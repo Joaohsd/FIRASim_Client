@@ -10,8 +10,11 @@
 
 int main(int argc, char *argv[]) {
     QCoreApplication a(argc, argv);
+    //Creating a pointer to Core object
     Core *core = new Core();
+    //Updating arguments passed to this code
     core->updateArguments(argc,argv);
+    //Starting Core object
     core->start();
     return a.exec();
 }
