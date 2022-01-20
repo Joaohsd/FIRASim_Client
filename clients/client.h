@@ -6,15 +6,24 @@
 #include <QUdpSocket>
 #include <QReadWriteLock>
 #include <QNetworkDatagram>
+#include <QObject>
 
-class Client
+class Client : public QObject
 {
+    Q_OBJECT
 public:
     Client(QString serverAddress, quint16 serverPort);
-
-    // Run
-    void run();
+    void connect();
     void close();
+
+//Slots
+public slots:
+    void run();
+
+//Signals
+signals:
+    void refereeAlert();
+    void dataReceived();
 
 protected:
     // Network data

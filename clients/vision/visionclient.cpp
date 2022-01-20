@@ -1,9 +1,6 @@
 #include "visionclient.h"
 
 void VisionClient::connectToNetwork() {
-    // Creating socket pointer
-    _clientSocket = new QUdpSocket();
-
     // Binding in defined network
     if(_clientSocket->bind(QHostAddress(_serverAddress), _serverPort, QUdpSocket::ShareAddress) == false) {
         std::cout << "[ERROR] Error while binding vision socket.\n";
@@ -51,6 +48,8 @@ void VisionClient::runClient() {
         _lastEnvironment = environment;
         _environmentMutex.unlock();
     }
+    std::cout << "Info received from FIRA." << std::endl;
+    emit dataReceived();
 }
 
 fira_message::sim_to_ref::Environment VisionClient::getLastEnvironment() {

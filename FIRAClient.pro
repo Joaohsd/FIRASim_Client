@@ -1,5 +1,6 @@
 # Qt libs to import
 QT += network
+QT += core
 
 # Project configs
 TEMPLATE = app
@@ -17,7 +18,7 @@ UI_DIR = tmp/moc
 RCC_DIR = tmp/rc
 
 # Project libs
-LIBS *= -lprotobuf -lQt5Core
+LIBS *= -lprotobuf
 
 # Compiling .proto files
 system(echo "Compiling protobuf files" && cd proto && cmake . && make)
@@ -40,6 +41,13 @@ SOURCES += \
         proto/vssref_command.pb.cc \
         proto/vssref_common.pb.cc \
         proto/vssref_placement.pb.cc \
+        src/arguments/arguments.cpp \
+        src/core.cpp \
+	src/fieldspace.cpp \
+	src/staticdata.cpp \
+	src/robot.cpp \
+	src/uvf.cpp \
+	src/pid.cpp \
         utils/timer/timer.cpp
 
 # Default rules for deployment.
@@ -60,4 +68,12 @@ HEADERS += \
     proto/vssref_command.pb.h \
     proto/vssref_common.pb.h \
     proto/vssref_placement.pb.h \
+    src/arguments/arguments.h \
+    src/core.h \
+    src/defines.h \
+    src/fieldspace.h \
+    src/staticdata.h \
+    src/robot.h \
+    src/uvf.h \
+    src/pid.h \
     utils/timer/timer.h

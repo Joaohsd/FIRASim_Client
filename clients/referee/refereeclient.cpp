@@ -1,9 +1,6 @@
 #include "refereeclient.h"
 
 void RefereeClient::connectToNetwork() {
-    // Creating socket pointer
-    _clientSocket = new QUdpSocket();
-
     // Binding in defined network
     if(_clientSocket->bind(QHostAddress(_serverAddress), _serverPort, QUdpSocket::ShareAddress) == false) {
         std::cout << "[ERROR] Error while binding referee socket.\n";
@@ -22,7 +19,6 @@ void RefereeClient::disconnectFromNetwork() {
     if(_clientSocket->isOpen()) {
         _clientSocket->close();
     }
-
     delete _clientSocket;
 }
 
@@ -48,9 +44,11 @@ void RefereeClient::runClient() {
 
         // Update last environment
         _foulMutex.lockForWrite();
-        _lastFoulData = std::make_tuple<VSSRef::Foul, VSSRef::Color, VSSRef::Quadrant>(command.foul(), command.teamcolor(), command.foulquadrant());
+        _lastFoulData = std::make_tuple<VSSRef::Foul, VSSRef::Color, VSSRef::Quadrant, VSSRef::Half>(command.foul(), command.teamcolor(), command.foulquadrant(), command.gamehalf());
         _foulMutex.unlock();
     }
+    std::cout << "Info received from REF." << std::endl;
+    emit refereeAlert();
 }
 
 VSSRef::Foul RefereeClient::getLastFoul() {
@@ -75,4 +73,12 @@ VSSRef::Quadrant RefereeClient::getLastFoulQuadrant() {
     _foulMutex.unlock();
 
     return lastFoulQuadrant;
+}
+
+VSSRef::Half RefereeClient::getLastGameHalf(){
+    _foulMutex.lockForRead();
+    VSSRef::Half lastGameHalf = std::get<3>(_lastFoulData);
+    _foulMutex.unlock();
+
+    return lastGameHalf;
 }

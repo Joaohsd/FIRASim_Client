@@ -1,9 +1,6 @@
 #include "actuatorclient.h"
 
 void ActuatorClient::connectToNetwork() {
-    // Creating socket pointer
-    _clientSocket = new QUdpSocket();
-
     // Connecting to network
     _clientSocket->connectToHost(_serverAddress, _serverPort, QUdpSocket::WriteOnly, QUdpSocket::IPv4Protocol);
 }
