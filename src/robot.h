@@ -9,12 +9,27 @@
 #include <clients/actuator/actuatorclient.h>
 #include <src/pid.h>
 #include <iostream>
+#include <QThread>
 
-class Robot{
-
+class Robot : public QThread
+{
+    Q_OBJECT
+public slots:
+    void printStartGOAL();
+    void printStartDEF();
+    void printStartATT();
+    void printFinishGOAL();
+    void printFinishDEF();
+    void printFinishATT();
+signals:
+    void endPlay();
     public:
-        Robot();
+        Robot(int, int, double, double, double, double, double);
         void setRobot(int, int, double, double, double, double, double);
+        void run();
+        void playGoalKeeper();
+        void playDefender();
+        void playStricker();
 
         int getId();
         int getTeamId();

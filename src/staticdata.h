@@ -4,6 +4,11 @@
 #include "fieldspace.h"
 #include "stdlib.h"
 
+enum play_mode {
+    bola_ataque,
+    bola_defesa,
+    bola_area
+};
 
 class StaticData
 {
@@ -25,6 +30,7 @@ public:
 	static double angle_error, robot1_motor, robot2_motor, robot3_motor;
     static bool penalty;
     static double speed_spin_increment;
+    static play_mode mode;
 	StaticData();
 };
 

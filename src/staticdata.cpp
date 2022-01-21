@@ -62,6 +62,8 @@ int StaticData::robotPenalty[] = {-1,-1,-1,-1,-1};
 int StaticData::penaltyAction = 0;
 double StaticData::speed_spin_increment = 3.0;
 
+play_mode StaticData::mode = bola_ataque;
+
 StaticData::StaticData()
 {
 

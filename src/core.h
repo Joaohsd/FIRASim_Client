@@ -18,6 +18,7 @@ class Core : public QObject
 public:
     Core();
     void updateArguments(int argc, char** argv);
+
     void start();
     void initialize(bool team, int formation);
 
@@ -26,18 +27,21 @@ public:
 
     void sendRef();
 
-    Robot player[NUMBER_OF_TEAMS][NUMBER_OF_ROBOTS];
+    Robot *player[NUMBER_OF_TEAMS][NUMBER_OF_ROBOTS];
     StaticData *data;
 
 public slots:
+    //Actions
     void update();
     void process();
     void verifyStatus();
     void reposition();
 
 signals:
+    //Events
     void readyToProcess();
     void repositioningAlert();
+    void playRobots();
 
 private:
     //Network clients
@@ -49,19 +53,23 @@ private:
     //Code arguments
     Arguments *codeArguments;
 
+    //IDs of each robot
     int att_id = ATT_ID;
     int def_id = DEF_ID;
     int goal_id = GOAL_ID;
 
+    //Counter to penalty action
     int max_cont_penalty = 90;
     int max_cont2_penalty = 60;
 
-    double predict_fact = 0.1;   //Para caĺculo da posição futura da bola (TESTAR)
+    double predict_fact = 0.05;   //Para caĺculo da posição futura da bola (TESTAR)
                                  //1.0
 
+    //Flags
     bool defende_penalty=false;
     bool testCondition = true;
 
+    //Inline functions
     /**
      * @brief get_angle
      * @param vec_a Vector A

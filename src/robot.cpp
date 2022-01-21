@@ -3,8 +3,14 @@
 
 #include "robot.h"
 
-Robot::Robot(){
-
+Robot::Robot(int _team_id, int _id, double _kp, double _ki, double _kd, double _base_speed, double _spin_speed){
+    this->team_id = _team_id;
+    this->player_id = _id;
+    this->KP = _kp;
+    this->KI = _ki;
+    this->KD = _kd;
+    this->base_speed = _base_speed;
+    this->spin_speed = _spin_speed;
 }
 
 void Robot::setRobot(int _team_id, int _id, double _kp, double _ki, double _kd, double _base_speed, double _spin_speed){
@@ -15,6 +21,30 @@ void Robot::setRobot(int _team_id, int _id, double _kp, double _ki, double _kd, 
     this->KD = _kd;
     this->base_speed = _base_speed;
     this->spin_speed = _spin_speed;
+}
+
+void Robot::printStartGOAL(){
+    std::cout << "THREAD GOAL STARTED" << std::endl;
+}
+
+void Robot::printFinishGOAL(){
+    std::cout << "THREAD GOAL FINISHED" << std::endl;
+}
+
+void Robot::printStartDEF(){
+    std::cout << "THREAD DEF STARTED" << std::endl;
+}
+
+void Robot::printFinishDEF(){
+    std::cout << "THREAD DEF FINISHED" << std::endl;
+}
+
+void Robot::printStartATT(){
+    std::cout << "THREAD ATT STARTED" << std::endl;
+}
+
+void Robot::printFinishATT(){
+    std::cout << "THREAD ATT FINISHED" << std::endl;
 }
 
 int Robot::getId(){
@@ -97,6 +127,74 @@ void Robot::sendFIRA(int id, double wheelL, double wheelR){
     this->actuator->sendCommand(id,wheelL,wheelR);
 }
 
+void Robot::run(){
+    if(this->getId() == GOAL_ID){
+        this->playGoalKeeper();
+    }
+    else if(this->getId() == DEF_ID){
+        this->playDefender();
+    }
+    else{
+        this->playStricker();
+    }
+}
+
+void Robot::playGoalKeeper(){
+    if(this->data->formation1){ // 1-0-2
+        //GOALKEEPER
+        switch(data->mode){
+        case bola_ataque:
+            if(!data->penalty)
+                this->defend_goal_LARC();
+            break;
+        case bola_defesa:
+            this->defend_goal_LARC();
+            break;
+        case bola_area:
+            this->defend_goal_LARC();
+            break;
+        }
+    }
+    emit endPlay();
+}
+
+void Robot::playDefender(){
+    if(this->data->formation1){ // 1-0-2
+        //DEFENDER
+        switch(data->mode){
+        case bola_ataque:
+            this->attack();
+            break;
+        case bola_defesa:
+            this->defend_middle_attack();
+            break;
+        case bola_area:
+            this->defend_middle_attack();
+            break;
+        }
+    }
+    emit endPlay();
+}
+
+void Robot::playStricker(){
+    if(this->data->formation1){ // 1-0-2
+        //STRICKER
+        switch(data->mode){
+        case bola_ataque:
+            if(!data->penalty)
+                this->attack();
+            break;
+        case bola_defesa:
+            this->intercept();
+            break;
+        case bola_area:
+            this->intercept();
+            break;
+        }
+    }
+    emit endPlay();
+}
+
 void Robot::attack()
 {
     enum play_mode {att_normal, att_borda, att_danger} mode = att_normal;
@@ -132,20 +230,20 @@ void Robot::attack()
         if(is_inside(this->data->player[data->playTeam][ATT_ID],this->data->area[RIGHT_SIDE]) || is_inside(this->data->player[data->playTeam][ATT_ID],this->data->area[LEFT_SIDE])){
             if(this->getId() == 2){
                 this->kick();
-                cout << "ENTROU KICK :::::::    2" << endl;
+                //cout << "ENTROU KICK :::::::    2" << endl;
             }
             if(this->getId() == 1){
                 this->defend_attack();
-                cout << "ENTROU DEFEND :::::::    1" << endl;
+                //cout << "ENTROU DEFEND :::::::    1" << endl;
             }
         }
         else{
             if(this->getId() == 2){
                 this->defend_attack();
-                cout << "ENTROU DEFEND :::::::    2" << endl;
+                //cout << "ENTROU DEFEND :::::::    2" << endl;
             }
             if(this->getId() == 1){
-                cout << "ENTROU KICK :::::::    1" << endl;
+                //cout << "ENTROU KICK :::::::    1" << endl;
                 this->kick();
             }
         }
@@ -190,20 +288,20 @@ void Robot::kick()
                 this->kick_stat = false;
             }
             if(this->kick_stat == false){
-                /*if(this->data->ballPos.y() <= this->data->middle_field.y() + min_dist_ball_y && this->data->ballPos.y() >= this->data->middle_field.y() - min_dist_ball_y){ // Center
-                    cout << "meio" << endl;
+                if(this->data->ballPos.y() <= this->data->middle_field.y() + min_dist_ball_y && this->data->ballPos.y() >= this->data->middle_field.y() - min_dist_ball_y){ // Center
+                    //cout << "meio" << endl;
                     this->go_to(QPointF(this->data->futureBallPos.x(), this->data->futureBallPos.y()), PI, 1, 3); //PI
                 }
-                else {*///if((this->data->ballPos.y() <= (this->data->middle_field.y() + max_dist_ball_y)) && (this->data->ballPos.y() >= (this->data->middle_field.y() - max_dist_ball_y))){ //External
+                else {//if((this->data->ballPos.y() <= (this->data->middle_field.y() + max_dist_ball_y)) && (this->data->ballPos.y() >= (this->data->middle_field.y() - max_dist_ball_y))){ //External
                     if(this->data->ballPos.y() > this->data->middle_field.y()){ // External up
-                        cout << "em cima meio" << endl;
+                        //cout << "em cima meio" << endl;
                         this->go_to(QPointF(this->data->futureBallPos.x(), this->data->futureBallPos.y()), 3*PI/4.0, 1, 3);//3*PI/4.0
                     }
                     else{   // External down
-                        cout << "baixo meio" << endl;
+                        //cout << "baixo meio" << endl;
                         this->go_to(QPointF(this->data->futureBallPos.x(), this->data->futureBallPos.y()), -3*PI/4.0, 1, 3);//-3*PI/4.0
                     }
-                //}
+                }
                 /*else{// Corner
                     cout << "canto" << endl;
                     this->intercept();
@@ -248,20 +346,20 @@ void Robot::kick()
             this->kick_stat = false;
         }
         if(this->kick_stat == false){
-            /*if(this->data->ballPos.y() <= this->data->middle_field.y() + min_dist_ball_y && this->data->ballPos.y() >= this->data->middle_field.y() - min_dist_ball_y){
+            if(this->data->ballPos.y() <= this->data->middle_field.y() + min_dist_ball_y && this->data->ballPos.y() >= this->data->middle_field.y() - min_dist_ball_y){
                 //cout << "meio" << endl;
                 this->go_to(QPointF(this->data->futureBallPos.x(), this->data->futureBallPos.y()), 0, 1, 3);
             }
-            else {*///if(this->data->ballPos.y() <= this->data->middle_field.y() + max_dist_ball_y && this->data->ballPos.y() >= this->data->middle_field.y() - max_dist_ball_y){
+            else {//if(this->data->ballPos.y() <= this->data->middle_field.y() + max_dist_ball_y && this->data->ballPos.y() >= this->data->middle_field.y() - max_dist_ball_y){
                 if(this->data->ballPos.y() > this->data->middle_field.y()){
-                    cout << "em cima dent" << endl;
+                    //cout << "em cima dent" << endl;
                     this->go_to(QPointF(this->data->futureBallPos.x(), this->data->futureBallPos.y()), PI/4.0, 1, 3);
                 }
                 else{
-                    cout << "baixo dent" << endl;
+                    //cout << "baixo dent" << endl;
                     this->go_to(QPointF(this->data->futureBallPos.x(), this->data->futureBallPos.y()), -PI/4.0, 1, 3);
                 }
-            //}
+            }
             /*else{
                 cout << "canto" << endl;
                 this->intercept();
@@ -290,7 +388,7 @@ void Robot::intercept()
     double dist_bet_players = MIN_DIST_BET_PLAYERS;
     QPointF goal = medium_qpoint(data->goal.getTopLeft(),data->goal.getBottomLeft());
     QPointF go_to_position = QPointF(data->futureBallPos.x(), data->futureBallPos.y());
-    cout << "INTERCEPT" << endl;
+    //cout << "INTERCEPT" << endl;
     if(distance(this->data->player[data->playTeam][DEF_ID],this->data->player[data->playTeam][ATT_ID]) < dist_bet_players){
         if(this->getId() == DEF_ID && pos.x() < data->player[this->data->playTeam][ATT_ID].x()){
             go_to(goal,PI,0,3);
