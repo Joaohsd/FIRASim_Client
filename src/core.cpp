@@ -248,6 +248,7 @@ void Core::process(){
                         data->mode = bola_defesa;
                 }
             }
+
             /////////////////////////////////////////Penalty action/////////////////////////////////////////////////
             if(data->robotPenalty[att_id] >= 0 || data->robotPenalty[att_id +1] >= 0 || data->robotPenalty[att_id+2] >=0){
                 /*cout << "PENALTY: " << data->penaltyAction << endl;*/
@@ -272,10 +273,12 @@ void Core::process(){
                     this->player[data->playTeam][att_id]->position(data->middle_field,180,1,2);
                 }
             }
+
             //Starting threads of each robot
             this->player[data->playTeam][att_id]->start(QThread::HighestPriority);
             this->player[data->playTeam][goal_id]->start(QThread::HighestPriority);
             this->player[data->playTeam][def_id]->start();
+
             ///////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
             if(this->data->formation1){ // 1-0-2
