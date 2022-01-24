@@ -51,9 +51,9 @@ void Core::start(){
     QObject::connect(this, SIGNAL(readyToProcess()), this, SLOT(process()));
     QObject::connect(this->refereeClient, SIGNAL(refereeAlert()), this, SLOT(verifyStatus()));
     QObject::connect(this, SIGNAL(repositioningAlert()), this, SLOT(reposition()));
-    QObject::connect(this, SIGNAL(playRobots()), this->player[data->playTeam][goal_id], SLOT(start()));
+    /*QObject::connect(this, SIGNAL(playRobots()), this->player[data->playTeam][goal_id], SLOT(start()));
     QObject::connect(this, SIGNAL(playRobots()), this->player[data->playTeam][def_id], SLOT(start()));
-    QObject::connect(this, SIGNAL(playRobots()), this->player[data->playTeam][att_id], SLOT(start()));
+    QObject::connect(this, SIGNAL(playRobots()), this->player[data->playTeam][att_id], SLOT(start()));*/
     //QObject::connect(this->player[data->playTeam][goal_id], SIGNAL(started()), this->player[data->playTeam][goal_id], SLOT(printStartGOAL()));
     //QObject::connect(this->player[data->playTeam][def_id], SIGNAL(started()), this->player[data->playTeam][def_id], SLOT(printStartDEF()));
     //QObject::connect(this->player[data->playTeam][att_id], SIGNAL(started()), this->player[data->playTeam][att_id], SLOT(printStartATT()));
@@ -258,8 +258,9 @@ void Core::process(){
                 }
             }
 
-            emit playRobots();
-
+            this->player[data->playTeam][att_id]->start(QThread::HighestPriority);
+            this->player[data->playTeam][goal_id]->start(QThread::HighestPriority);
+            this->player[data->playTeam][def_id]->start();
             ///////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
             if(this->data->formation1){ // 1-0-2
