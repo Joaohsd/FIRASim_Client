@@ -288,11 +288,11 @@ void Robot::kick()
                 this->kick_stat = false;
             }
             if(this->kick_stat == false){
-                if(this->data->ballPos.y() <= this->data->middle_field.y() + min_dist_ball_y && this->data->ballPos.y() >= this->data->middle_field.y() - min_dist_ball_y){ // Center
+                /*if(this->data->ballPos.y() <= this->data->middle_field.y() + min_dist_ball_y && this->data->ballPos.y() >= this->data->middle_field.y() - min_dist_ball_y){ // Center
                     //cout << "meio" << endl;
                     this->go_to(QPointF(this->data->futureBallPos.x(), this->data->futureBallPos.y()), PI, 1, 3); //PI
                 }
-                else {//if((this->data->ballPos.y() <= (this->data->middle_field.y() + max_dist_ball_y)) && (this->data->ballPos.y() >= (this->data->middle_field.y() - max_dist_ball_y))){ //External
+                else {*///if((this->data->ballPos.y() <= (this->data->middle_field.y() + max_dist_ball_y)) && (this->data->ballPos.y() >= (this->data->middle_field.y() - max_dist_ball_y))){ //External
                     if(this->data->ballPos.y() > this->data->middle_field.y()){ // External up
                         //cout << "em cima meio" << endl;
                         this->go_to(QPointF(this->data->futureBallPos.x(), this->data->futureBallPos.y()), 3*PI/4.0, 1, 3);//3*PI/4.0
@@ -302,12 +302,7 @@ void Robot::kick()
                         this->go_to(QPointF(this->data->futureBallPos.x(), this->data->futureBallPos.y()), -3*PI/4.0, 1, 3);//-3*PI/4.0
                     }
                 }
-                /*else{// Corner
-                    cout << "canto" << endl;
-                    this->intercept();
-                    //go_to(data->ballPos, PI, 1, 3);
-                }*/
-            }//}
+            //}
             else{
                 QPointF med_goal = medium_qpoint(this->data->goal.getTopRight(),this->data->goal.getBottomRight());
                 QPointF vec_ball_goal = QPointF(med_goal.x() - this->data->ballPos.x(), med_goal.y() - this->data->ballPos.y());
@@ -320,24 +315,6 @@ void Robot::kick()
     }
     else{
         med_goal2 = medium_qpoint(data->goal.getTopLeft(),data->goal.getBottomLeft());
-        /*if(distance(this->data->player[data->playTeam][DEF_ID],this->data->player[data->playTeam][ATT_ID]) < dist_bet_players){
-            if(this->getId() == DEF_ID && pos.x() < data->player[this->data->playTeam][ATT_ID].x()){
-                go_to(med_goal2,PI,0,3);
-            }
-            else if(this->getId() == DEF_ID && pos.x() > data->player[this->data->playTeam][ATT_ID].x()){
-                defend_center();
-            }
-            else if(this->getId() == ATT_ID && pos.x() < data->player[this->data->playTeam][DEF_ID].x()){
-                go_to(med_goal2,PI,0,3);
-            }
-            else if(this->getId() == ATT_ID && pos.x() > data->player[this->data->playTeam][DEF_ID].x()){
-                defend_center();
-            }
-        }*/
-        /*if(this->getId() == ATT_ID && this->pos.x() > data->max_field.x()){
-            position(med_goal2,PI,0,3);
-        }
-        else{*/
         //QPoint med_goal2 = medium_qpoint(data->goal.getTopLeft(),data->goal.getBottomLeft());
         if(this->distance(this->pos,this->data->ballPos) <= min_threshold && this->pos.x() > this->data->ballPos.x() && ball_player_angle <= angle_threshold && this->data->ballPos.x() < this->data->middle_field.x()){
             this->kick_stat = true;
@@ -346,11 +323,11 @@ void Robot::kick()
             this->kick_stat = false;
         }
         if(this->kick_stat == false){
-            if(this->data->ballPos.y() <= this->data->middle_field.y() + min_dist_ball_y && this->data->ballPos.y() >= this->data->middle_field.y() - min_dist_ball_y){
+            /*if(this->data->ballPos.y() <= this->data->middle_field.y() + min_dist_ball_y && this->data->ballPos.y() >= this->data->middle_field.y() - min_dist_ball_y){
                 //cout << "meio" << endl;
                 this->go_to(QPointF(this->data->futureBallPos.x(), this->data->futureBallPos.y()), 0, 1, 3);
             }
-            else {//if(this->data->ballPos.y() <= this->data->middle_field.y() + max_dist_ball_y && this->data->ballPos.y() >= this->data->middle_field.y() - max_dist_ball_y){
+            else {*///if(this->data->ballPos.y() <= this->data->middle_field.y() + max_dist_ball_y && this->data->ballPos.y() >= this->data->middle_field.y() - max_dist_ball_y){
                 if(this->data->ballPos.y() > this->data->middle_field.y()){
                     //cout << "em cima dent" << endl;
                     this->go_to(QPointF(this->data->futureBallPos.x(), this->data->futureBallPos.y()), PI/4.0, 1, 3);
@@ -360,12 +337,7 @@ void Robot::kick()
                     this->go_to(QPointF(this->data->futureBallPos.x(), this->data->futureBallPos.y()), -PI/4.0, 1, 3);
                 }
             }
-            /*else{
-                cout << "canto" << endl;
-                this->intercept();
-                //go_to(data->ballPos, PI, 1, 3);
-            }*/
-        }//}
+        //}}
         else{
             QPointF med_goal = medium_qpoint(this->data->goal.getTopLeft(), this->data->goal.getBottomLeft());
             QPointF vec_ball_goal = QPointF(med_goal.x() - this->data->ballPos.x(), med_goal.y() - this->data->ballPos.y());

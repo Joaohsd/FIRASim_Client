@@ -18,6 +18,7 @@ double StaticData::angle_error = 10.0;
 // Ball data
 QPointF StaticData::ballPos = QPointF(-20,481);
 QPointF StaticData::ballVel = QPointF(0.0,0.0);
+QPointF StaticData::lastBallVel = QPointF(0.0,0.0);
 QPointF StaticData::futureBallPos = QPointF(0.0,0.0);
 QPointF StaticData::lastBallPos = QPointF(0.0,0.0);
 

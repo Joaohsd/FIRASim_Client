@@ -62,7 +62,7 @@ private:
     int max_cont_penalty = 90;
     int max_cont2_penalty = 60;
 
-    double predict_fact = 0.05;   //Para caĺculo da posição futura da bola (TESTAR)
+    double predict_fact = 0.2;   //Para caĺculo da posição futura da bola (TESTAR)
                                  //1.0
 
     //Flags

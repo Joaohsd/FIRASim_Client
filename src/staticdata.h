@@ -15,7 +15,7 @@ class StaticData
 public:
 	static double openglTime, pathTime, delayTime;
     static QPointF ballPos, lastBallPos;
-    static QPointF ballVel, futureBallPos;
+    static QPointF ballVel, lastBallVel, futureBallPos;
     static FieldSpace field, area[2], goal;
     static QPointF middle_field, max_field, min_field;
     static QPointF player[2][4];

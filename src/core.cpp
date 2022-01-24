@@ -32,28 +32,36 @@ bool Core::getTestCondition(){
 }
 
 void Core::start(){
+    //Creating client objects
     this->visionClient = new VisionClient(this->codeArguments->get_ip_Multicast_FIRA_Vision(),this->codeArguments->get_port_FIRA_Vision());
     this->actuatorClient = new ActuatorClient(this->codeArguments->get_ip_Local_Machine_FIRA(), this->codeArguments->get_port_FIRA_Actuator());
     this->refereeClient = new RefereeClient(this->codeArguments->get_ip_Multicast_REF(), this->codeArguments->get_port_REF());
     this->replacerClient = new ReplacerClient(this->codeArguments->get_ip_Multicast_REF(), this->codeArguments->get_port_REF_REPLACER());
 
+    //Setting team color for actuator and replacer object
     VSSRef::Color teamColor = this->codeArguments->get_teamColor() ? VSSRef::Color::YELLOW : VSSRef::Color::BLUE;
     this->actuatorClient->setTeamColor(teamColor);
     this->replacerClient->setTeamColor(teamColor);
 
+    //Connecting clients that receive information
     this->visionClient->connect();
     this->refereeClient->connect();
 
     //Initialize
     this->initialize(this->codeArguments->get_teamColor(), this->codeArguments->get_teamFormation());
 
+    //Events and Actions
+    //Events involving FIRASim
     QObject::connect(this->visionClient, SIGNAL(dataReceived()), this, SLOT(update()));
     QObject::connect(this, SIGNAL(readyToProcess()), this, SLOT(process()));
+
+    //Events involving Referee
     QObject::connect(this->refereeClient, SIGNAL(refereeAlert()), this, SLOT(verifyStatus()));
     QObject::connect(this, SIGNAL(repositioningAlert()), this, SLOT(reposition()));
-    /*QObject::connect(this, SIGNAL(playRobots()), this->player[data->playTeam][goal_id], SLOT(start()));
-    QObject::connect(this, SIGNAL(playRobots()), this->player[data->playTeam][def_id], SLOT(start()));
-    QObject::connect(this, SIGNAL(playRobots()), this->player[data->playTeam][att_id], SLOT(start()));*/
+
+    //QObject::connect(this, SIGNAL(playRobots()), this->player[data->playTeam][goal_id], SLOT(start()));
+    //QObject::connect(this, SIGNAL(playRobots()), this->player[data->playTeam][def_id], SLOT(start()));
+    //QObject::connect(this, SIGNAL(playRobots()), this->player[data->playTeam][att_id], SLOT(start()));
     //QObject::connect(this->player[data->playTeam][goal_id], SIGNAL(started()), this->player[data->playTeam][goal_id], SLOT(printStartGOAL()));
     //QObject::connect(this->player[data->playTeam][def_id], SIGNAL(started()), this->player[data->playTeam][def_id], SLOT(printStartDEF()));
     //QObject::connect(this->player[data->playTeam][att_id], SIGNAL(started()), this->player[data->playTeam][att_id], SLOT(printStartATT()));
@@ -184,22 +192,28 @@ void Core::update(){
         // Updating information of ball
         data->lastBallPos = this->data->ballPos;
         data->ballPos = QPointF(lastFrame.ball().x()+0.75, lastFrame.ball().y()+0.65);  // Adjust to work only in the first quadrant
+        data->ballVel = QPointF(lastFrame.ball().vx(), lastFrame.ball().vy());
 
         // Predicting future ball position
-        double v_x = 30.0*(data->ballPos.x() - this->data->lastBallPos.x());
+        /*double v_x = 30.0*(data->ballPos.x() - this->data->lastBallPos.x());
         double v_y = 30.0*(data->ballPos.y() - this->data->lastBallPos.y());;
         double k = 0.05;
         double f_vx = k * v_x + (1.0 - k) * data->ballVel.x();
         double f_vy = k * v_y + (1.0 - k) * data->ballVel.y();
         data->ballVel = QPointF(f_vx,f_vy);
         data->futureBallPos = QPointF(data->ballPos.x() + data->ballVel.x()*predict_fact, data->ballPos.y() + data->ballVel.y()*predict_fact);
+        */
+
+        //Determing future ball position
+        data->futureBallPos.setX(data->ballPos.x() + data->ballVel.x() * TIME_TO_RECEIVE_DATA + (0.5 * (data->ballVel.x() - data->lastBallVel.x()) * TIME_TO_RECEIVE_DATA));
+        data->futureBallPos.setY(data->ballPos.y() + data->ballVel.y() * TIME_TO_RECEIVE_DATA + (0.5 * (data->ballVel.y() - data->lastBallVel.y()) * TIME_TO_RECEIVE_DATA));
 
         //Showing information about ball
         cout << "X: " << this->data->ballPos.x() << endl;
         cout << "Y: " << this->data->ballPos.y() << endl;
-        /*cout << "X FUT: " << this->data->futureBallPos.x() << endl;
+        cout << "X FUT: " << this->data->futureBallPos.x() << endl;
         cout << "Y FUT: " << this->data->futureBallPos.y() << endl;
-        cout << "Vx: " << this->data->ballVel.x() << endl;
+        /*cout << "Vx: " << this->data->ballVel.x() << endl;
         cout << "Vy: " << this->data->ballVel.y() << endl;
         */
         emit readyToProcess();
@@ -257,7 +271,7 @@ void Core::process(){
                     this->player[data->playTeam][att_id]->position(data->middle_field,180,1,2);
                 }
             }
-
+            //Starting threads of each robot
             this->player[data->playTeam][att_id]->start(QThread::HighestPriority);
             this->player[data->playTeam][goal_id]->start(QThread::HighestPriority);
             this->player[data->playTeam][def_id]->start();
@@ -265,7 +279,7 @@ void Core::process(){
 /*
             if(this->data->formation1){ // 1-0-2
                 //STRICKER
-                switch(mode){
+                switch(data->mode){
                 case bola_ataque:
                     if(!data->penalty)
                         this->player[data->playTeam][att_id]->attack();
@@ -278,7 +292,7 @@ void Core::process(){
                     break;
                 }
                 //DEFENDER
-                switch(mode){
+                switch(data->mode){
                 case bola_ataque:
                     this->player[this->data->playTeam][def_id]->attack();
                     break;
@@ -290,7 +304,7 @@ void Core::process(){
                     break;
                 }
                 //GOALKEEPER
-                switch(mode){
+                switch(data->mode){
                 case bola_ataque:
                     this->player[this->data->playTeam][goal_id]->defend_goal_LARC();
                     break;
@@ -305,7 +319,7 @@ void Core::process(){
 
             else if (this->data->formation2) { //Safe 1-1-1
                 //ATACANTE
-                switch(mode){
+                switch(data->mode){
                 case bola_ataque:
                     this->player[data->playTeam][att_id]->attack();
                     break;
@@ -320,7 +334,7 @@ void Core::process(){
                     break;
                 }
                 //DEFENSOR
-                switch(mode){
+                switch(data->mode){
                 case bola_ataque:
                     this->player[data->playTeam][def_id]->defend_middle();
                     break;
@@ -335,7 +349,7 @@ void Core::process(){
                     break;
                 }
                 //GOLEIRO
-                switch(mode){
+                switch(data->mode){
                 case bola_ataque:
                     this->player[data->playTeam][goal_id]->attack();
                     break;
@@ -350,7 +364,7 @@ void Core::process(){
 
             else if (this->data->formation3) {
                 //ATACANTE
-                switch(mode){
+                switch(data->mode){
                 case bola_ataque:
                     this->player[data->playTeam][att_id]->attack();
                     break;
@@ -365,7 +379,7 @@ void Core::process(){
                     break;
                 }
                 //DEFENSOR
-                switch(mode){
+                switch(data->mode){
                 case bola_ataque:
                     this->player[data->playTeam][def_id]->defend_middle();
                     break;
@@ -380,7 +394,7 @@ void Core::process(){
                     break;
                 }
                 //GOLEIRO
-                switch(mode){
+                switch(data->mode){
                 case bola_ataque:
                     this->player[data->playTeam][goal_id]->attack();
                     break;
@@ -394,7 +408,7 @@ void Core::process(){
             }
             else if(this->data->formation4){
                 //ATACANTE
-                switch(mode){
+                switch(data->mode){
                 case bola_ataque:
                     this->player[data->playTeam][att_id]->attack();
                     break;
@@ -409,7 +423,7 @@ void Core::process(){
                     break;
                 }
                 //DEFENSOR
-                switch(mode){
+                switch(data->mode){
                 case bola_ataque:
                     this->player[data->playTeam][def_id]->go_to_debug();
                     break;
@@ -424,7 +438,7 @@ void Core::process(){
                     break;
                 }
                 //GOLEIRO
-                switch(mode){
+                switch(data->mode){
                 case bola_ataque:
                     this->player[data->playTeam][goal_id]->defend_goal();
                     break;
