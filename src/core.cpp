@@ -133,18 +133,18 @@ void Core::initialize(bool team, int formation){
     double kd_base = -50.5;
 
     // PID and Speed defender (robot 1)
-    double fast_speed2 = 300;   //200   //300
+    double fast_speed2 = 200;   //200   //300
     double spin_speed2 = fast_speed2*1.5;
-    double kp_base2 = -4.15;    //-2.65 //-4.65
+    double kp_base2 = -2.15;    //-2.65 //-4.65
     double ki_base2 = -0.0;
-    double kd_base2 = -85.5;    //-50.5  //-95.5
+    double kd_base2 = -50.5;    //-50.5  //-95.5
 
     //PID and Speed stricker (robot 2)
-    double fast_speed3_r = 400; //210   //400
+    double fast_speed3_r = 210; //210   //400
     double spin_speed3_r = fast_speed3_r*1.5;
-    double kp_base3_r = -4.65;  //-2.65 //-5.65
+    double kp_base3_r = -2.65;  //-2.65 //-5.65
     double ki_base3_r = -0.0;
-    double kd_base3_r = -95.5; //-50.5 //-100.5
+    double kd_base3_r = -50.5; //-50.5 //-100.5
 
     // Configuring robots
     //int _team_id, int _id, double _kp, double _ki, double _kd, double _base_speed, double_spin_speed
@@ -192,6 +192,7 @@ void Core::update(){
         // Updating information of ball
         data->lastBallPos = this->data->ballPos;
         data->ballPos = QPointF(lastFrame.ball().x()+0.75, lastFrame.ball().y()+0.65);  // Adjust to work only in the first quadrant
+        data->lastBallVel = data->ballVel;
         data->ballVel = QPointF(lastFrame.ball().vx(), lastFrame.ball().vy());
 
         // Predicting future ball position

@@ -188,7 +188,7 @@ signals:
          * @return Verify if the ball is in the y border of the field
          */
         inline bool border_y(){
-            double min_dist = 0.07;
+            double min_dist = 0.08;
             double y = data->ballPos.y();
             if(y >= data->max_field.y() - min_dist || y <= data->min_field.y() + min_dist)
                 return 1;
@@ -201,7 +201,7 @@ signals:
          * @return Verify if the ball is in the x border of the field
          */
         inline bool border_x(){
-            double min_dist = 0.07;
+            double min_dist = 0.08;
             double x = data->ballPos.x();
             if(x >= data->max_field.x() - min_dist || x <= data->min_field.x() + min_dist)
                 return 1;

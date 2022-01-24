@@ -254,7 +254,7 @@ void Robot::attack()
 void Robot::kick()
 {
     double min_dist_ball_y = 0.25;
-    double max_dist_ball_y = 0.52;
+    double max_dist_ball_y = 0.55;
     //double min_distance_kickable = 70;
     //Minimum distance threshold for entering kick mode
     double min_threshold = 0.2; //Modified 0.25 to 0.15
@@ -355,27 +355,13 @@ void Robot::kick()
 
 void Robot::intercept()
 {
-    double min_pos_dist = 0.08;
+    double min_pos_dist = 0.07;
     int speed = -1;
     double dist_bet_players = MIN_DIST_BET_PLAYERS;
     QPointF goal = medium_qpoint(data->goal.getTopLeft(),data->goal.getBottomLeft());
     QPointF go_to_position = QPointF(data->futureBallPos.x(), data->futureBallPos.y());
     //cout << "INTERCEPT" << endl;
-    if(distance(this->data->player[data->playTeam][DEF_ID],this->data->player[data->playTeam][ATT_ID]) < dist_bet_players){
-        if(this->getId() == DEF_ID && pos.x() < data->player[this->data->playTeam][ATT_ID].x()){
-            go_to(goal,PI,0,3);
-        }
-        else if(this->getId() == DEF_ID && pos.x() > data->player[this->data->playTeam][ATT_ID].x()){
-            defend_center();
-        }
-        else if(this->getId() == ATT_ID && pos.x() < data->player[this->data->playTeam][DEF_ID].x()){
-            go_to(goal,PI,0,3);
-        }
-        else if(this->getId() == ATT_ID && pos.x() > data->player[this->data->playTeam][DEF_ID].x()){
-            defend_center();
-        }
-    }
-    else{
+
     if(distance(pos, data->ballPos) <= min_pos_dist){
         if(border_x()){
             spin_x();
@@ -455,7 +441,6 @@ void Robot::intercept()
                 }
             }
         }
-    }
 }
 
 /**
@@ -497,8 +482,8 @@ void Robot:: go_to(QPointF target, double target_angle, bool have_obstacle, int 
     }
     else if(decay_mode == 1){
         //cout << "decay_mode 1" << endl;
-        double min_goto_dist = 0.35; //0.3
-        double min_goto_dist_2 = 0.54; //0.5
+        double min_goto_dist = 0.32; //0.3
+        double min_goto_dist_2 = 0.52; //0.5
         double min_goto_fact = 0.7;     //CONFERIR
         double max_goto_fact= 1.0;      //CONFERIR
         if(distance(pos,target) < min_goto_dist_2){
@@ -527,7 +512,7 @@ void Robot:: go_to(QPointF target, double target_angle, bool have_obstacle, int 
     else if(decay_mode == 3){
         //cout << "decay_mode 3" << endl;
         double min_dist = 0.31; //0.3
-        double min_min_dist = 0.15;//0.18
+        double min_min_dist = 0.16;//0.18
         //cout << "ENTROOOU GO TO" << endl;
         if(distance(pos,target) <= min_min_dist){
             //cout << "PERTO" << endl;
@@ -538,8 +523,6 @@ void Robot:: go_to(QPointF target, double target_angle, bool have_obstacle, int 
         }
         else if(distance(pos,target) <= min_dist){
             curr_speed *= 0.8; //0.8
-            // Robo 3 novo 0.7
-            //curr_speed *= 0.7;
             //cout << "LONGE" << endl;
             kp_ *= 0.8; //0.8
             ki_ *= 0.8; //0.8
