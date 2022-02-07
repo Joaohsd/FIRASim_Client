@@ -1,0 +1,28 @@
+sudo docker login
+       username: robotbulls
+       password: equiperobotbulls
+
+-> Buildar imagem e subir pro DOCKER HUB
+
+#Na pasta em que esta o Dockerfile
+sudo docker build --tag robotbulls_larc2021:1.4 .
+sudo docker tag robotbulls_larc2021:1.4 robotbulls/robotbulls_larc2021:1.4        	# pode usar depois se precisar
+sudo docker push robotbulls/robotbulls_larc2021:1.4
+
+-> Acessando o servidor (Tem que estar no mesmo diretório do arquivo "pem")
+ssh -i robotbulls.pem robotbulls@IP_DA_MÁQUINA
+
+#Baixando a imagem na máquina
+sudo docker pull robotbulls/robotbulls_larc2021:1.4
+
+-> Subindo o executável "main" para a máquina remota
+scp -r -i robotbulls.pem /home/joao/RobotBulls/VSSS/Simulator/RobotBulls_FiraSim/ssl-Client/build/main robotbulls@IP_DA_MÁQUINA:/home/robotbulls/LARC
+
+->Rodando o docker
+#Alterar o nome da imagem do docker no script do runDocker para a imagem que está no servidor
+sudo nano runDocker.sh
+sudo sh runDocker.sh
+
+->Executando o código
+./main blue 127.0.0.1 10002 20011 224.0.0.1 10003 10004 224.5.23.2 1 0
+./main yellow 127.0.0.1 10002 20011 224.0.0.1 10003 10004 224.5.23.2 1 0
