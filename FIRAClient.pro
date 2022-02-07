@@ -1,6 +1,7 @@
 # Qt libs to import
 QT += network
 QT += core
+QMAKE_CXXFLAGS += "-fno-sized-deallocation"
 
 # Project configs
 TEMPLATE = app

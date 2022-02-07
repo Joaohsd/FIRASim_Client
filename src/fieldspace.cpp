@@ -2,13 +2,13 @@
 
 FieldSpace::FieldSpace()
 {
-    this->topLeft = QPointF(-1,-1);
-    this->topRight = QPointF(-1,-1);
-    this->bottomLeft = QPointF(-1,-1);
-    this->bottomRight = QPointF(-1,-1);
+    this->topLeft = QPoint(-1,-1);
+    this->topRight = QPoint(-1,-1);
+    this->bottomLeft = QPoint(-1,-1);
+    this->bottomRight = QPoint(-1,-1);
 }
 
-FieldSpace::FieldSpace(QPointF topLeft, QPointF topRight, QPointF bottomLeft, QPointF bottomRight)
+FieldSpace::FieldSpace(QPoint topLeft, QPoint topRight, QPoint bottomLeft, QPoint bottomRight)
 {
     this->topLeft = topLeft;
     this->topRight = topRight;
@@ -16,42 +16,42 @@ FieldSpace::FieldSpace(QPointF topLeft, QPointF topRight, QPointF bottomLeft, QP
     this->bottomRight = bottomRight;
 }
 
-QPointF FieldSpace::getTopLeft() const
+QPoint FieldSpace::getTopLeft() const
 {
     return topLeft;
 }
 
-void FieldSpace::setTopLeft(const QPointF &value)
+void FieldSpace::setTopLeft(const QPoint &value)
 {
     topLeft = value;
 }
 
-QPointF FieldSpace::getTopRight() const
+QPoint FieldSpace::getTopRight() const
 {
     return topRight;
 }
 
-void FieldSpace::setTopRight(const QPointF &value)
+void FieldSpace::setTopRight(const QPoint &value)
 {
     topRight = value;
 }
 
-QPointF FieldSpace::getBottomLeft() const
+QPoint FieldSpace::getBottomLeft() const
 {
     return bottomLeft;
 }
 
-void FieldSpace::setBottomLeft(const QPointF &value)
+void FieldSpace::setBottomLeft(const QPoint &value)
 {
     bottomLeft = value;
 }
 
-QPointF FieldSpace::getBottomRight() const
+QPoint FieldSpace::getBottomRight() const
 {
     return bottomRight;
 }
 
-void FieldSpace::setBottomRight(const QPointF &value)
+void FieldSpace::setBottomRight(const QPoint &value)
 {
     bottomRight = value;
 }

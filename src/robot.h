@@ -14,58 +14,56 @@
 class Robot : public QThread
 {
     Q_OBJECT
+
 public slots:
+    //Actions
     void printStartGOAL();
     void printStartDEF();
     void printStartATT();
     void printFinishGOAL();
     void printFinishDEF();
     void printFinishATT();
-signals:
-    void endPlay();
+
     public:
         Robot(int, int, double, double, double, double, double);
-        void setRobot(int, int, double, double, double, double, double);
         void run();
         void playGoalKeeper();
         void playDefender();
         void playStricker();
 
+        //GETTERS
         int getId();
         int getTeamId();
-
-        double getX();
-        double getY();
-        double getVx();
-        double getVy();
+        int getX();
+        int getY();
+        int getVx();
+        int getVy();
         double getVo();
         double getAngle();
-
+        //SETTERS
         void setId(int);
         void setTeamId(int);
-        void setX(double);
-        void setY(double);
-        void setVx(double);
-        void setVy(double);
+        void setX(int);
+        void setY(int);
+        void setVx(int);
+        void setVy(int);
         void setVo(double);
         void setAngle(double);
 
         void setActuator(ActuatorClient* command);
-        void setData(StaticData* data);
 
         void sendFIRA(int id, double wheelL, double wheelR);
 
         //Métodos de ação dos Robos
         void attack();  //OK
-
         void kick();    //OK
-
         void intercept();   //OK
+        void intercept_antigo();
 
         void go_to(QPointF target, double target_angle, bool have_obstacle, int decay_mode); //OK
-        void go_to_kick(QPointF target, double speed_factor);   //OK
+        void go_to_kick(QPoint target, double speed_factor);   //OK
         void go_to_debug(); //OK
-        void go_to_LARC(QPointF target, double target_angle, bool have_obstacle);
+        void go_to_LARC(QPoint target, double target_angle, bool have_obstacle);
         void go_to_penalty();
         void go_to_defend_penalty();
 
@@ -75,7 +73,7 @@ signals:
         void spin_goleiro();    //OK
         void spin_penalty();    //OK
 
-        void position(QPointF point, double angle, bool has_obstacle, int speed_mode);
+        void position(QPoint point, double angle, bool has_obstacle, int speed_mode);
 
         void goleiro_semUVF();
         void defend_goal();
@@ -95,10 +93,10 @@ signals:
 
         void defend_attack();
 
-        void position_atacantes(QPointF point, double angle, bool has_obstacle, int speed_mode);
+        void position_atacantes(QPoint point, double angle, bool has_obstacle, int speed_mode);
 
         void set_angle(double heading_angle);   //OK
-        void set_angle(QPointF heading_point);  //OK
+        void set_angle(QPoint heading_point);  //OK
 
         void penalty();
 
@@ -108,7 +106,7 @@ signals:
 
         UVF path;
 
-        QPointF pos, fut_pos;
+        QPoint pos, fut_pos;
 
         /**
          * @brief get_angle
@@ -130,10 +128,10 @@ signals:
 
         int player_id;
         int team_id;
-        double x;
-        double y;
-        double vx;
-        double vy;
+        int x;
+        int y;
+        int vx;
+        int vy;
         double vo;
         double angle;
 
@@ -179,8 +177,8 @@ signals:
          * @param point_b Point B
          * @return Returns the medium point betwen point A and B
          */
-        inline QPointF medium_qpoint(QPointF point_a, QPointF point_b){
-            return QPointF((point_a.x() + point_b.x())/2,(point_a.y() + point_b.y())/2);
+        inline QPoint medium_qpoint(QPoint point_a, QPoint point_b){
+            return QPoint((point_a.x() + point_b.x())/2,(point_a.y() + point_b.y())/2);
         }
 
         /**
@@ -188,7 +186,7 @@ signals:
          * @return Verify if the ball is in the y border of the field
          */
         inline bool border_y(){
-            double min_dist = 0.1;
+            double min_dist = 100;
             double y = data->ballPos.y();
             if(y >= data->max_field.y() - min_dist || y <= data->min_field.y() + min_dist)
                 return 1;
@@ -201,7 +199,7 @@ signals:
          * @return Verify if the ball is in the x border of the field
          */
         inline bool border_x(){
-            double min_dist = 0.1;
+            double min_dist = 100;
             double x = data->ballPos.x();
             if(x >= data->max_field.x() - min_dist || x <= data->min_field.x() + min_dist)
                 return 1;
@@ -217,15 +215,15 @@ signals:
          * @param value_d Point D
          * @return Returns the intersection between points A, B and C,D
          */
-        inline QPointF line_intersect(QPointF value_a, QPointF value_b, QPointF value_c, QPointF value_d){
-            double x1 = value_a.x(), x2 = value_b.x(), x3 = value_c.x(), x4 = value_d.x();
-            double y1 = value_a.y(), y2 = value_b.y(), y3 = value_c.y(), y4 = value_d.y();
-            double p_x = (x1*y2 - y1*x2)*(x3 - x4) - (x1 - x2)*(x3*y4 - y3*x4);
-            double p_y = (x1*y2 - y1*x2)*(y3 - y4) - (y1 - y2)*(x3*y4 - y3*x4);
+        inline QPoint line_intersect(QPoint value_a, QPoint value_b, QPoint value_c, QPoint value_d){
+            int x1 = value_a.x(), x2 = value_b.x(), x3 = value_c.x(), x4 = value_d.x();
+            int y1 = value_a.y(), y2 = value_b.y(), y3 = value_c.y(), y4 = value_d.y();
+            int p_x = (x1*y2 - y1*x2)*(x3 - x4) - (x1 - x2)*(x3*y4 - y3*x4);
+            int p_y = (x1*y2 - y1*x2)*(y3 - y4) - (y1 - y2)*(x3*y4 - y3*x4);
             double div = (x1 - x2)*(y3 - y4) - (y1 - y2)*(x3 - x4);
             if(div == 0)
                 div = 0.001;
-            return QPointF(p_x/div,p_y/div);
+            return QPoint(p_x/div,p_y/div);
         }
 
         /**
@@ -235,7 +233,7 @@ signals:
          * @return Returns true if the point a is inside the field A, and false
          * otherwise
          */
-        inline bool is_inside(QPointF point, FieldSpace field){
+        inline bool is_inside(QPoint point, FieldSpace field){
             double x = point.x();
             double y = point.y();
             if(x <= field.getBottomRight().x() && x >= field.getBottomLeft().x())

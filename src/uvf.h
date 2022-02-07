@@ -33,10 +33,10 @@ public:
 	inline double get_gauss(double r, double delta){
 		return exp(-(r*r)/(2*(delta*delta)));
 	}
-	vector<QPointF> get_obstacles(int team_id, int player_id, bool has_obstacles);
-	double get_phi(QPointF origin, QPointF target, double target_ori, vector<QPointF> obstacles);
-	double get_phih(QPointF p, double tx, double ty, double ccw);
-	double get_angle(QPointF origin, QPointF target, double target_ori, int team_id, int player_id, bool has_obs);
+    vector<QPoint> get_obstacles(int team_id, int player_id, bool has_obstacles);
+    double get_phi(QPoint origin, QPointF target, double target_ori, vector<QPoint> obstacles);
+    double get_phih(QPoint p, double tx, double ty, double ccw);
+    double get_angle(QPoint origin, QPointF target, double target_ori, int team_id, int player_id, bool has_obs);
     void setData(StaticData* data);
 signals:
 

@@ -10,20 +10,20 @@ class FieldSpace
 {
 public:
     explicit FieldSpace();
-    explicit FieldSpace(QPointF topLeft, QPointF topRight, QPointF bottomLeft, QPointF bottomRight);
-    QPointF getTopLeft() const;
-    void setTopLeft(const QPointF &value);
-    QPointF getTopRight() const;
-    void setTopRight(const QPointF &value);
-    QPointF getBottomLeft() const;
-    void setBottomLeft(const QPointF &value);
-    QPointF getBottomRight() const;
-    void setBottomRight(const QPointF &value);
+    explicit FieldSpace(QPoint topLeft, QPoint topRight, QPoint bottomLeft, QPoint bottomRight);
+    QPoint getTopLeft() const;
+    void setTopLeft(const QPoint &value);
+    QPoint getTopRight() const;
+    void setTopRight(const QPoint &value);
+    QPoint getBottomLeft() const;
+    void setBottomLeft(const QPoint &value);
+    QPoint getBottomRight() const;
+    void setBottomRight(const QPoint &value);
 private:
-    QPointF topLeft;
-    QPointF topRight;
-    QPointF bottomLeft;
-    QPointF bottomRight;
+    QPoint topLeft;
+    QPoint topRight;
+    QPoint bottomLeft;
+    QPoint bottomRight;
 };
 
 #endif // FIELDSPACE_H

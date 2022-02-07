@@ -1,11 +1,12 @@
 #include <QCoreApplication>
 
-#include <thread>
-#include <utils/timer/timer.h>
+//Including Clients classes
 #include <clients/vision/visionclient.h>
 #include <clients/referee/refereeclient.h>
 #include <clients/actuator/actuatorclient.h>
 #include <clients/replacer/replacerclient.h>
+
+//Including Core class
 #include <src/core.h>
 
 int main(int argc, char *argv[]) {

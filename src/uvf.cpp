@@ -5,23 +5,19 @@ UVF::UVF(QObject *parent) : QObject(parent)
 
 }
 
-void UVF::setData(StaticData *data){
-    this->data = data;
-}
-
-vector<QPointF> UVF::get_obstacles(int team_id, int player_id, bool has_obstacles)
+vector<QPoint> UVF::get_obstacles(int team_id, int player_id, bool has_obstacles)
 {
-	vector<QPointF> obstacles;
-	if(!has_obstacles)
-		return obstacles;
-	for(int i = 0; i < 2; ++i)
-        for(int j = 0; j < 3; ++j)
-                        if(!(i == team_id && j == player_id)) //modificado segundo parametro do QPoint de 481 para 131
-                            obstacles.push_back(data->player[i][j]);
+    vector<QPoint> obstacles;
+    if(!has_obstacles)
+        return obstacles;
+    for(int i = 0; i < 2; ++i)
+        for(int j = 1; j < 4; ++j)
+                        if(!(i == team_id && j == player_id))
+                obstacles.push_back(data->player[i][j]);
     return obstacles;
 }
 
-double UVF::get_phi(QPointF origin, QPointF target, double target_ori, vector<QPointF> obstacles)
+double UVF::get_phi(QPoint origin, QPointF target, double target_ori, vector<QPoint> obstacles)
 {
     double phi = 0.0;
     target_ori = constrain_angle(target_ori);
@@ -37,8 +33,8 @@ double UVF::get_phi(QPointF origin, QPointF target, double target_ori, vector<QP
     double phi_tuf = 0;
     double yL = y + data->k_de;
     double yR = y - data->k_de;
-    QPointF pL(x,yL);
-    QPointF pR(x,yR);
+    QPoint pL(x,yL);
+    QPoint pR(x,yR);
     if(y < -data->k_de)
         phi_tuf = get_phih(pL,0,0,1);
     else if(y >= data->k_de)
@@ -52,7 +48,7 @@ double UVF::get_phi(QPointF origin, QPointF target, double target_ori, vector<QP
         double phi_py = (fabs(yL)*nh_ccw.y() + fabs(yR)*nh_cw.y())/(2.0*data->k_de);
         phi_tuf = atan2(phi_py,phi_px);
     }
-    for(int i = 0; i < (int)obstacles.size(); ++i){
+    for(int i = 0; i < static_cast<int>(obstacles.size()); ++i){
         QPointF obstacle = obstacles[i];
         QPointF temp_obstacle = obstacle;
         obstacle.setX(temp_obstacle.x()*cos(rot) - temp_obstacle.y()*sin(rot));
@@ -93,7 +89,7 @@ double UVF::get_phi(QPointF origin, QPointF target, double target_ori, vector<QP
     return phi;
 }
 
-double UVF::get_phih(QPointF p, double tx, double ty, double ccw)
+double UVF::get_phih(QPoint p, double tx, double ty, double ccw)
 {
     double signal = 1;
     double phih;
@@ -108,9 +104,9 @@ double UVF::get_phih(QPointF p, double tx, double ty, double ccw)
     return phih;
 }
 
-double UVF::get_angle(QPointF origin, QPointF target, double target_ori, int team_id, int player_id, bool has_obs)
+double UVF::get_angle(QPoint origin, QPointF target, double target_ori, int team_id, int player_id, bool has_obs)
 {
-    vector<QPointF> obs = get_obstacles(team_id, player_id, has_obs);
+    vector<QPoint> obs = get_obstacles(team_id, player_id, has_obs);
     double phi = get_phi(origin,target,target_ori,obs);
     return phi;
 }

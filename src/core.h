@@ -20,12 +20,11 @@ public:
     void updateArguments(int argc, char** argv);
 
     void start();
-    void initialize(bool team, int formation);
+    void initializeTeam(bool team, int formation);
+    void sendRef();
 
     void setTestCondition(bool _test);
     bool getTestCondition();
-
-    void sendRef();
 
     Robot *player[NUMBER_OF_TEAMS][NUMBER_OF_ROBOTS];
     StaticData *data;
@@ -41,7 +40,6 @@ signals:
     //Events
     void readyToProcess();
     void repositioningAlert();
-    void playRobots();
 
 private:
     //Network clients
@@ -59,10 +57,11 @@ private:
     int goal_id = GOAL_ID;
 
     //Counter to penalty action
-    int max_cont_penalty = 90;
+    int max_cont_penalty = 60;
     int max_cont2_penalty = 60;
 
-    double predict_fact = 0.2;   //Para caĺculo da posição futura da bola (TESTAR)
+    //Constant to predict ball position
+    double predict_fact = 1.0;   //Para caĺculo da posição futura da bola (TESTAR)
                                  //1.0
 
     //Flags
@@ -77,7 +76,7 @@ private:
      * @return Returns the angle between two vectors
      */
 
-    inline double get_angle(QPointF vec_a, QPointF vec_b){
+    inline double get_angle(QPoint vec_a, QPoint vec_b){
         double ans = atan2(vec_b.y(),vec_b.x()) - atan2(vec_a.y(),vec_a.x());
         if(ans < -PI)
             ans += 2*PI;
@@ -93,7 +92,7 @@ private:
      * @return Returns true if the point a is inside the field A, and false
      * otherwise
      */
-    inline bool is_inside(QPointF point, FieldSpace field){
+    inline bool is_inside(QPoint point, FieldSpace field){
         double x = point.x();
         double y = point.y();
         if(x <= field.getBottomRight().x() && x >= field.getBottomLeft().x())
@@ -110,7 +109,7 @@ private:
      * @param point_b Point B
      * @return Returns the euclidian distance between two points
      */
-    inline double distance(QPointF point_a, QPointF point_b){
+    inline double distance(QPoint point_a, QPoint point_b){
         double xx = point_a.x() - point_b.x();
         double yy = point_a.y() - point_b.y();
         return sqrt(xx*xx + yy*yy);
