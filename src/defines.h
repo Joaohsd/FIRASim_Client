@@ -18,9 +18,9 @@
 
 #define NUMBER_OF_ROBOTS 3
 #define NUMBER_OF_TEAMS 2
-#define GOAL_ID 0
-#define DEF_ID 1
-#define ATT_ID 2
+#define ID_0 0
+#define ID_1 1
+#define ID_2 2
 #define LEFT_SIDE 0
 #define RIGHT_SIDE 1
 #define TEAM_YELLOW 1

@@ -30,11 +30,11 @@ public:
     StaticData *data;
 
 public slots:
-    //Actions
     void update();
     void process();
     void verifyStatus();
     void reposition();
+    void stop();
 
 signals:
     //Events
@@ -52,21 +52,23 @@ private:
     Arguments *codeArguments;
 
     //IDs of each robot
-    int att_id = ATT_ID;
-    int def_id = DEF_ID;
-    int goal_id = GOAL_ID;
+    int att_id = ID_2;
+    int def_id = ID_1;
+    int goal_id = ID_0;
 
     //Counter to penalty action
     int max_cont_penalty = 60;
     int max_cont2_penalty = 60;
 
     //Constant to predict ball position
-    double predict_fact = 1.0;   //Para caĺculo da posição futura da bola (TESTAR)
+    double predict_fact = 0.2;   //Para caĺculo da posição futura da bola (TESTAR)
                                  //1.0
 
     //Flags
     bool defende_penalty=false;
     bool testCondition = true;
+
+    void ballInfo();
 
     //Inline functions
     /**

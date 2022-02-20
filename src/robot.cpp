@@ -113,20 +113,22 @@ void Robot::sendFIRA(int id, double wheelL, double wheelR){
 }
 
 void Robot::run(){
-    if(this->getId() == GOAL_ID){
-        this->playGoalKeeper();
-    }
-    else if(this->getId() == ATT_ID){
-        this->playStricker();
-    }
-    else{
-        this->playDefender();
+    switch(this->getId()) {
+    case ID_2:
+        this->playID_2();
+        break;
+    case ID_0:
+        this->playID_0();
+        break;
+    default:
+        this->playID_1();
+        break;
     }
 }
 
-void Robot::playGoalKeeper(){
+void Robot::playID_0(){
     if(this->data->formation1){ // 1-0-2
-        //GOALKEEPER
+        //GOALKEEPER - GOALKEEPER - GOALKEEPER
         switch(data->mode){
         case bola_ataque:
             this->defend_goal_LARC();
@@ -141,15 +143,15 @@ void Robot::playGoalKeeper(){
     }
 }
 
-void Robot::playDefender(){
+void Robot::playID_1(){
     if(this->data->formation1){ // 1-0-2
-        //DEFENDER
+        //STRICKER - MIDFIELDER - MIDFIELDER
         switch(data->mode){
         case bola_ataque:
             this->attack();
             break;
         case bola_defesa:
-            this->defend_middle_attack();
+            this->defend();
             break;
         case bola_area:
             this->defend_middle_attack();
@@ -158,19 +160,19 @@ void Robot::playDefender(){
     }
 }
 
-void Robot::playStricker(){
+void Robot::playID_2(){
     if(this->data->formation1){ // 1-0-2
-        //STRICKER
+        //STRICKER - DEFENDER - DEFENDER
         switch(data->mode){
         case bola_ataque:
             if(!data->penalty)
                 this->attack();
             break;
         case bola_defesa:
-            this->intercept_antigo();
+            this->defend();
             break;
         case bola_area:
-            this->intercept_antigo();
+            this->defend_middle();
             break;
         }
     }
@@ -198,53 +200,54 @@ void Robot::attack()
 
     switch(mode){
     case att_normal:
-        this->kick();
+        if(distance(data->player[data->playTeam][ID_2], data->ballPos) <= distance(data->player[data->playTeam][ID_1], data->ballPos)){
+            if(this->getId() == ID_2)
+                this->kick();
+            else this->defend_attack();
+        }
+        else{
+            if(this->getId() == ID_2)
+                this->defend_attack();
+            else this->kick();
+        }
         break;
     case att_borda:
         this->intercept();
         break;
     case att_danger:
         if(this->data->playSide == LEFT_SIDE){
-            if(is_inside(this->data->player[this->data->playTeam][ATT_ID], this->data->area[RIGHT_SIDE]) || this->data->player[this->data->playTeam][ATT_ID].x() > this->data->max_field.x()){
-                if(this->getId() == ATT_ID){
+            if(is_inside(this->data->player[this->data->playTeam][ID_2], this->data->area[RIGHT_SIDE]) || this->data->player[this->data->playTeam][ID_2].x() > this->data->max_field.x()){
+                if(this->getId() == ID_2){
                     this->kick();
-                    //cout << "ENTROU KICK :::::::    2" << endl;
                 }
                 else{
                     this->defend_attack();
-                    //cout << "ENTROU DEFEND :::::::    1" << endl;
                 }
             }
             else{
-                if(this->getId() == DEF_ID){
+                if(this->getId() == ID_1){
                     this->kick();
-                    //cout << "ENTROU KICK :::::::    1" << endl;
                 }
                 else{
                     this->defend_attack();
-                    //cout << "ENTROU DEFEND :::::::    2" << endl;
                 }
             }
         }
         else{
-            if(is_inside(this->data->player[this->data->playTeam][ATT_ID], this->data->area[LEFT_SIDE]) || this->data->player[this->data->playTeam][ATT_ID].x() < this->data->min_field.x()){
-                if(this->getId() == ATT_ID){
+            if(is_inside(this->data->player[this->data->playTeam][ID_2], this->data->area[LEFT_SIDE]) || this->data->player[this->data->playTeam][ID_2].x() < this->data->min_field.x()){
+                if(this->getId() == ID_2){
                     this->kick();
-                    //cout << "ENTROU KICK :::::::    2" << endl;
                 }
                 else{
                     this->defend_attack();
-                    //cout << "ENTROU DEFEND :::::::    1" << endl;
                 }
             }
             else{
-                if(this->getId() == DEF_ID){
+                if(this->getId() == ID_1){
                     this->kick();
-                    //cout << "ENTROU KICK :::::::    1" << endl;
                 }
                 else{
                     this->defend_attack();
-                    //cout << "ENTROU DEFEND :::::::    2" << endl;
                 }
             }
         }
@@ -254,7 +257,7 @@ void Robot::attack()
 
 void Robot::kick()
 {
-    double min_dist_ball_y = 250;
+    double min_dist_ball_y = 220;
     double max_dist_ball_y = 550;
     //double min_distance_kickable = 70;
     //Minimum distance threshold for entering kick mode
@@ -267,14 +270,7 @@ void Robot::kick()
     double max_threshold = 270;
     double dist_bet_players = MIN_DIST_BET_PLAYERS;
     QPoint med_goal2;
-    //Angle between player and ball
-/*    QPoint vec_middle_max_field = data->max_field - data->middle_field;
-    QPoint vec_ball_player = pos - data->ballPos;
-    QPoint vec_player_middle = pos - vec_middle_max_field;
-
-    double player_ball_target_angle = fabs(get_angle(vec_player_middle,vec_ball_player))*180/PI;
-*/
-    double ball_player_angle = fabs(get_angle(QPoint(80*cos(angle),80*sin(angle)),QPoint(data->ballPos - pos)))*180/PI;
+    double ball_player_angle = fabs(get_angle(QPoint(120*cos(angle),120*sin(angle)),QPoint(data->ballPos - pos)))*180/PI;
     if(ball_player_angle >= 90.0){
         ball_player_angle = 180.0 - ball_player_angle;
     }
@@ -350,14 +346,26 @@ void Robot::kick()
     }
 }
 
+void Robot::defend(){
+    if(distance(data->player[data->playTeam][ID_2], data->ballPos) <= distance(data->player[data->playTeam][ID_1], data->ballPos)){
+        if(this->getId() == ID_2)
+            this->intercept();
+        else this->defend_middle_attack();
+    }
+    else{
+        if(this->getId() == ID_2)
+            this->defend_middle_attack();
+        else this->intercept();
+    }
+}
+
 void Robot::intercept_antigo()
 {
-
     double min_pos_dist = 60;
     int speed = -1;
     bool entrou = false;
     bool borda = false;
-    int min_dist = 100;
+    int min_dist = 80;
     int y = data->ballPos.y();
 
     if(y >= data->max_field.y() - min_dist || y <= data->min_field.y() + min_dist)
@@ -457,8 +465,8 @@ void Robot::intercept_antigo()
 
 void Robot::intercept()
 {
-    double min_pos_dist = 90;
-    int speed = -1;
+    double min_pos_dist = 80;
+    int speed = 3;
     QPoint goal = medium_qpoint(data->goal.getTopLeft(),data->goal.getBottomLeft());
     QPoint go_to_position = QPoint(data->futureBallPos.x(), data->futureBallPos.y());
     //cout << "INTERCEPT" << endl;
@@ -579,10 +587,10 @@ void Robot:: go_to(QPointF target, double target_angle, bool have_obstacle, int 
         //cout << "UVF: " << phi*180/PI << " GRAUS" << endl;
 
         //Da um passo com o robo a partir do vetor direção fornecido pelo uvf
-        fut_pos.setX(pos.x() + 80*cos(phi));
-        fut_pos.setY(pos.y() + 80*sin(phi));
+        fut_pos.setX(pos.x() + 60*cos(phi));
+        fut_pos.setY(pos.y() + 60*sin(phi));
         //O input é o ângulo entre o vetor orientação do robo e o vetor direção da trajetória a ser feita (fut_pos - pos)
-        input = get_angle(QPoint(80*cos(angle),80*sin(angle)),QPoint(fut_pos - pos))*180/PI;
+        input = get_angle(QPoint(60*cos(angle),60*sin(angle)),QPoint(fut_pos - pos))*180/PI;
         /*cout << "POS X:" << pos.x() << endl;
         cout << "POS Y:" << pos.y() << endl;
         cout << "ANGULO ROBO: " << this->angle*180/PI << endl;
@@ -636,7 +644,7 @@ void Robot:: go_to(QPointF target, double target_angle, bool have_obstacle, int 
         if(distance(pos,target) <= min_min_dist){
             cout << "PERTO" << endl;
             curr_speed *= 0.7; //0.65
-            kp_ *= 0.8; //0.7
+            kp_ *= 0.7; //0.7
             ki_ *= 0.8; //0.7
             kd_ *= 0.6; //0.7
         }
@@ -792,271 +800,6 @@ void Robot::go_to_penalty(){
     this->sendFIRA(this->getId(),speed.first,speed.second);
 }
 
-void Robot::goleiro_semUVF()
-{
-    double min_distance = 50;
-    //Maxium distance to stop spin
-    double max_distance = 70;
-    //Minimum distance to predict ball position
-    double min_ball_predict = 60;
-    //Minimum angle to spin and go to ball
-    double min_angle = 90;
-
-
-    bool entrou = false;
-    float dist_area = 50, y_distance = 50;
-    float pos_x_goleiro = 0;
-    QPoint middle_goal, future_ball, ball_pos, pos_correta;
-    double kp_ = this->KP;
-    double ki_ = this->KI;
-    double kd_ = this->KD;
-    double out_min = -this->base_speed;
-    double out_max = this->base_speed;
-    curr_speed = this->base_speed;
-
-
-    future_ball = QPoint(data->ballPos.x() + data->ballVel.x()*5, data->ballPos.y() + data->ballVel.y()*5);
-    ball_pos = data->ballPos;
-    if(data->playSide == RIGHT_SIDE) {
-        middle_goal = medium_qpoint(data->goal.getTopRight(),data->goal.getBottomRight());
-        pos_x_goleiro = middle_goal.x() - dist_area;
-
-        if(ball_pos.y() > data->goal.getTopRight().y() + y_distance){
-            future_ball.setY(data->goal.getTopRight().y() + y_distance);
-            pos_correta.setX(pos_x_goleiro);
-            pos_correta.setY(data->goal.getTopRight().y() + y_distance);
-            entrou = true;
-        }
-        else if(ball_pos.y() < data->goal.getBottomRight().y() - y_distance){
-            future_ball.setY(data->goal.getBottomRight().y() - y_distance);
-            pos_correta.setX(pos_x_goleiro);
-            pos_correta.setY(data->goal.getBottomRight().y() - y_distance);
-            entrou = true;
-        }
-        else {
-            if(data->ballVel.y() >= 0)
-                future_ball.setY(data->ballPos.y());
-            else
-                future_ball.setY(data->ballPos.y());
-            entrou = false;
-        }
-    }
-    else if(data->playSide == LEFT_SIDE) {
-        middle_goal = medium_qpoint(data->goal.getTopLeft(),data->goal.getBottomLeft());
-        pos_x_goleiro = middle_goal.x() + dist_area;
-
-        if(ball_pos.y() > data->goal.getTopLeft().y() + y_distance){
-            future_ball.setY(data->goal.getTopLeft().y() + y_distance);
-            pos_correta.setX(pos_x_goleiro);
-            pos_correta.setY(data->goal.getTopLeft().y() + y_distance);
-            entrou = true;
-        }
-        else if(ball_pos.y() < data->goal.getBottomLeft().y() - y_distance){
-            future_ball.setY(data->goal.getBottomLeft().y() - y_distance);
-            pos_correta.setX(pos_x_goleiro);
-            pos_correta.setY(data->goal.getBottomLeft().y() - y_distance);
-            entrou = true;
-        }
-        else {
-            if(data->ballVel.y() >= 0)
-                future_ball.setY(data->ballPos.y());
-            else
-                future_ball.setY(data->ballPos.y());
-            entrou = false;
-        }
-    }
-
-    QPoint aux;
-
-    aux.setX(pos_x_goleiro);
-    //cout << future_ball.y() << endl;
-    aux.setY(future_ball.y());
-    //cout << angle*180/PI << endl;
-    if(distance(pos, data->ballPos) > 60)
-        this->input = (get_angle(QPoint(30*cos(angle),30*sin(angle)),QPoint(aux - pos)))*180/PI;
-    //else
-    //	go_to_debug();
-    //cout << this->input << endl;
-    if(input >= 90.0){
-        input = 180.0 - input;
-        output = path_pid.process(kp_, ki_, kd_, out_min, out_max);
-        speed.first = -1.0*curr_speed + output;
-        speed.second = -1.0*curr_speed;
-    }
-    else if(input <= 0 && input >= -90){
-        input = -1.0*input;
-        output = path_pid.process(kp_, ki_, kd_, out_min, out_max);
-        speed.first = curr_speed;
-        speed.second = curr_speed - output;
-    }
-    else if(input < -90){
-        input = 180 + input;
-        output = path_pid.process(kp_, ki_, kd_, out_min, out_max);
-        speed.first = -1.0*curr_speed;
-        speed.second = -1.0*curr_speed + output;
-    }
-    else{
-        output = path_pid.process(kp_, ki_, kd_, out_min, out_max);
-        speed.first = curr_speed - output;
-        speed.second = curr_speed;
-    }
-    double ball_player_angle = fabs(get_angle(QPoint(30*cos(angle),30*sin(angle)),QPoint(data->ballPos - pos)))*180/PI;
-
-    if(distance(pos, data->ballPos) <= min_distance && ball_player_angle <= min_angle){
-        defend_spin = true;
-    }
-    else if(distance(pos,data->ballPos) >= max_distance && defend_spin == true){
-        defend_spin = false;
-    }
-    bool entrou_go_to = false;
-    if(defend_spin == true){
-        spin();
-    }
-    else if(distance(pos, data->ballPos) <= 0.07)
-    {
-        //go_to(data->ballPos,PI,0,3);
-        intercept();
-        entrou_go_to = true;
-    }
-    else if(distance(pos, data->ballPos) > 0.09){
-        entrou_go_to = false;
-    }
-    QPoint aux_int;
-    aux_int.setX(aux.x());
-    aux_int.setY(aux.y());
-    if(entrou_go_to == false && defend_spin == false && (abs(pos.y() - data->ballPos.y()) < 10 || abs(pos.y() - future_ball.y()) < 10) && distance(pos, aux_int) < 10)
-        speed.first = speed.second = 0;
-    if(entrou_go_to == false && defend_spin == false)
-        this->sendFIRA(this->getId(),speed.first,speed.second);
-}
-
-/**
- * @brief Align with the ball-y inside the goal line and spins if the
- * ball is close
- */
-
-void Robot::defend_goal()
-{
-    //double ball_play_dist_min = 70;
-    //Distance between player-x and goal line-x
-    double x_distance = 0.06;
-    //Maximum distance between player-y and goal line-y
-    double y_distance = 0.03; //Conferir
-    //Ball player distance to go to ball
-    double ball_play_dist = 0.3;
-    //Enemy distance
-    double enem_dist = 0.3;
-    //Distance to future point
-    double x_fut_dist = 0.1;
-    //Minimum ball distance to spin
-    double min_distance = 0.075;
-    //Maxium distance to stop spin
-    double max_distance = 0.1;
-    //Minimum distance to predict ball position
-    double min_ball_predict = 0.2; //0.05
-    //Minimum angle to spin and go to ball
-    double min_angle = 70;
-
-    //Angle between player and ball
-    double ball_player_angle = fabs(get_angle(QPoint(30*cos(angle),30*sin(angle)),QPoint(data->ballPos - pos)))*180/PI;
-    if(ball_player_angle >= 90.0){
-        ball_player_angle = 180.0 - ball_player_angle;
-    }
-    QPoint goal, future_ball, goal_intersect, ball_pos;
-    future_ball = QPoint(data->ballPos.x() + data->ballVel.x()*1.0, data->ballPos.y() + data->ballVel.y()*1.0);
-
-    if(data->playSide == LEFT_SIDE){
-        goal = medium_qpoint(data->goal.getTopLeft(),data->goal.getBottomLeft());
-        goal_intersect = line_intersect(data->ballPos,future_ball,QPoint(data->goal.getTopLeft() + QPoint(x_distance + x_fut_dist,y_distance)),QPoint(data->goal.getBottomLeft() + QPoint(x_distance + x_fut_dist,-y_distance)));
-        //goal_intersect = line_intersect(data->ballPos,future_ball,QPoint(data->goal.getTopLeft() + QPoint(x_distance + x_fut_dist,y_distance)),QPoint(data->goal.getBottomLeft() + QPoint(x_distance + x_fut_dist,-y_distance)));
-        ball_pos = data->ballPos;
-        goal.setX(goal.x() + x_distance);
-        if(data->ballVel.manhattanLength() >= min_ball_predict && data->ballVel.x() < 0){
-            ball_pos = goal_intersect;
-        }
-        if(ball_pos.y() > data->goal.getTopLeft().y() + y_distance){
-            goal.setY(data->goal.getTopLeft().y() + y_distance);
-        }
-        else if(ball_pos.y() < data->goal.getBottomLeft().y() - y_distance){
-            goal.setY(data->goal.getBottomLeft().y() - y_distance);
-        }
-        else{
-            //goal.setY(ball_pos.y());
-            goal.setY(data->futureBallPos.y());
-        }
-    }
-    else{
-        goal = medium_qpoint(data->goal.getTopRight(),data->goal.getBottomRight());
-        goal_intersect = line_intersect(data->ballPos,future_ball,QPoint(data->goal.getTopRight() + QPoint(-x_distance - x_fut_dist,y_distance)),QPoint(data->goal.getBottomRight() + QPoint(-x_distance - x_fut_dist,-y_distance)));
-        ball_pos = data->ballPos;
-        goal.setX(goal.x() - x_distance);
-        if(data->ballVel.manhattanLength() >= min_ball_predict && data->ballVel.x() > 0){
-            ball_pos = goal_intersect;
-        }
-        if(ball_pos.y() > data->goal.getTopRight().y() + y_distance){
-            goal.setY(data->goal.getTopRight().y() + y_distance);
-        }
-        else if(ball_pos.y() < data->goal.getBottomRight().y() - y_distance){
-            goal.setY(data->goal.getBottomRight().y() - y_distance);
-        }
-        else{
-            //goal.setY(ball_pos.y());
-            goal.setY(data->futureBallPos.y());
-        }
-    }
-    //Spin mode
-    if(distance(pos,data->ballPos) <= min_distance && ball_player_angle >= min_angle){ //trocado <= por >=
-        defend_spin = true;
-        cout << "ENTROOOOU                   SPIN" << endl;
-    }
-    else if(distance(pos,data->ballPos) >= max_distance && defend_spin == true){
-        defend_spin = false;
-    }
-
-    if(defend_spin == true){
-        if(is_inside(pos,data->area[data->playSide]))
-            spin_goleiro();
-        else
-            intercept(); //MODIFIQUEI
-        //go_to_debug();
-
-
-
-        //	cout << "entrou spin" << endl;
-    }
-    //Alterado aqui
-    else if(distance(data->ballPos,pos) <= ball_play_dist && ball_player_angle <= min_angle){// && is_inside(data->ballPos,data->area[data->playSide])){
-        if(distance(data->ballPos,pos) >= 0.07)
-        {
-            QPoint goal;
-            goal = medium_qpoint(data->goal.getTopLeft(),data->goal.getBottomLeft());
-            //goal.setY(data->ballPos.y());
-            goal.setY(data->futureBallPos.y());
-            position(goal,PI/2,1,1);
-        }
-        else
-            go_to(data->ballPos,-999,0,1);
-
-        cout << "ANGULO JOGADOR BOLA :::::::    " <<ball_player_angle <<endl;
-    }
-    else if(pos.y() > goal.y()){
-        if(distance(pos,goal) >= enem_dist)
-            position(goal,PI/2,1,1);
-        else
-            position(goal,PI/2,0,1);
-
-        cout << "ANGULO JOGADOR BOLA :::::::    " <<ball_player_angle <<endl;
-    }
-    else{
-        if(distance(pos,goal) >= enem_dist)
-            position(goal,-PI/2,1,1);
-        else
-            position(goal,-PI/2,0,1);
-
-        cout << "ANGULO JOGADOR BOLA :::::::    " <<ball_player_angle <<endl;
-    }
-}
-
 void Robot::stopRobot(){
     this->sendFIRA(this->getId(),0,0);
 }
@@ -1135,7 +878,7 @@ void Robot::defend_goal_LARC(){
             QPoint secure_point = QPoint(top_left.x() - 130, top_left.y());
             position(secure_point, PI/2, 0, 1);
         }
-        else if(distance(this->data->ballPos,center_left) <= ball_goal_dist || (data->ballPos.x() <= 450 && distance(data->player[data->playTeam][DEF_ID], data->ballPos) > 350 && distance(data->player[data->playTeam][ATT_ID], data->ballPos) > 350)){
+        else if(distance(this->data->ballPos,center_left) <= ball_goal_dist || (data->ballPos.x() <= 450 && distance(data->player[data->playTeam][ID_1], data->ballPos) > 350 && distance(data->player[data->playTeam][ID_2], data->ballPos) > 350)){
             if(is_inside(data->ballPos, data->area[LEFT_SIDE]))
                 intercept();
             else
@@ -1175,7 +918,7 @@ void Robot::defend_goal_LARC(){
             QPoint secure_point = QPoint(top_right.x() + 130, top_right.y());
             position(secure_point, -PI/2, 0, 1);
         }
-        else if((distance(this->data->ballPos,center_right) <= ball_goal_dist || data->ballPos.x() >= 1050) && distance(data->player[data->playTeam][DEF_ID], data->ballPos) > 350 && distance(data->player[data->playTeam][ATT_ID], data->ballPos) > 350){
+        else if((distance(this->data->ballPos,center_right) <= ball_goal_dist || data->ballPos.x() >= 1050) && distance(data->player[data->playTeam][ID_1], data->ballPos) > 350 && distance(data->player[data->playTeam][ID_2], data->ballPos) > 350){
             if(is_inside(data->ballPos, data->area[RIGHT_SIDE]))
                 intercept();
             else
@@ -1213,195 +956,6 @@ void Robot::defend_goal_LARC(){
     }
 }
 
-void Robot::defend_goal_LARC_2(){
-    //Distance between player-x and goal line-x
-    double x_distance = 0.06;
-    //Ball player distance to go to ball
-    bool flag_position = false;
-    double max_dist_x = data->middle_field.x()+0.1;
-    double ball_goal_dist = 0.45;
-
-    QPoint goal;
-    double speed = 0.0;
-
-    if(this->data->playSide == LEFT_SIDE){
-        goal = medium_qpoint(data->goal.getTopLeft(),data->goal.getBottomLeft());
-        goal.setX(goal.x() + x_distance);
-        cout << "DISTANCIA:       " << distance(this->data->ballPos,goal) << endl;
-        cout << "FUTURE BALL POS:    " << this->data->futureBallPos.x() << endl;
-        if(this->getAngle() != -PI/2 && distance(this->data->ballPos,goal) > max_dist_x){
-           position(goal, -PI/2, 1, 1);
-           //cout << "ANGULO :::::::::::::    " <<this->getAngle()*180/PI << endl;
-           cout << "ENTROU :::::::::::::    1 " <<endl;
-        }
-        else if(/*this->getAngle() != -PI/2 && */distance(this->data->ballPos,goal) <= max_dist_x){
-            if(distance(this->data->ballPos,goal) <= ball_goal_dist){
-                go_to(this->data->futureBallPos,PI, false,3);
-                cout << "ENTROU :::::::::::::    2 " <<endl;
-            }
-            else{
-                defend_goal_Left();
-                cout << "ENTROU :::::::::::::    4 " <<endl;
-            }
-        }/*
-        else if(this->getAngle() >= 1.3926 && this->getAngle() <= 1,7453){
-            cout << "ENTROU :::::::::::::    3 " <<endl;
-                if(distance(this->data->futureBallPos, this->pos) < 0.12){
-                    go_to_debug();
-                }
-                else{
-                    if(this->data->ballPos.y() > this->pos.y()){
-                        goal.setY(this->pos.y() + (this->data->ballPos.y() - this->pos.y()));
-                        if(goal.y() >= this->data->goal.getTopLeft().y()){
-                           position(QPoint(this->data->min_field.x(),this->data->goal.getTopLeft().y()-0.02), -PI/2, 1, 1);
-                            flag_position = true;
-                        }
-                        else{
-                            speed = -600;
-                        }
-                    }
-                    else{
-                        goal.setY(this->pos.y() - (this->pos.y() - this->data->ballPos.y()));
-                        if(goal.y() <= this->data->goal.getBottomLeft().y()){
-                           position(QPoint(this->data->min_field.x(),this->data->goal.getBottomLeft().y()+0.02), -PI/2, 1, 1);
-                           flag_position = true;
-                        }
-                        else{
-                           speed = 600;
-                        }
-                    }
-                    if(flag_position)
-                        this->sendFIRA(speed,speed,this->getTeamId(),this->getId());
-            }
-        }*/
-    }
-
-    else{
-        goal = medium_qpoint(data->goal.getTopRight(),data->goal.getBottomRight());
-        goal.setX(goal.x() - x_distance);
-        if(this->getAngle() != PI/2 && distance(this->data->ballPos,goal) > ball_goal_dist){
-           position(goal, PI/2, 1, 1);
-           //cout << "ENTROU :::::::::::::    1 " <<endl;
-        }
-        else if(this->getAngle() != PI/2 && distance(this->data->ballPos,goal) <= ball_goal_dist){
-            go_to(this->data->ballPos,PI, false,3);
-            //cout << "ENTROU :::::::::::::    2 " <<endl;
-        }
-        else if(this->getAngle() >= 1.3926 && this->getAngle() <= 1,7453){
-            //cout << "ENTROU :::::::::::::    3 " <<endl;
-
-                if(distance(this->data->ballPos, this->pos) < 0.1){
-                    go_to_debug();
-                }
-
-                else{
-                    if(this->data->ballPos.y() > this->pos.y()){
-                        goal.setY(this->pos.y() + (this->data->ballPos.y() - this->pos.y()));
-                        speed = 600;
-                    }
-
-                    else{
-                        goal.setY(this->pos.y() - (this->pos.y() - this->data->ballPos.y()));
-                        speed = -600;
-                    }
-
-                    this->sendFIRA(this->getId(),speed,speed);
-            }
-        }
-    }
-}
-
-
-void Robot::defend_goal_new(){
-    //Distance between player-x and goal line-x
-    double x_distance = 0.06;
-    //Ball player distance to go to ball
-    bool flag_position = false;
-    double ball_play_dist = 0.45;
-
-    QPoint goal;
-    double speed = 0.0;
-
-    if(this->data->playSide == LEFT_SIDE){
-        goal = medium_qpoint(data->goal.getTopLeft(),data->goal.getBottomLeft());
-        goal.setX(goal.x() + x_distance);
-
-        if(this->getAngle() != -PI/2 && distance(this->data->ballPos,goal) > ball_play_dist){
-           position(goal, -PI/2, 1, 1);
-           //cout << "ANGULO :::::::::::::    " <<this->getAngle()*180/PI << endl;
-           cout << "ENTROU :::::::::::::    1 " <<endl;
-        }
-        else if(/*this->getAngle() != -PI/2 && */distance(this->data->ballPos,goal) <= ball_play_dist){
-            go_to(this->data->futureBallPos,PI, false,3);
-            cout << "ENTROU :::::::::::::    2 " <<endl;
-        }
-        else if(this->getAngle() >= 1.3926 && this->getAngle() <= 1,7453){
-            cout << "ENTROU :::::::::::::    3 " <<endl;
-                if(distance(this->data->futureBallPos, this->pos) < 0.12){
-                    go_to_debug();
-                }
-                else{
-                    if(this->data->ballPos.y() > this->pos.y()){
-                        goal.setY(this->pos.y() + (this->data->ballPos.y() - this->pos.y()));
-                        if(goal.y() >= this->data->goal.getTopLeft().y()){
-                           position(QPoint(this->data->min_field.x(),this->data->goal.getTopLeft().y()-0.02), -PI/2, 1, 1);
-                            flag_position = true;
-                        }
-                        else{
-                            speed = -600;
-                        }
-                    }
-                    else{
-                        goal.setY(this->pos.y() - (this->pos.y() - this->data->ballPos.y()));
-                        if(goal.y() <= this->data->goal.getBottomLeft().y()){
-                           position(QPoint(this->data->min_field.x(),this->data->goal.getBottomLeft().y()+0.02), -PI/2, 1, 1);
-                           flag_position = true;
-                        }
-                        else{
-                           speed = 600;
-                        }
-                    }
-                    if(flag_position)
-                        this->sendFIRA(this->getId(),speed,speed);
-            }
-        }
-    }
-
-    else{
-        goal = medium_qpoint(data->goal.getTopRight(),data->goal.getBottomRight());
-        goal.setX(goal.x() - x_distance);
-        if(this->getAngle() != PI/2 && distance(this->data->ballPos,goal) > ball_play_dist){
-           position(goal, PI/2, 1, 1);
-           //cout << "ENTROU :::::::::::::    1 " <<endl;
-        }
-        else if(this->getAngle() != PI/2 && distance(this->data->ballPos,goal) <= ball_play_dist){
-            go_to(this->data->ballPos,PI, false,3);
-            //cout << "ENTROU :::::::::::::    2 " <<endl;
-        }
-        else if(this->getAngle() >= 1.3926 && this->getAngle() <= 1,7453){
-            //cout << "ENTROU :::::::::::::    3 " <<endl;
-
-                if(distance(this->data->ballPos, this->pos) < 0.1){
-                    go_to_debug();
-                }
-
-                else{
-                    if(this->data->ballPos.y() > this->pos.y()){
-                        goal.setY(this->pos.y() + (this->data->ballPos.y() - this->pos.y()));
-                        speed = 600;
-                    }
-
-                    else{
-                        goal.setY(this->pos.y() - (this->pos.y() - this->data->ballPos.y()));
-                        speed = -600;
-                    }
-
-                    this->sendFIRA(this->getId(),speed,speed);
-            }
-        }
-    }
-}
-
 void Robot::defend_middle()
 {
     int x_point = 0, y_point= 0;
@@ -1413,10 +967,6 @@ void Robot::defend_middle()
     //Maxium distance to stop spin
     int max_distance = 90;
     double angle = 0.0;
-    /*
-    if(player_id == 0){
-        x_var = -0.5;
-    }*/
 
     if(data->playSide == LEFT_SIDE){
         x_point = data->middle_field.x() + x_var;
@@ -1707,18 +1257,9 @@ void Robot::defend_block(int e_id)
  *									2 - Medium
  *									3 - Fast
  */
-
-/**
- * @brief Go to a position and than stops and adjusts the angle.
- * @param point Go-to point
- * @param angle Final angle
- * @param speed_mode Speed mode:	1 - Slow
- *									2 - Medium
- *									3 - Fast
- */
 void Robot::position(QPoint point, double angle, bool has_obstacle, int speed_mode)
 {
-    double min_pos_dist = 40;
+    double min_pos_dist = 30;
     if(speed_mode == 1){
         double max_distance = 200;
         if(distance(pos, point) <= min_pos_dist /*&& abs(pos.x() - point.x()) < 10 && abs(pos.y() - point.y()) < 20*/){
@@ -1914,18 +1455,6 @@ void Robot::spin()
     else if(data->playSide == RIGHT_SIDE && y <= ball_y ){
         this->sendFIRA(this->getId(),-spin_speed,spin_speed);
     }
-}
-
-void Robot::go_to_defend_penalty(){
-    QPoint future_ball, goal;
-    future_ball = QPoint(data->ballPos.x() + data->ballVel.x()*1.0, data->ballPos.y() + data->ballVel.y()*1.0);
-
-    if(data->playSide == LEFT_SIDE)
-        goal = medium_qpoint(data->goal.getTopLeft(),data->goal.getBottomLeft());
-    else goal = medium_qpoint(data->goal.getTopRight(),data->goal.getBottomRight());
-    speed.first = 2000;
-    speed.second = 2000;
-    this->sendFIRA(this->getId(),speed.first,speed.second);
 }
 
 void Robot::spin_penalty(){

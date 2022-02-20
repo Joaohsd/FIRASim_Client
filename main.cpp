@@ -17,5 +17,7 @@ int main(int argc, char *argv[]) {
     core->updateArguments(argc,argv);
     //Starting Core object
     core->start();
+    //Ending event from application
+    //QObject::connect(a,SIGNAL(aboutToQuit(QPrivateSignal)),core,SLOT(stop()));
     return a.exec();
 }

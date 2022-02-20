@@ -27,9 +27,53 @@ public slots:
     public:
         Robot(int, int, double, double, double, double, double);
         void run();
-        void playGoalKeeper();
-        void playDefender();
-        void playStricker();
+
+        //Métodos de ação dos Robos
+
+        //Gerais
+        void intercept();
+        void intercept_antigo();
+
+        void go_to(QPointF target, double target_angle, bool have_obstacle, int decay_mode);
+        void go_to_debug();
+
+        void spin();
+        void spin_x();
+        void spin_ataque();
+        void spin_goleiro();
+        void spin_penalty();
+
+        void position(QPoint point, double angle, bool has_obstacle, int speed_mode);
+
+        void set_angle(double heading_angle);
+        void set_angle(QPoint heading_point);
+
+        void defend_middle();
+        void defend_middle_attack();
+        void defend_center();
+        void defend_block(int);
+
+        void stopRobot();
+
+        //Stricker
+
+        void attack();
+        void kick();
+        void go_to_kick(QPoint target, double speed_factor);
+        void go_to_penalty();
+        void defend_attack();
+
+        //Defender
+        void defend();
+
+        //Goalkeeper
+        void defend_goal_LARC();
+        void defend_goal_Left();
+        void defend_goal_Right();
+
+        void playID_2();
+        void playID_1();
+        void playID_0();
 
         //GETTERS
         int getId();
@@ -51,58 +95,7 @@ public slots:
         void setAngle(double);
 
         void setActuator(ActuatorClient* command);
-
         void sendFIRA(int id, double wheelL, double wheelR);
-
-        //Métodos de ação dos Robos
-        void attack();  //OK
-        void kick();    //OK
-        void intercept();   //OK
-        void intercept_antigo();
-
-        void go_to(QPointF target, double target_angle, bool have_obstacle, int decay_mode); //OK
-        void go_to_kick(QPoint target, double speed_factor);   //OK
-        void go_to_debug(); //OK
-        void go_to_LARC(QPoint target, double target_angle, bool have_obstacle);
-        void go_to_penalty();
-        void go_to_defend_penalty();
-
-        void spin();            //OK
-        void spin_x();          //OK
-        void spin_ataque();     //OK
-        void spin_goleiro();    //OK
-        void spin_penalty();    //OK
-
-        void position(QPoint point, double angle, bool has_obstacle, int speed_mode);
-
-        void goleiro_semUVF();
-        void defend_goal();
-        void defend_block(int);
-        void defend_middle();           //OK
-        void defend_middle_attack();    //OK
-        void defend_goal_new();
-        void defend_goal_middle();
-        void defend_center();           //OK
-        void defend_goal_bao();
-
-        void defend_goal_LARC_2();
-
-        void defend_goal_LARC();
-        void defend_goal_Left();
-        void defend_goal_Right();
-
-        void defend_attack();
-
-        void position_atacantes(QPoint point, double angle, bool has_obstacle, int speed_mode);
-
-        void set_angle(double heading_angle);   //OK
-        void set_angle(QPoint heading_point);  //OK
-
-        void penalty();
-
-        void stopRobot();
-
-        void containment();
 
         UVF path;
 
@@ -125,7 +118,6 @@ public slots:
         }
 
     private:
-
         int player_id;
         int team_id;
         int x;
@@ -186,7 +178,7 @@ public slots:
          * @return Verify if the ball is in the y border of the field
          */
         inline bool border_y(){
-            double min_dist = 100;
+            double min_dist =100;
             double y = data->ballPos.y();
             if(y >= data->max_field.y() - min_dist || y <= data->min_field.y() + min_dist)
                 return 1;
@@ -245,13 +237,13 @@ public slots:
         }
 
         inline bool verify_Strickers_Left_Is_Inside_Attack_Area(){
-             if(is_inside(this->data->ballPos,this->data->area[RIGHT_SIDE]) && (is_inside(this->data->player[TEAM_BLUE][ATT_ID],this->data->area[RIGHT_SIDE]) || is_inside(this->data->player[TEAM_BLUE][DEF_ID],this->data->area[RIGHT_SIDE]) || this->data->player[TEAM_BLUE][ATT_ID].x() > this->data->max_field.x() || this->data->player[TEAM_BLUE][DEF_ID].x() > this->data->max_field.x()))
+             if(is_inside(this->data->ballPos,this->data->area[RIGHT_SIDE]) && (is_inside(this->data->player[TEAM_BLUE][ID_2],this->data->area[RIGHT_SIDE]) || is_inside(this->data->player[TEAM_BLUE][ID_1],this->data->area[RIGHT_SIDE]) || this->data->player[TEAM_BLUE][ID_2].x() > this->data->max_field.x() || this->data->player[TEAM_BLUE][ID_1].x() > this->data->max_field.x()))
                 return true;
              else return false;
         }
 
         inline bool verify_Strickers_Right_Is_Inside_Attack_Area(){
-             if(is_inside(this->data->ballPos,this->data->area[LEFT_SIDE]) && (is_inside(this->data->player[TEAM_YELLOW][ATT_ID],this->data->area[LEFT_SIDE]) || is_inside(this->data->player[TEAM_YELLOW][DEF_ID],this->data->area[LEFT_SIDE]) || this->data->player[TEAM_YELLOW][ATT_ID].x() < this->data->min_field.x() || this->data->player[TEAM_YELLOW][DEF_ID].x() < this->data->min_field.x()))
+             if(is_inside(this->data->ballPos,this->data->area[LEFT_SIDE]) && (is_inside(this->data->player[TEAM_YELLOW][ID_2],this->data->area[LEFT_SIDE]) || is_inside(this->data->player[TEAM_YELLOW][ID_1],this->data->area[LEFT_SIDE]) || this->data->player[TEAM_YELLOW][ID_2].x() < this->data->min_field.x() || this->data->player[TEAM_YELLOW][ID_1].x() < this->data->min_field.x()))
                 return true;
              else return false;
         }

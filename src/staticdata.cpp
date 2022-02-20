@@ -8,12 +8,11 @@ double StaticData::i = 0.0;
 double StaticData::d = -75.0;
 
 // Pathing UVF
-double StaticData::k_de = 35.0;     //40     //82         // Define o raio máximo da curva a ser feita no trajeto, dada a posição da bola
-double StaticData::k_kr = 40.0;     //30     //45
+double StaticData::k_de = 80.0;     //40     //82         // Define o raio máximo da curva a ser feita no trajeto, dada a posição da bola
+double StaticData::k_kr = 77.5;     //30     //45
 double StaticData::k_dmin = 40.0;   //37     //35         //distancia (raio) para repelir / distancia entre o jogador e o obstáculo
 double StaticData::k_delta = 65.0;  //40     //65
 double StaticData::angle_error = 10.0;
-
 
 // Ball data
 QPoint StaticData::ballPos = QPoint(-1550,1350);
@@ -42,9 +41,9 @@ bool StaticData::formation4 = false;
 bool StaticData::formation5 = false;
 bool StaticData::formation6 = false;
 
-// Game status and information about out team (wich side and color)
-int StaticData::playTeam = 0;
+// Game status and information about our team (wich side and color)
 int StaticData::playStatus = 0;
+int StaticData::playTeam = 0;
 int StaticData::playSide = 0;
 
 bool StaticData::penalty = false;

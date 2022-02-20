@@ -16,8 +16,8 @@ double PID::process(double kp, double ki, double kd, double out_min, double out_
 {
 	error = *set_point - *input;
     /*std::cout << "ERRO: " << error << std::endl;
-    std::cout << "SETPOINT: " << *set_point << std::endl;*/
-    //std::cout << "INPUT: " << *input << std::endl;
+    std::cout << "SETPOINT: " << *set_point << std::endl;
+    std::cout << "INPUT: " << *input << std::endl;*/
 	/*
 	if(-error <= 10){
 		PFactor = 0.1;
