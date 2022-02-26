@@ -8,7 +8,7 @@ DESTDIR  = ../bin
 TARGET   = FIRAClient
 VERSION  = 1.0.0
 
-CONFIG += c++14 console
+CONFIG += c++11 console
 CONFIG -= app_bundle
 
 # Temporary dirs

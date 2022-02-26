@@ -9,6 +9,7 @@
 //Including Core class
 #include <src/core.h>
 
+//main function
 int main(int argc, char *argv[]) {
     QCoreApplication a(argc, argv);
     //Creating a pointer to Core object
@@ -17,7 +18,5 @@ int main(int argc, char *argv[]) {
     core->updateArguments(argc,argv);
     //Starting Core object
     core->start();
-    //Ending event from application
-    //QObject::connect(a,SIGNAL(aboutToQuit(QPrivateSignal)),core,SLOT(stop()));
     return a.exec();
 }

@@ -18,7 +18,7 @@ This example contains the reception of messages from the automatic Referee and t
 ## Clonning
 
 ```shell
-git clone --recurse-submodules https://github.com/VSSSLeague/FIRAClient.git
+git clone --recurse-submodules https://github.com/Joaohsd/FIRASim_Client.git
 git submodule update --init
 ```
 
