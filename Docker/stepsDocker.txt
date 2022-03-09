@@ -1,0 +1,48 @@
+sudo docker login
+       username: robotbulls
+       password: equiperobotbulls
+
+# Duas opções: Buildar e subir pro repositório. Ou Buildar direto na máquina
+
+				# 1ª forma -> Buildar imagem e subir pro DOCKER HUB
+#Na pasta em que está o Dockerfile
+sudo docker build --tag robotbulls_br2022:1.0 .
+sudo docker tag robotbulls_br2022:1.0 robotbulls/robotbulls_br2022:1.0        	
+sudo docker push robotbulls/robotbulls_br2022:1.0
+# Acessando o servidor (Tem que estar no mesmo diretório do arquivo "pem")
+ssh -i robotbulls.pem robotbulls@<IP_DA_MÁQUINA>
+# Baixando a imagem na máquina
+sudo docker pull robotbulls/robotbulls_br2022:1.0
+
+					# 2ª forma -> Buildar dentro do servidor
+# Subindo a pasta com os scripts do Docker
+scp -r -i robotbulls.pem /home/joao/INATEL/RobotBulls/VSSS/Simulator/FIASim_Client/Docker robotbulls@<IP_DA_MÁQUINA>:/home/robotbulls
+
+# Acessando o servidor (Tem que estar no mesmo diretório do arquivo "pem")
+ssh -i robotbulls.pem robotbulls@<IP_DA_MÁQUINA>
+
+# Buildar a imagem sem subir no DOCKER HUB
+# Na pasta que tiver o Dockefile e o dockerbuild (script)
+cd Docker
+sudo sh dockerbuild.sh
+
+# Rodando o container
+#Alterar o nome da imagem do docker no script do runDocker para a imagem que está no servidor
+sudo docker images
+sudo nano runDocker.sh
+sudo sh runDocker.sh
+
+# Clonando o repositório para buildar dentro do container
+sh cloneRobotbulls.sh
+
+# Buildando o código dentro do container
+cd FIRASim_Client
+mkdir build
+cd build
+qmake ..
+make -j4
+
+# Executando o código
+cd ../bin
+./FIRAClient blue 127.0.0.1 10002 20011 224.0.0.1 10003 10004 224.5.23.2 1 0
+./FIRAClient yellow 127.0.0.1 10002 20011 224.0.0.1 10003 10004 224.5.23.2 1 0
