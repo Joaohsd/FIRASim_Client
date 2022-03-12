@@ -172,7 +172,7 @@ void Robot::playID_2(){
             this->defend();
             break;
         case bola_area:
-            this->defend_middle();
+            this->defend_middle_attack();
             break;
         }
     }
@@ -361,7 +361,7 @@ void Robot::defend(){
 
 void Robot::intercept_antigo()
 {
-    double min_pos_dist = 60;
+    double min_pos_dist = 50;
     int speed = -1;
     bool entrou = false;
     bool borda = false;
@@ -612,7 +612,7 @@ void Robot:: go_to(QPointF target, double target_angle, bool have_obstacle, int 
         //cout << "decay_mode 1" << endl;
         double min_goto_dist = 320; //0.3
         double min_goto_dist_2 = 520; //0.5
-        double min_goto_fact = 700;     //CONFERIR
+        double min_goto_fact = 0.7;     //CONFERIR
         double max_goto_fact= 1.0;      //CONFERIR
         if(distance(pos,target) < min_goto_dist_2){
             curr_speed *= distance(pos,target)/min_goto_dist_2;
@@ -808,17 +808,17 @@ void Robot::defend_goal_Left()
 {
     QPointF ball_pos = data->futureBallPos;
     QPoint goal = data->goal.getTopLeft();
-    goal.setX(goal.x() + 0.06);
+    goal.setX(goal.x() + 50);
     if(ball_pos.y() > data->goal.getTopLeft().y()){
-        goal.setY(data->goal.getTopLeft().y() - 0.08);
+        goal.setY(data->goal.getTopLeft().y() - 50);
     }
     else if(ball_pos.y() < data->goal.getBottomLeft().y()){
-        goal.setY(data->goal.getBottomLeft().y() + 0.08);
+        goal.setY(data->goal.getBottomLeft().y() + 50);
     }
     else{
         goal.setY(ball_pos.y());
     }
-    if(distance(pos,goal) <= 0.05){
+    if(distance(pos,goal) <= 50){
         set_angle(PI/2);
     }
     else{
@@ -852,7 +852,7 @@ void Robot::defend_goal_Right()
 void Robot::defend_goal_LARC(){
     double x_pos;
     int x_distance_goal = 200;
-    int ball_goal_dist = 450;
+    int ball_center_dist = 550;
 
     int y_top = 1050;
     int y_bot = 250;
@@ -866,59 +866,75 @@ void Robot::defend_goal_LARC(){
     QPoint center_left = QPoint(data->min_field.x()+x_distance_goal, y_center);
     QPoint bot_left = QPoint(data->min_field.x()+x_distance_goal, y_bot + 200);
 
-    QPoint middle_top = QPoint(data->middle_field.x(),data->middle_field.y()+200);
-    QPoint middle_bot = QPoint(data->middle_field.x(),data->middle_field.y()-200);
+    QPoint middle_top = QPoint(data->middle_field.x(),data->middle_field.y() + 200);
+    QPoint middle_bot = QPoint(data->middle_field.x(),data->middle_field.y() - 200);
 
     if(this->data->playSide == LEFT_SIDE){
-        if((data->ballPos.x() <= 370 && data->ballPos.y() <= 280)/* && flag_Corner_Fight*/){
-            QPoint secure_point = QPoint(bot_left.x() - 130, bot_left.y());
-            position(secure_point, -PI/2, 0, 1);
+        if(data->ballPos.x() <= 350 && data->ballPos.y() <= 200){        //corner bot
+            QPoint secure_point = QPoint(bot_left.x() - 120, bot_left.y());
+            position(secure_point, -PI/2, 1, 1);
         }
-        else if((data->ballPos.x() <= 370 && data->ballPos.y() >= 1020)/* && flag_Corner_Fight*/){
-            QPoint secure_point = QPoint(top_left.x() - 130, top_left.y());
-            position(secure_point, PI/2, 0, 1);
+        else if(data->ballPos.x() <= 350 && data->ballPos.y() >= 1100){  //corner top
+            QPoint secure_point = QPoint(top_left.x() - 120, top_left.y());
+            position(secure_point, PI/2, 1, 1);
         }
-        else if(distance(this->data->ballPos,center_left) <= ball_goal_dist || (data->ballPos.x() <= 450 && distance(data->player[data->playTeam][ID_1], data->ballPos) > 350 && distance(data->player[data->playTeam][ID_2], data->ballPos) > 350)){
+        else if(data->ballPos.x() <= 750){
             if(is_inside(data->ballPos, data->area[LEFT_SIDE]))
                 intercept();
-            else
+            else if(distance(data->ballPos, QPoint(data->goal.getTopLeft().x(), data->goal.getTopLeft().y() - 200)) <= 380 || (distance(this->data->ballPos,center_left) <= ball_center_dist && distance(data->player[data->playTeam][ID_1], data->ballPos) > 350 && distance(data->player[data->playTeam][ID_2], data->ballPos) > 350))
                 go_to_debug();
+            else{
+                QPointF ball_pos = data->futureBallPos;
+                QPoint goal = data->goal.getTopLeft();
+                goal.setX(goal.x() + 60);
+                if(ball_pos.y() > data->goal.getTopLeft().y()){
+                    goal.setY(data->goal.getTopLeft().y() - 50);
+                }
+                else if(ball_pos.y() < data->goal.getBottomLeft().y()){
+                    goal.setY(data->goal.getBottomLeft().y() + 50);
+                }
+                else{
+                    goal.setY(ball_pos.y());
+                }
+                position(goal, PI/2, 0, 1);
+            }
         }
         else{
             if(data->ballPos.y() >= y_top){
                 QPoint vec_top = middle_top - top_left;
-                QPoint vec_ball_goalkeeper = data->ballPos - top_left;
-                double angle_ball_goalKeeper = get_angle(vec_top,vec_ball_goalkeeper);
-                position(top_left, angle_ball_goalKeeper, 0, 1);
+                QPoint vec_ball_top = data->ballPos - top_left;
+                double angle_ball_top = get_angle(vec_top,vec_ball_top);
+                position(top_left, angle_ball_top, 0, 1);
             }
             else if(data->ballPos.y() <= y_bot){
                 QPoint vec_bot = middle_bot - bot_left;
-                QPoint vec_ball_goalkeeper = data->ballPos - bot_left;
-                double angle_ball_goalKeeper = get_angle(vec_bot,vec_ball_goalkeeper);
-                position(bot_left, angle_ball_goalKeeper, 0, 1);
+                QPoint vec_ball_bot = data->ballPos - bot_left;
+                double angle_ball_bot = get_angle(vec_bot,vec_ball_bot);
+                position(bot_left, angle_ball_bot, 0, 1);
             }
             else{
                 QPoint vec_middle = data->middle_field - center_left;
-                QPoint vec_ball_goalkeeper = data->ballPos - center_left;
-                double angle_ball_goalKeeper = get_angle(vec_middle,vec_ball_goalkeeper);
-                if(data->ballPos.y() > top_left.y())
-                    position(top_left, angle_ball_goalKeeper, 0, 1);
+                QPoint vec_ball_center = data->ballPos - center_left;
+                double angle_ball_center = get_angle(vec_middle,vec_ball_center);
+                /*if(data->ballPos.y() > top_left.y())
+                    position(top_left, angle_ball_center, 1, 1);
                 else if(data->ballPos.y() < bot_left.y())
-                    position(bot_left, angle_ball_goalKeeper, 0, 1);
-                else position(QPoint(center_left.x(),data->ballPos.y()), angle_ball_goalKeeper, 0, 1);
+                    position(bot_left, angle_ball_center, 1, 1);
+                else position(center_left, angle_ball_center, 1, 1);*/
+                position(center_left, angle_ball_center, 0, 1);
             }
         }
     }
     else{
         if((data->ballPos.x() >= 1130 && data->ballPos.y() <= 280) /*&& flag_Corner_Fight*/){
-            QPoint secure_point = QPoint(bot_right.x() + 130, bot_right.y());
+            QPoint secure_point = QPoint(bot_right.x() + 120, bot_right.y());
             position(secure_point, PI/2, 0, 1);
         }
         else if((data->ballPos.x() >= 1.13 && data->ballPos.y() >= 1020) /*&& flag_Corner_Fight*/){
-            QPoint secure_point = QPoint(top_right.x() + 130, top_right.y());
+            QPoint secure_point = QPoint(top_right.x() + 120, top_right.y());
             position(secure_point, -PI/2, 0, 1);
         }
-        else if((distance(this->data->ballPos,center_right) <= ball_goal_dist || data->ballPos.x() >= 1050) && distance(data->player[data->playTeam][ID_1], data->ballPos) > 350 && distance(data->player[data->playTeam][ID_2], data->ballPos) > 350){
+        else if((distance(this->data->ballPos,center_right) <= ball_center_dist || data->ballPos.x() >= 1050) && distance(data->player[data->playTeam][ID_1], data->ballPos) > 350 && distance(data->player[data->playTeam][ID_2], data->ballPos) > 350){
             if(is_inside(data->ballPos, data->area[RIGHT_SIDE]))
                 intercept();
             else
@@ -938,7 +954,7 @@ void Robot::defend_goal_LARC(){
                 position(bot_right, angle_ball_goalKeeper, 0, 1);
             }
             else{
-                if(distance(this->data->ballPos,center_right) <= ball_goal_dist){
+                if(distance(this->data->ballPos,center_right) <= ball_center_dist){
                     go_to_debug();
                 }
                 else{
@@ -1259,7 +1275,7 @@ void Robot::defend_block(int e_id)
  */
 void Robot::position(QPoint point, double angle, bool has_obstacle, int speed_mode)
 {
-    double min_pos_dist = 30;
+    double min_pos_dist = 50;
     if(speed_mode == 1){
         double max_distance = 200;
         if(distance(pos, point) <= min_pos_dist /*&& abs(pos.x() - point.x()) < 10 && abs(pos.y() - point.y()) < 20*/){

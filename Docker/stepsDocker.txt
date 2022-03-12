@@ -15,10 +15,12 @@ ssh -i robotbulls.pem robotbulls@<IP_DA_MÁQUINA>
 sudo docker pull robotbulls/robotbulls_br2022:1.0
 
 					# 2ª forma -> Buildar dentro do servidor
+# robotbulls@ec2-18-228-22-122.sa-east-1.compute.amazonaws.com
 # Subindo a pasta com os scripts do Docker
-scp -r -i robotbulls.pem /home/joao/INATEL/RobotBulls/VSSS/Simulator/FIASim_Client/Docker robotbulls@<IP_DA_MÁQUINA>:/home/robotbulls
+scp -r -i robotbulls.pem /home/joao/INATEL/RobotBulls/VSSS/Simulador/FIRASim_Client/Docker robotbulls@<IP_DA_MÁQUINA>:/home/robotbulls
 
 # Acessando o servidor (Tem que estar no mesmo diretório do arquivo "pem")
+ssh -i "robotbulls.pem" robotbulls@ec2-18-228-22-122.sa-east-1.compute.amazonaws.com
 ssh -i robotbulls.pem robotbulls@<IP_DA_MÁQUINA>
 
 # Buildar a imagem sem subir no DOCKER HUB

@@ -36,8 +36,8 @@ void Core::ballInfo(){
     cout << "Y: " << this->data->ballPos.y() << endl;
     cout << "X FUT: " << this->data->futureBallPos.x() << endl;
     cout << "Y FUT: " << this->data->futureBallPos.y() << endl;
-    /*cout << "Vx: " << this->data->ballVel.x() << endl;
-    cout << "Vy: " << this->data->ballVel.y() << endl;*/
+    //cout << "Vx: " << this->data->ballVel.x() << endl;
+    //cout << "Vy: " << this->data->ballVel.y() << endl;
 }
 
 void Core::start(){
@@ -123,11 +123,11 @@ void Core::initializeTeam(bool team, int formation){
     data->ballPos = QPoint(750,650);
 
     // PID and Speed goalkeeper (robot 0)
-    double fast_speed = 105;  //200
+    double fast_speed = 200;  //200
     double spin_speed = fast_speed*1.5;
-    double kp_base = -1.3;     //-2.65
+    double kp_base = -2.65;     //-2.65
     double ki_base = -0.0;
-    double kd_base = -26.7;     //-50.5
+    double kd_base = -45.0;     //-50.5
 
     // PID and Speed defender (robot 1)
     double fast_speed2 = 200;   //200   //300
@@ -139,7 +139,7 @@ void Core::initializeTeam(bool team, int formation){
     //PID and Speed stricker (robot 2)
     double fast_speed3_r = 200; //110   //400
     double spin_speed3_r = fast_speed3_r*1.5;
-    double kp_base3_r = -2.7;   //-3.0 //-5.65
+    double kp_base3_r = -2.65;   //-3.0 //-5.65
     double ki_base3_r = -0.0;
     double kd_base3_r = -45.0;  //-15.0 //-100.5
 
@@ -205,8 +205,8 @@ void Core::update(){
         //data->futureBallPos = QPointF(data->ballPos.x() + data->ballVel.x()*predict_fact, data->ballPos.y() + data->ballVel.y()*predict_fact);
 
         //Determing future ball position
-        data->futureBallPos.setX(data->ballPos.x() + data->ballVel.x() * 4 * TIME_TO_RECEIVE_DATA + (0.5 * (data->ballVel.x() - data->lastBallVel.x()) * 16 * TIME_TO_RECEIVE_DATA));
-        data->futureBallPos.setY(data->ballPos.y() + data->ballVel.y() * 4 * TIME_TO_RECEIVE_DATA + (0.5 * (data->ballVel.y() - data->lastBallVel.y()) * 16 * TIME_TO_RECEIVE_DATA));
+        data->futureBallPos.setX(data->ballPos.x() + data->ballVel.x() * 6 * TIME_TO_RECEIVE_DATA + (0.5 * (data->ballVel.x() - data->lastBallVel.x()) * 36 * TIME_TO_RECEIVE_DATA));
+        data->futureBallPos.setY(data->ballPos.y() + data->ballVel.y() * 6 * TIME_TO_RECEIVE_DATA + (0.5 * (data->ballVel.y() - data->lastBallVel.y()) * 36 * TIME_TO_RECEIVE_DATA));
 
         //Showing ball information
         ballInfo();
@@ -279,9 +279,9 @@ void Core::process(){
         }
     }
     else{
-        this->player[this->data->playTeam][ID_0]->stopRobot();
+        this->player[this->data->playTeam][ID_0]->playID_0();
         this->player[this->data->playTeam][ID_1]->stopRobot();
-        this->player[this->data->playTeam][ID_2]->playID_2();
+        this->player[this->data->playTeam][ID_2]->stopRobot();
     }
 }
 
