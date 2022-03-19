@@ -28,6 +28,8 @@ public:
 	static double p, i, d, k_de, k_kr, k_dmin, k_delta;
     static double angle_error;
     static bool penalty;
+    static bool defendPenalty;
+    static int contDefendPenalty;
     static double speed_spin_increment;
     static play_mode mode;
 	StaticData();

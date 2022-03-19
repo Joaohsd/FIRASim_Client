@@ -31,7 +31,7 @@ QPoint StaticData::max_field = QPoint(1500,1300);
 QPoint StaticData::middle_field = QPoint(750,650);
 FieldSpace StaticData::field = FieldSpace(QPoint(0,1300),QPoint(1500,1300), QPoint(0,0), QPoint(1500,0)); // Change here
 FieldSpace StaticData::area[2]; //0 -> Left side and 1 -> Right Side
-FieldSpace StaticData::goal = FieldSpace(QPoint(0,900),QPoint(1500,900),QPoint(0,400),QPoint(1500,400));  // Change here
+FieldSpace StaticData::goal = FieldSpace(QPoint(0,850),QPoint(1500,850),QPoint(0,450),QPoint(1500,450));  // Change here
 
 // Formations
 bool StaticData::formation1 = false;
@@ -47,6 +47,9 @@ int StaticData::playTeam = 0;
 int StaticData::playSide = 0;
 
 bool StaticData::penalty = false;
+bool StaticData::defendPenalty = false;
+
+int StaticData::contDefendPenalty = -1;
 
 int StaticData::robotAction[] = {-1,-1,-1,-1,-1};
 int StaticData::robotPenalty[] = {-1,-1,-1,-1,-1};

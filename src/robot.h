@@ -67,9 +67,11 @@ public slots:
         void defend();
 
         //Goalkeeper
-        void defend_goal_LARC();
-        void defend_goal_Left();
-        void defend_goal_Right();
+        void defend_goal_libero();
+        void defend_goal_safe();
+        void defend_goalLine_Left();
+        void defend_goalLine_Right();
+        void intercept_goalkeeper(bool hasObstacle);
 
         void playID_2();
         void playID_1();
@@ -128,6 +130,8 @@ public slots:
         double angle;
 
         bool kick_stat = false;
+        bool pos_stat = false;
+        bool leaveFromGoal = false;
 
         double speed_kick_base = 0.8;
         double speed_kick_increment = 0.3;
