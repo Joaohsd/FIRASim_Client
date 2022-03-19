@@ -199,7 +199,7 @@ void Robot::playID_1(){
         //CONTAINING - DEFENDER - CONTAINING
         switch(data->mode){
         case bola_ataque:
-            this->defend_middle_attack();
+            this->attack();
             break;
         case bola_defesa:
             this->defend();
@@ -1268,7 +1268,7 @@ void Robot::defend_middle_attack()
     //Minimum ball distance to spin
     double min_distance = 80;
     //Distance between border and position to stop
-    double y_distance = 150;
+    double y_distance = 60;
     //Maxium distance to stop spin
     double max_distance = 90;
     double angle = 0.0;
