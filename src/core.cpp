@@ -125,14 +125,14 @@ void Core::initializeTeam(bool team, int formation){
     // PID and Speed goalkeeper (robot 0)
     double fast_speed = 180;  //200
     double spin_speed = fast_speed*1.5;
-    double kp_base = -2.0;     //-1.91
+    double kp_base = -1.8;     //-1.91
     double ki_base = -0.0;
-    double kd_base = -38.5;     //-38.1
+    double kd_base = -38.1;     //-38.1
 
     // PID and Speed defender (robot 1)
     double fast_speed2 = 200;   //200   //300
     double spin_speed2 = fast_speed2*1.5;
-    double kp_base2 = -2.4;    //-2.65 //-4.65
+    double kp_base2 = -2.1;    //-2.65 //-4.65
     double ki_base2 = -0.0;
     double kd_base2 = -40.0;    //-50.5  //-95.5
 
@@ -141,7 +141,7 @@ void Core::initializeTeam(bool team, int formation){
     double spin_speed3_r = fast_speed3_r*1.5;
     double kp_base3_r = -2.1;   //-3.0 //-5.65
     double ki_base3_r = -0.0;
-    double kd_base3_r = -37.9;  //-15.0 //-100.5
+    double kd_base3_r = -40.0;  //-15.0 //-100.5
 
     // Configuring robots
     //int _team_id, int _id, double _kp, double _ki, double _kd, double _base_speed, double_spin_speed

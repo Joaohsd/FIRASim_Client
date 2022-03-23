@@ -53,11 +53,13 @@ public slots:
         void defend_center();
         void defend_block(int);
 
+        void containing();
+
         void stopRobot();
 
         //Stricker
-
         void attack();
+        void attack_antigo();
         void kick();
         void go_to_kick(QPoint target, double speed_factor);
         void go_to_penalty();
@@ -250,6 +252,29 @@ public slots:
              if(is_inside(this->data->ballPos,this->data->area[LEFT_SIDE]) && (is_inside(this->data->player[TEAM_YELLOW][ID_2],this->data->area[LEFT_SIDE]) || is_inside(this->data->player[TEAM_YELLOW][ID_1],this->data->area[LEFT_SIDE]) || this->data->player[TEAM_YELLOW][ID_2].x() < this->data->min_field.x() || this->data->player[TEAM_YELLOW][ID_1].x() < this->data->min_field.x()))
                 return true;
              else return false;
+        }
+
+        inline int verify_Player_Best_Condition(int firstID, int secondID){
+            double ball_player_angle_firstID = fabs(get_angle(QPoint(120*cos(data->player_angle[data->playTeam][firstID]),120*sin(data->player_angle[data->playTeam][firstID])),QPointF(data->futureBallPos - pos)))*180/PI;
+            double ball_player_angle_secondID = fabs(get_angle(QPoint(120*cos(data->player_angle[data->playTeam][secondID]),120*sin(data->player_angle[data->playTeam][secondID])),QPointF(data->futureBallPos - pos)))*180/PI;
+            int distance_firstID_ball = distance(data->player[data->playTeam][firstID], data->futureBallPos);
+            int distance_secondID_ball = distance(data->player[data->playTeam][secondID], data->futureBallPos);
+            if(ball_player_angle_firstID >= 90.0){
+                ball_player_angle_firstID = 180.0 - ball_player_angle_firstID;
+            }
+            if(ball_player_angle_secondID >= 90.0){
+                ball_player_angle_secondID = 180.0 - ball_player_angle_secondID;
+            }
+            if(distance_secondID_ball <= distance_firstID_ball && ball_player_angle_secondID <= ball_player_angle_firstID){
+                return secondID;
+            }
+            else if(distance_firstID_ball < distance_secondID_ball){
+                return firstID;
+            }
+            else{
+                return secondID;
+            }
+
         }
 };
 #endif // ROBOT_H
