@@ -283,7 +283,7 @@ void Robot::playID_1(){
         //CONTAINING - DEFENDER - CONTAINING
         switch(data->mode){
         case bola_ataque:
-            this->attack();
+            this->attack_antigo();
             break;
         case bola_meio:
             this->intercept();
@@ -389,7 +389,7 @@ void Robot::playID_2(){
         switch(data->mode){
         case bola_ataque:
             if(!data->penalty)
-                this->attack();
+                this->attack_antigo();
             break;
         case bola_meio:
             this->attack_antigo();
@@ -532,9 +532,9 @@ void Robot::attack()
 
 void Robot::attack_antigo()
 {
-    enum play_mode {att_normal, att_borda, att_danger} mode = att_normal;
+    enum play_mode {att_normal, att_danger} mode = att_normal;
 
-    /*if(is_inside(data->ballPos, this->data->area[RIGHT_SIDE]) && this->data->playSide == LEFT_SIDE){
+    if(is_inside(data->ballPos, this->data->area[RIGHT_SIDE]) && this->data->playSide == LEFT_SIDE){
         mode = att_danger;
     }
 
@@ -544,47 +544,27 @@ void Robot::attack_antigo()
 
     else{
         mode = att_normal;
-    }*/
+    }
 
     switch(mode){
     case att_normal:
         this->kick();
         break;
     case att_danger:
-        if(this->data->playSide == LEFT_SIDE){
-            if(is_inside(this->data->player[this->data->playTeam][ID_2], this->data->area[RIGHT_SIDE]) || this->data->player[this->data->playTeam][ID_2].x() > this->data->max_field.x()){
-                if(this->getId() == ID_2){
-                    this->kick();
-                }
-                else{
-                    this->defend_attack();
-                }
+        if(distance(this->data->player[this->data->playTeam][ID_2], this->data->ballPos) <= distance(this->data->player[this->data->playTeam][ID_1], this->data->ballPos)){
+            if(this->getId() == ID_2){
+                this->kick();
             }
             else{
-                if(this->getId() == ID_1){
-                    this->kick();
-                }
-                else{
-                    this->defend_attack();
-                }
+                this->defend_attack();
             }
         }
         else{
-            if(is_inside(this->data->player[this->data->playTeam][ID_2], this->data->area[LEFT_SIDE]) || this->data->player[this->data->playTeam][ID_2].x() < this->data->min_field.x()){
-                if(this->getId() == ID_2){
-                    this->kick();
-                }
-                else{
-                    this->defend_attack();
-                }
+            if(this->getId() == ID_1){
+                this->kick();
             }
             else{
-                if(this->getId() == ID_1){
-                    this->kick();
-                }
-                else{
-                    this->defend_attack();
-                }
+                this->defend_attack();
             }
         }
         break;
