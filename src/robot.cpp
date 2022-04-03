@@ -108,6 +108,18 @@ void Robot::setActuator(ActuatorClient *command){
     this->actuator = command;
 }
 
+void Robot::setKD(double _KD){
+    this->KD = _KD;
+}
+
+void Robot::setKP(double _KP){
+    this->KP = _KP;
+}
+
+void Robot::setBaseSpeed(double _base_speed){
+    this->base_speed = _base_speed;
+}
+
 void Robot::sendFIRA(int id, double wheelL, double wheelR){
     this->actuator->sendCommand(id,wheelL,wheelR);
 }
@@ -131,15 +143,18 @@ void Robot::playID_0(){
         //GOALKEEPER_LIBERO - GOALKEEPER_LIBERO - GOALKEEPER_LIBERO
         switch(data->mode){
         case bola_ataque:
-            if(!data->defendPenalty)
+            if(!data->defendPenalty && !data->goalKick)
                 this->defend_goal_libero();
             break;
         case bola_defesa:
-            if(!data->defendPenalty)
+            if(!data->defendPenalty && !data->goalKick)
+                this->defend_goal_libero();
+        case bola_meio:
+            if(!data->defendPenalty && !data->goalKick)
                 this->defend_goal_libero();
             break;
         case bola_area:
-            if(!data->defendPenalty)
+            if(!data->defendPenalty && !data->goalKick)
                 this->defend_goal_libero();
             break;
         }
@@ -148,15 +163,19 @@ void Robot::playID_0(){
         //GOALKEEPER - GOALKEEPER - GOALKEEPER
         switch(data->mode){
         case bola_ataque:
-            if(!data->defendPenalty)
+            if(!data->defendPenalty && !data->goalKick)
+                this->defend_goal_safe();
+            break;
+        case bola_meio:
+            if(!data->defendPenalty && !data->goalKick)
                 this->defend_goal_safe();
             break;
         case bola_defesa:
-            if(!data->defendPenalty)
+            if(!data->defendPenalty && !data->goalKick)
                 this->defend_goal_safe();
             break;
         case bola_area:
-            if(!data->defendPenalty)
+            if(!data->defendPenalty && !data->goalKick)
                 this->defend_goal_safe();
             break;
         }
@@ -165,15 +184,19 @@ void Robot::playID_0(){
         //GOALKEEPER - GOALKEEPER - GOALKEEPER
         switch(data->mode){
         case bola_ataque:
-            if(!data->defendPenalty)
+            if(!data->defendPenalty && !data->goalKick)
+                this->defend_goal_safe();
+            break;
+        case bola_meio:
+            if(!data->defendPenalty && !data->goalKick)
                 this->defend_goal_safe();
             break;
         case bola_defesa:
-            if(!data->defendPenalty)
+            if(!data->defendPenalty && !data->goalKick)
                 this->defend_goal_safe();
             break;
         case bola_area:
-            if(!data->defendPenalty)
+            if(!data->defendPenalty && !data->goalKick)
                 this->defend_goal_safe();
             break;
         }
@@ -182,15 +205,19 @@ void Robot::playID_0(){
         //GOALKEEPER - GOALKEEPER - GOALKEEPER
         switch(data->mode){
         case bola_ataque:
-            if(!data->defendPenalty)
+            if(!data->defendPenalty && !data->goalKick)
+                this->defend_goal_safe();
+            break;
+        case bola_meio:
+            if(!data->defendPenalty && !data->goalKick)
                 this->defend_goal_safe();
             break;
         case bola_defesa:
-            if(!data->defendPenalty)
+            if(!data->defendPenalty && !data->goalKick)
                 this->defend_goal_safe();
             break;
         case bola_area:
-            if(!data->defendPenalty)
+            if(!data->defendPenalty && !data->goalKick)
                 this->defend_goal_safe();
             break;
         }
@@ -199,16 +226,36 @@ void Robot::playID_0(){
         //GOALKEEPER - GOALKEEPER - GOALKEEPER
         switch(data->mode){
         case bola_ataque:
-            if(!data->defendPenalty)
+            if(!data->defendPenalty && !data->goalKick)
+                this->defend_goal_safe();
+            break;
+        case bola_meio:
+            if(!data->defendPenalty && !data->goalKick)
                 this->defend_goal_safe();
             break;
         case bola_defesa:
-            if(!data->defendPenalty)
+            if(!data->defendPenalty && !data->goalKick)
                 this->defend_goal_safe();
             break;
         case bola_area:
             if(!data->defendPenalty)
                 this->defend_goal_safe();
+            break;
+        }
+    }
+    else if(this->data->formation6){
+        //GOALKEEPER - GOALKEEPER - GOALKEEPER
+        switch(data->mode){
+        case bola_ataque:
+            this->attack_antigo();
+            break;
+        case bola_meio:
+            this->attack_antigo();
+        case bola_defesa:
+            this->attack_antigo();
+            break;
+        case bola_area:
+            this->attack_antigo();
             break;
         }
     }
@@ -220,6 +267,9 @@ void Robot::playID_1(){
         switch(data->mode){
         case bola_ataque:
             this->attack();
+            break;
+        case bola_meio:
+            this->intercept();
             break;
         case bola_defesa:
             this->defend();
@@ -234,6 +284,9 @@ void Robot::playID_1(){
         switch(data->mode){
         case bola_ataque:
             this->attack();
+            break;
+        case bola_meio:
+            this->intercept();
             break;
         case bola_defesa:
             this->defend();
@@ -248,6 +301,9 @@ void Robot::playID_1(){
         switch(data->mode){
         case bola_ataque:
             this->defend_middle_attack();
+            break;
+        case bola_meio:
+            this->intercept();
             break;
         case bola_defesa:
             this->defend();
@@ -263,6 +319,9 @@ void Robot::playID_1(){
         case bola_ataque:
             this->attack_antigo();
             break;
+        case bola_meio:
+            this->intercept();
+            break;
         case bola_defesa:
             this->defend();
             break;
@@ -277,11 +336,30 @@ void Robot::playID_1(){
         case bola_ataque:
             this->defend_middle_attack();
             break;
+        case bola_meio:
+            this->intercept();
+            break;
         case bola_defesa:
             this->defend();
             break;
         case bola_area:
             this->defend_middle();
+            break;
+        }
+    }
+    else if(this->data->formation6){
+        //GOALKEEPER - GOALKEEPER - GOALKEEPER
+        switch(data->mode){
+        case bola_ataque:
+            this->stopRobot();
+            break;
+        case bola_meio:
+            this->stopRobot();
+        case bola_defesa:
+            this->stopRobot();
+            break;
+        case bola_area:
+            this->stopRobot();
             break;
         }
     }
@@ -294,6 +372,9 @@ void Robot::playID_2(){
         case bola_ataque:
             if(!data->penalty)
                 this->attack();
+            break;
+        case bola_meio:
+            this->attack_antigo();
             break;
         case bola_defesa:
             this->defend();
@@ -309,6 +390,9 @@ void Robot::playID_2(){
         case bola_ataque:
             if(!data->penalty)
                 this->attack();
+            break;
+        case bola_meio:
+            this->attack_antigo();
             break;
         case bola_defesa:
             this->defend();
@@ -340,6 +424,9 @@ void Robot::playID_2(){
             if(!data->penalty)
                 this->attack_antigo();
             break;
+        case bola_meio:
+            this->attack_antigo();
+            break;
         case bola_defesa:
             this->defend();
             break;
@@ -363,17 +450,33 @@ void Robot::playID_2(){
             break;
         }
     }
+    else if(this->data->formation6){
+        //GOALKEEPER - GOALKEEPER - GOALKEEPER
+        switch(data->mode){
+        case bola_ataque:
+            this->stopRobot();
+            break;
+        case bola_meio:
+            this->stopRobot();
+        case bola_defesa:
+            this->stopRobot();
+            break;
+        case bola_area:
+            this->stopRobot();
+            break;
+        }
+    }
 }
 
 void Robot::attack()
 {
     enum play_mode {att_normal, att_danger} mode = att_normal;
 
-    if(verify_Strickers_Left_Is_Inside_Attack_Area() && this->data->playSide == LEFT_SIDE){
+    if(is_inside(data->ballPos, this->data->area[RIGHT_SIDE]) && this->data->playSide == LEFT_SIDE){
         mode = att_danger;
     }
 
-    else if(verify_Strickers_Right_Is_Inside_Attack_Area() && this->data->playSide == RIGHT_SIDE){
+    else if(is_inside(data->ballPos, this->data->area[LEFT_SIDE]) && this->data->playSide == RIGHT_SIDE){
         mode = att_danger;
     }
 
@@ -388,7 +491,7 @@ void Robot::attack()
         else {
             if(data->playSide == LEFT_SIDE){
                 if(data->ballPos.x() >= data->middle_field.x())
-                    if(distance(data->ballPos, pos) > 250)
+                    if(distance(data->ballPos, pos) > 380)
                         this->containing();
                     else this->kick();
                 else{
@@ -397,7 +500,7 @@ void Robot::attack()
             }
             else{
                 if(data->ballPos.x() <= data->middle_field.x())
-                    if(distance(data->ballPos, pos) > 250)
+                    if(distance(data->ballPos, pos) > 380)
                         this->containing();
                     else this->kick();
                 else{
@@ -407,40 +510,20 @@ void Robot::attack()
         }
         break;
     case att_danger:
-        if(this->data->playSide == LEFT_SIDE){
-            if(is_inside(this->data->player[this->data->playTeam][ID_2], this->data->area[RIGHT_SIDE]) || this->data->player[this->data->playTeam][ID_2].x() > this->data->max_field.x()){
-                if(this->getId() == ID_2){
-                    this->kick();
-                }
-                else{
-                    this->defend_attack();
-                }
+        if(distance(this->data->player[this->data->playTeam][ID_2], this->data->ballPos) <= distance(this->data->player[this->data->playTeam][ID_1], this->data->ballPos)){
+            if(this->getId() == ID_2){
+                this->kick();
             }
             else{
-                if(this->getId() == ID_1){
-                    this->kick();
-                }
-                else{
-                    this->defend_attack();
-                }
+                this->defend_attack();
             }
         }
         else{
-            if(is_inside(this->data->player[this->data->playTeam][ID_2], this->data->area[LEFT_SIDE]) || this->data->player[this->data->playTeam][ID_2].x() < this->data->min_field.x()){
-                if(this->getId() == ID_2){
-                    this->kick();
-                }
-                else{
-                    this->defend_attack();
-                }
+            if(this->getId() == ID_1){
+                this->kick();
             }
             else{
-                if(this->getId() == ID_1){
-                    this->kick();
-                }
-                else{
-                    this->defend_attack();
-                }
+                this->defend_attack();
             }
         }
         break;
@@ -451,17 +534,17 @@ void Robot::attack_antigo()
 {
     enum play_mode {att_normal, att_borda, att_danger} mode = att_normal;
 
-    if(verify_Strickers_Left_Is_Inside_Attack_Area() && this->data->playSide == LEFT_SIDE){
+    /*if(is_inside(data->ballPos, this->data->area[RIGHT_SIDE]) && this->data->playSide == LEFT_SIDE){
         mode = att_danger;
     }
 
-    else if(verify_Strickers_Right_Is_Inside_Attack_Area() && this->data->playSide == RIGHT_SIDE){
+    else if(is_inside(data->ballPos, this->data->area[LEFT_SIDE]) && this->data->playSide == RIGHT_SIDE){
         mode = att_danger;
     }
 
     else{
         mode = att_normal;
-    }
+    }*/
 
     switch(mode){
     case att_normal:
@@ -510,6 +593,7 @@ void Robot::attack_antigo()
 
 void Robot::containing(){
     if(data->mode == bola_ataque){
+        int desloc_y = 100;
         if(data->playSide == LEFT_SIDE){
             int x_Max = 900;
             int x_Min = 350;
@@ -520,11 +604,11 @@ void Robot::containing(){
             else if(x_Point > x_Max)
                 x_Point = x_Max;
             if(data->ballPos.y() >= data->middle_field.y()){
-                QPoint containingPoint = QPoint(x_Point, data->middle_field.y() + 100);
+                QPoint containingPoint = QPoint(x_Point, data->middle_field.y() + desloc_y);
                 this->position(containingPoint, 0, 1, 1);
             }
             else{
-                QPoint containingPoint = QPoint(x_Point, data->middle_field.y() - 100);
+                QPoint containingPoint = QPoint(x_Point, data->middle_field.y() - desloc_y);
                 this->position(containingPoint, 0, 1, 1);
             }
         }
@@ -532,17 +616,17 @@ void Robot::containing(){
             int x_Max = 600;
             int x_Min = 1150;
             int ball_Player_xDist = 350;
-            int x_Point = data->ballPos.x() - ball_Player_xDist;
+            int x_Point = data->ballPos.x() + ball_Player_xDist;
             if(x_Point < x_Max)
                 x_Point = x_Max;
             else if(x_Point > x_Min)
                 x_Point = x_Min;
             if(data->ballPos.y() >= data->middle_field.y()){
-                QPoint containingPoint = QPoint(x_Point, data->middle_field.y() + 100);
+                QPoint containingPoint = QPoint(x_Point, data->middle_field.y() + desloc_y);
                 this->position(containingPoint, 0, 1, 1);
             }
             else{
-                QPoint containingPoint = QPoint(x_Point, data->middle_field.y() - 100);
+                QPoint containingPoint = QPoint(x_Point, data->middle_field.y() - desloc_y);
                 this->position(containingPoint, 0, 1, 1);
             }
         }
@@ -551,23 +635,25 @@ void Robot::containing(){
 
 void Robot::kick()
 {
-    double min_dist_ball_y = 220;
+    double min_dist_ball_y = 150;
     double max_dist_ball_y = 550;
     //double min_distance_kickable = 70;
     //Minimum distance threshold for entering kick mode
-    double min_threshold = 160; //Modified 0.25 to 0.15
+    double min_threshold = 160;
     //Minimum angle diference threshold for entering kick mode
-    double angle_threshold = 15; //Alterado de 10 p 20
+    double angle_threshold = 15;
     //Maximum angle diference threshold for leaving kick mode
-    double max_angle_threshold = 55; //50
+    double max_angle_threshold = 55;
     //Maximum distance threshold for leaving kick mode
     double max_threshold = 270;
-    double dist_bet_players = MIN_DIST_BET_PLAYERS;
+
     QPoint med_goal2;
+
     double ball_player_angle = fabs(get_angle(QPoint(120*cos(angle),120*sin(angle)),QPoint(data->ballPos - pos)))*180/PI;
     if(ball_player_angle >= 90.0){
         ball_player_angle = 180.0 - ball_player_angle;
     }
+
     //Kick behaviour
     if(data->playSide == LEFT_SIDE){
         med_goal2 = medium_qpoint(data->goal.getTopRight(),data->goal.getBottomRight());
@@ -645,6 +731,34 @@ void Robot::kick()
 }
 
 void Robot::defend(){
+    int desloc_y = 100;
+    if(verify_Player_Best_Condition(ID_2, ID_1) == this->getId()){
+        this->intercept();
+    }
+    else{
+        QPoint containing_point;
+        if(data->playSide == LEFT_SIDE){
+            if(data->ballPos.y() >= data->middle_field.y()){
+                containing_point = QPoint(data->middle_field.x()/2 - 180,data->middle_field.y() + desloc_y);
+            }
+            else{
+                containing_point = QPoint(data->middle_field.x()/2 - 180,data->middle_field.y() - desloc_y);
+            }
+        }
+        else{
+            if(data->ballPos.y() >= data->middle_field.y()){
+                containing_point = QPoint(data->middle_field.x() + data->middle_field.x()/2 + 180,data->middle_field.y() + desloc_y);
+            }
+            else{
+                containing_point = QPoint(data->middle_field.x() + data->middle_field.x()/2 + 180,data->middle_field.y() - desloc_y);
+            }
+        }
+        this->position(containing_point, PI/2, 1, 3);
+    }
+
+}
+
+/*void Robot::defend(){
     QPoint containing_point;
     if(distance(data->player[data->playTeam][ID_2], data->ballPos) <= distance(data->player[data->playTeam][ID_1], data->ballPos)){
         if(this->getId() == ID_2){
@@ -694,7 +808,7 @@ void Robot::defend(){
             this->intercept();
         }
     }
-}
+}*/
 
 void Robot::intercept_antigo()
 {
@@ -804,7 +918,6 @@ void Robot::intercept()
 {
     double min_pos_dist = 80;
     int speed = 1;
-    QPoint goal = medium_qpoint(data->goal.getTopLeft(),data->goal.getBottomLeft());
     QPoint go_to_position = QPoint(data->futureBallPos.x(), data->futureBallPos.y());
     //cout << "INTERCEPT" << endl;
 
@@ -844,7 +957,7 @@ void Robot::intercept()
                     go_to(go_to_position, 3*PI/4, 1, speed);
                 }
             }
-            else if(data->ballPos.y() > pos.y()){
+            else if((data->ballPos.y() - 20) > pos.y()){
                 go_to(go_to_position, -3*PI/4, 1, speed);
             }
             else{
@@ -879,7 +992,7 @@ void Robot::intercept()
                     go_to(go_to_position, PI/4, 1, speed);
                 }
             }
-            else if(data->ballPos.y() > pos.y()){
+            else if((data->ballPos.y() - 20) > pos.y()){
                 go_to(go_to_position, -PI/4, 1, speed);
             }
             else{
@@ -964,19 +1077,19 @@ void Robot:: go_to(QPointF target, double target_angle, bool have_obstacle, int 
         }
     }
     else if(decay_mode == 3){
-        cout << "decay_mode 3" << endl;
+        //cout << "decay_mode 3" << endl;
         double min_dist = 350; //0.3
         double min_min_dist = 180;//0.18
         if(distance(pos,target) <= min_min_dist){
-            cout << "PERTO" << endl;
+            //cout << "PERTO" << endl;
             curr_speed *= 0.65; //0.65
-            kp_ *= 0.615; //0.7
+            kp_ *= 0.65; //0.65
             ki_ *= 0.8; //0.7
-            kd_ *= 0.6; //0.7
+            kd_ *= 0.6; //0.6
         }
         else if(distance(pos,target) <= min_dist){
             curr_speed *= 0.8; //0.8
-            cout << "LONGE" << endl;
+            //cout << "LONGE" << endl;
             kp_ *= 0.8; //0.8
             ki_ *= 0.8; //0.8
             kd_ *= 0.8; //0.8
@@ -1130,173 +1243,21 @@ void Robot::stopRobot(){
     this->sendFIRA(this->getId(),0,0);
 }
 
-void Robot::defend_goalLine_Left()
-{
-    QPointF ball_pos = data->futureBallPos;
-    QPoint goal = data->goal.getTopLeft();
-    double angle;
-    goal.setX(goal.x() + 50);
-    if(ball_pos.y() > data->goal.getTopLeft().y()){
-        goal.setY(data->goal.getTopLeft().y() - 80);
-    }
-    else if(ball_pos.y() < data->goal.getBottomLeft().y()){
-        goal.setY(data->goal.getBottomLeft().y() + 80);
-    }
-    else{
-        QPoint med_goal = medium_qpoint(data->goal.getTopLeft(),data->goal.getBottomLeft());
-        if(distance(med_goal, data->ballPos) < 450){
-            QPoint futureBallPos;
-            futureBallPos.setY(data->futureBallPos.y() + data->ballVel.y() * 15 * TIME_TO_RECEIVE_DATA);
-            if(futureBallPos.y() > data->goal.getTopLeft().y()){
-                futureBallPos.setY(data->goal.getTopLeft().y() - 80);
-            }
-            else if(futureBallPos.y() < data->goal.getBottomLeft().y()){
-                futureBallPos.setY(data->goal.getBottomLeft().y() + 80);
-            }
-            goal.setY(futureBallPos.y());
-        }
-        else{
-            goal.setY(ball_pos.y());
-        }
-    }
-    if(data->ballVel.y() <= 0)
-        angle = PI/2;
-    else angle = -PI/2;
-    position(goal, angle, 0, 1);
-}
-
-void Robot::defend_goalLine_Right()
-{
-    QPointF ball_pos = data->futureBallPos;
-    QPoint goal = data->goal.getTopRight();
-    double angle;
-    goal.setX(goal.x() - 50);
-    if(ball_pos.y() > data->goal.getTopRight().y()){
-        goal.setY(data->goal.getTopRight().y() - 80);
-    }
-    else if(ball_pos.y() < data->goal.getBottomRight().y()){
-        goal.setY(data->goal.getBottomRight().y() + 80);
-    }
-    else{
-        QPoint med_goal = medium_qpoint(data->goal.getTopRight(),data->goal.getBottomRight());
-        if(distance(med_goal, data->ballPos) < 450){
-            QPoint futureBallPos;
-            futureBallPos.setY(data->futureBallPos.y() + data->ballVel.y() * 15 * TIME_TO_RECEIVE_DATA);
-            if(futureBallPos.y() > data->goal.getTopRight().y()){
-                futureBallPos.setY(data->goal.getTopRight().y() - 80);
-            }
-            else if(futureBallPos.y() < data->goal.getBottomRight().y()){
-                futureBallPos.setY(data->goal.getBottomRight().y() + 80);
-            }
-            goal.setY(futureBallPos.y());
-        }
-        else{
-            goal.setY(ball_pos.y());
-        }
-    }
-    if(data->ballVel.y() >= 0)
-        angle = PI/2;
-    else angle = -PI/2;
-    position(goal, angle, 0, 1);
-}
-
-void Robot::intercept_goalkeeper(bool hasObstacle){
-    double min_pos_dist = 80;
-    int speed = 1;
-    QPoint go_to_position = QPoint(data->futureBallPos.x(), data->futureBallPos.y());
-    //cout << "INTERCEPT" << endl;
-
-    if(distance(pos, data->ballPos) <= min_pos_dist){
-        if(border_x()){
-            spin_x();
-        }
-        else{
-            spin();
-        }
-    }
-    else{
-        if(data->playSide == LEFT_SIDE){
-            if(border_x()){
-                if(data->ballPos.x() < data->middle_field.x()){
-                    if(data->ballPos.y() > data->middle_field.y()){
-                        go_to(go_to_position, -PI/4, hasObstacle, speed);
-                    }
-                    else{
-                        go_to(go_to_position, PI/4, hasObstacle, speed);
-                    }
-                }
-                else{
-                    if(data->ballPos.y() > data->middle_field.y()){
-                        go_to(go_to_position, 3*PI/4, hasObstacle, speed);
-                    }
-                    else{
-                        go_to(go_to_position, -3*PI/4, hasObstacle, speed);
-                    }
-                }
-            }
-            else if(border_y()){
-                if(data->ballPos.y() > data->middle_field.y()){
-                    go_to(go_to_position, -3*PI/4, hasObstacle, speed);
-                }
-                else{
-                    go_to(go_to_position, 3*PI/4, hasObstacle, speed);
-                }
-            }
-            else if(data->ballPos.y() > pos.y()){
-                go_to(go_to_position, -3*PI/4, hasObstacle, speed);
-            }
-            else{
-                go_to(go_to_position, 3*PI/4, hasObstacle, speed);
-            }
-        }
-        //lado direito
-        else{
-            if(border_x()){
-                if(data->ballPos.x() > data->middle_field.x()){
-                    if(data->ballPos.y() > data->middle_field.y()){
-                        go_to(go_to_position, -3*PI/4, hasObstacle, speed);
-                    }
-                    else{
-                        go_to(go_to_position, 3*PI/4, hasObstacle, speed);
-                    }
-                }
-                else{
-                    if(data->ballPos.y() > data->middle_field.y()){
-                        go_to(go_to_position, PI/4, hasObstacle, speed);
-                    }
-                    else{
-                        go_to(go_to_position, -PI/4, hasObstacle, speed);
-                    }
-                }
-            }
-            else if(border_y()){
-                if(data->ballPos.y() > data->middle_field.y()){
-                    go_to(go_to_position, -PI/4, hasObstacle, speed);
-                }
-                else{
-                    go_to(go_to_position, PI/4, hasObstacle, speed);
-                }
-            }
-            else if(data->ballPos.y() > pos.y()){
-                go_to(go_to_position, -PI/4, hasObstacle, speed);
-            }
-            else{
-                go_to(go_to_position, PI/4, hasObstacle, speed);
-                }
-            }
-        }
-}
-
 void Robot::defend_goal_safe(){
     if(data->playSide == LEFT_SIDE){
-        if(distance(pos, data->ballPos) > 110)
+        //QPoint med_goal = medium_qpoint(data->goal.getTopLeft(),data->goal.getBottomLeft());
+        if(distance(pos, data->ballPos) > 80){
             defend_goalLine_Left();
-        else intercept_goalkeeper(false);
+        }
+        else{
+            spin_goleiro();
+        }
     }
     else{
-        if(distance(pos, data->ballPos) > 110)
+        //QPoint med_goal = medium_qpoint(data->goal.getTopRight(),data->goal.getBottomRight());
+        if(distance(pos, data->ballPos) > 80)
             defend_goalLine_Right();
-        else intercept_goalkeeper(false);
+        else spin_goleiro();
     }
 }
 
@@ -1408,6 +1369,238 @@ void Robot::defend_goal_libero(){
         }
     }
 }
+
+
+void Robot::defend_goalLine_Left()
+{
+    QPointF ball_pos = data->futureBallPos;
+    QPoint goal = data->goal.getTopLeft();
+    double angle = PI/2;
+    goal.setX(goal.x() + 50);
+    if(ball_pos.y() > data->goal.getTopLeft().y()){
+        goal.setY(data->goal.getTopLeft().y() - 80);
+    }
+    else if(ball_pos.y() < data->goal.getBottomLeft().y()){
+        goal.setY(data->goal.getBottomLeft().y() + 80);
+    }
+    else{
+        QPoint med_goal = medium_qpoint(data->goal.getTopLeft(),data->goal.getBottomLeft());
+        if(distance(med_goal, data->ballPos) < 450){
+            QPointF futureBallPos = data->futureBallPos;
+            futureBallPos.setY(data->futureBallPos.y() + data->ballVel.y() * 7 * TIME_TO_RECEIVE_DATA);
+            if(futureBallPos.y() > data->goal.getTopLeft().y()){
+                futureBallPos.setY(data->goal.getTopLeft().y() - 80);
+            }
+            else if(futureBallPos.y() < data->goal.getBottomLeft().y()){
+                futureBallPos.setY(data->goal.getBottomLeft().y() + 80);
+            }
+            goal.setY(futureBallPos.y());
+        }
+        else{
+            goal.setY(ball_pos.y());
+        }
+    }
+    if(abs(this->pos.x() - goal.x()) <= 60){
+        this->KP = -1.0;
+        this->KD = 0.0;
+        this->base_speed = 80;
+        if((abs(this->angle) > (PI/2.0 + (10 * 180)/PI)) || abs(this->angle) < (PI/2.0 - (10 * 180)/PI)){
+            set_angle(PI/2.0);
+        }
+        else{
+            position_goalKeeper(goal, angle, 0, 1);
+        }
+    }
+    else{
+        this->KD = -14.9;
+        this->KP = -1.0;
+        this->base_speed = 80;
+        position_goalKeeper(goal, angle, 0, 1);
+    }
+
+}
+
+void Robot::defend_goalLine_Right()
+{
+    QPointF ball_pos = data->futureBallPos;
+    QPoint goal = data->goal.getTopRight();
+    double angle = PI/2;
+    goal.setX(goal.x() - 50);
+    if(ball_pos.y() > data->goal.getTopRight().y() - 30){
+        goal.setY(data->goal.getTopRight().y() - 80);
+    }
+    else if(ball_pos.y() < data->goal.getBottomRight().y() + 30){
+        goal.setY(data->goal.getBottomRight().y() + 80);
+    }
+    else{
+        QPoint med_goal = medium_qpoint(data->goal.getTopRight(),data->goal.getBottomRight());
+        if(distance(med_goal, data->ballPos) < 450){
+            QPointF futureBallPos = data->futureBallPos;
+            futureBallPos.setY(data->futureBallPos.y() + data->ballVel.y() * 7 * TIME_TO_RECEIVE_DATA);
+            if(futureBallPos.y() > data->goal.getTopRight().y() - 30){
+                futureBallPos.setY(data->goal.getTopRight().y() - 80);
+            }
+            else if(futureBallPos.y() < data->goal.getBottomRight().y() + 30){
+                futureBallPos.setY(data->goal.getBottomRight().y() + 80);
+            }
+            goal.setY(futureBallPos.y());
+        }
+        else{
+            goal.setY(ball_pos.y());
+        }
+    }
+    if(abs(this->pos.x() - goal.x()) <= 60){
+        this->KP = -1.0;
+        this->KD = 0.0;
+        this->base_speed = 80;
+        if((abs(this->angle) > (PI/2.0 + (10 * 180)/PI)) || abs(this->angle) < (PI/2.0 - (10 * 180)/PI)){
+            set_angle(PI/2.0);
+        }
+        else{
+            position_goalKeeper(goal, angle, 0, 1);
+        }
+    }
+    else{
+        this->KD = -14.9;
+        this->KP = -1.0;
+        this->base_speed = 80;
+    }
+    position_goalKeeper(goal, angle, 0, 1);
+}
+
+void Robot::defend_goalLine_Left_Projection(){
+    QPointF ball_pos = data->futureBallPos;
+    QPointF point = data->goal.getTopLeft();
+    double angle;
+    point.setX(point.x() + 50);
+
+    if(data->ballVel.x() < 0){
+        QPointF ballVellX = QPointF(data->ballVel.x(),0);
+        QPointF ballVellY = QPointF(0,data->ballVel.y());
+        double angle_ballVel = get_angle(ballVellX, ballVellY);
+        QPointF projY = QPointF(data->ballPos.y(), 0);
+        double distX_ball_projY = abs(projY.x() - data->ballPos.x());
+        point.setY(data->ballPos.y() - distX_ball_projY*tan(angle_ballVel));
+        if(point.y() > data->goal.getTopLeft().y()){
+            point.setY(data->goal.getTopLeft().y() - 80);
+        }
+        else if(point.y() < data->goal.getBottomLeft().y()){
+            point.setY(data->goal.getBottomLeft().y() + 80);
+        }
+        if(data->ballPos.y() > pos.y()){
+            angle = PI/2;
+        }
+        else{
+            angle = -PI/2;
+        }
+
+        position_goalKeeper(point, angle, 0, 1);
+    }
+    else{
+        if(ball_pos.y() > data->goal.getTopLeft().y()){
+            point.setY(data->goal.getTopLeft().y() - 80);
+        }
+        else if(ball_pos.y() < data->goal.getBottomLeft().y()){
+            point.setY(data->goal.getBottomLeft().y() + 80);
+        }
+        if(data->ballPos.y() > pos.y()){
+            angle = PI/2;
+        }
+        else{
+            angle = -PI/2;
+        }
+        point.setY(ball_pos.y());
+        position_goalKeeper(point, angle, 0, 1);
+    }
+
+}
+
+void Robot::intercept_goalkeeper(bool hasObstacle){
+    double min_pos_dist = 70;
+    int speed = 1;
+    QPoint go_to_position = QPoint(data->futureBallPos.x(), data->futureBallPos.y());
+    this->KD = 14.9;
+    if(distance(pos, data->ballPos) <= min_pos_dist){
+        if(border_x()){
+            spin_x();
+        }
+        else{
+            spin();
+        }
+    }
+    else{
+        if(data->playSide == LEFT_SIDE){
+            if(border_x()){
+                if(data->ballPos.x() < data->middle_field.x()){
+                    if(data->ballPos.y() > data->middle_field.y()){
+                        go_to(go_to_position, -PI/4, hasObstacle, speed);
+                    }
+                    else{
+                        go_to(go_to_position, PI/4, hasObstacle, speed);
+                    }
+                }
+                else{
+                    if(data->ballPos.y() > data->middle_field.y()){
+                        go_to(go_to_position, 3*PI/4, hasObstacle, speed);
+                    }
+                    else{
+                        go_to(go_to_position, -3*PI/4, hasObstacle, speed);
+                    }
+                }
+            }
+            else if(border_y()){
+                if(data->ballPos.y() > data->middle_field.y()){
+                    go_to(go_to_position, -3*PI/4, hasObstacle, speed);
+                }
+                else{
+                    go_to(go_to_position, 3*PI/4, hasObstacle, speed);
+                }
+            }
+            else if(data->ballPos.y() > pos.y()){
+                go_to(go_to_position, -3*PI/4, hasObstacle, speed);
+            }
+            else{
+                go_to(go_to_position, 3*PI/4, hasObstacle, speed);
+            }
+        }
+        //lado direito
+        else{
+            if(border_x()){
+                if(data->ballPos.x() > data->middle_field.x()){
+                    if(data->ballPos.y() > data->middle_field.y()){
+                        go_to(go_to_position, -3*PI/4, hasObstacle, speed);
+                    }
+                    else{
+                        go_to(go_to_position, 3*PI/4, hasObstacle, speed);
+                    }
+                }
+                else{
+                    if(data->ballPos.y() > data->middle_field.y()){
+                        go_to(go_to_position, PI/4, hasObstacle, speed);
+                    }
+                    else{
+                        go_to(go_to_position, -PI/4, hasObstacle, speed);
+                    }
+                }
+            }
+            else if(border_y()){
+                if(data->ballPos.y() > data->middle_field.y()){
+                    go_to(go_to_position, -PI/4, hasObstacle, speed);
+                }
+                else{
+                    go_to(go_to_position, PI/4, hasObstacle, speed);
+                }
+            }
+            else if(data->ballPos.y() > pos.y()){
+                go_to(go_to_position, -PI/4, hasObstacle, speed);
+            }
+            else{
+                go_to(go_to_position, PI/4, hasObstacle, speed);
+                }
+            }
+        }
+}
+
 
 void Robot::defend_middle()
 {
@@ -1561,10 +1754,6 @@ void Robot::defend_attack()
     double max_distance = 90;
     double angle = 0.0;
 
-    /*
-    if(player_id == 0){
-        x_var = -0.5;
-    }*/
 
     if(data->playSide == LEFT_SIDE){
         x_point = data->middle_field.x() + x_var;
@@ -1712,9 +1901,9 @@ void Robot::defend_block(int e_id)
  */
 void Robot::position(QPoint point, double angle, bool has_obstacle, int speed_mode)
 {
-    double min_pos_dist = 30;
+    double min_pos_dist = 40;
 
-    if(abs(pos.x() - point.x()) < 20 && abs(pos.y() - point.y()) < 20 && !pos_stat){
+    if(abs(pos.x() - point.x()) <= 20 && abs(pos.y() - point.y()) <= 20 && !pos_stat){
         if(abs(input) < 5){
             pos_stat = true;
             stopRobot();
@@ -1731,6 +1920,41 @@ void Robot::position(QPoint point, double angle, bool has_obstacle, int speed_mo
             go_to(point,-999,has_obstacle,speed_mode);
         }
         else if(abs(pos.x() - point.x()) >= 7 || abs(pos.y() - point.y()) >= 7){
+            pos_stat = false;
+        }*/
+        if(distance(pos, point) <= min_pos_dist && !pos_stat){
+            pos_stat = false;
+            set_angle(angle);
+            //cout << "Perto do ponto" << endl;
+        }
+        else{
+            pos_stat = false;
+            //cout << "Longe do ponto" << endl;
+            go_to(point,-999,has_obstacle,speed_mode);
+        }
+    }
+}
+
+void Robot::position_goalKeeper(QPointF point, double angle, bool has_obstacle, int speed_mode){
+    double min_pos_dist = 30;
+
+    if(abs(pos.x() - point.x()) < 20 && abs(pos.y() - point.y()) < 15 && !pos_stat){
+        if(abs(input) < 5){
+            pos_stat = true;
+            stopRobot();
+            //cout << "Angulo correto" << endl;
+        }
+        else {
+            set_angle(angle);
+            //cout << "Angulo incorreto" << endl;
+        }
+    }
+    else{
+        /*if(!pos_stat){
+            cout << "Longe do ponto" << endl;
+            go_to(point,-999,has_obstacle,speed_mode);
+        }
+        else if(abs(pos.x() - point.x()) >= 10 || abs(pos.y() - point.y()) >= 10){
             pos_stat = false;
         }*/
         if(distance(pos, point) <= min_pos_dist && !pos_stat){

@@ -59,7 +59,7 @@ private:
     //Counter to penalty action
     int max_cont_penalty = 60;
     int max_cont2_penalty = 60;
-    int max_cont_defend_penalty = 60;
+    int max_cont_defend_penalty = 75;
 
     //Constant to predict ball position
     double predict_fact = 0.2;   //Para caĺculo da posição futura da bola (TESTAR)

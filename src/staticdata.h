@@ -6,6 +6,7 @@
 
 enum play_mode {
     bola_ataque,
+    bola_meio,
     bola_defesa,
     bola_area
 };
@@ -30,6 +31,8 @@ public:
     static bool penalty;
     static bool defendPenalty;
     static int contDefendPenalty;
+    static bool goalKick;
+    static int contGoalKick;
     static double speed_spin_increment;
     static play_mode mode;
 	StaticData();

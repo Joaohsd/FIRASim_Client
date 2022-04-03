@@ -73,6 +73,9 @@ public slots:
         void defend_goal_safe();
         void defend_goalLine_Left();
         void defend_goalLine_Right();
+        void defend_goalLine_Left_Projection();
+        void defend_goalLine_Right_Projection();
+        void position_goalKeeper(QPointF point, double angle, bool has_obstacle, int speed_mode);
         void intercept_goalkeeper(bool hasObstacle);
 
         void playID_2();
@@ -97,6 +100,9 @@ public slots:
         void setVy(int);
         void setVo(double);
         void setAngle(double);
+        void setKP(double _KP);
+        void setKD(double _KD);
+        void setBaseSpeed(double _base_speed);
 
         void setActuator(ActuatorClient* command);
         void sendFIRA(int id, double wheelL, double wheelR);
@@ -255,8 +261,8 @@ public slots:
         }
 
         inline int verify_Player_Best_Condition(int firstID, int secondID){
-            double ball_player_angle_firstID = fabs(get_angle(QPoint(120*cos(data->player_angle[data->playTeam][firstID]),120*sin(data->player_angle[data->playTeam][firstID])),QPointF(data->futureBallPos - pos)))*180/PI;
-            double ball_player_angle_secondID = fabs(get_angle(QPoint(120*cos(data->player_angle[data->playTeam][secondID]),120*sin(data->player_angle[data->playTeam][secondID])),QPointF(data->futureBallPos - pos)))*180/PI;
+            double ball_player_angle_firstID = fabs(get_angle(QPoint(120*cos(data->player_angle[data->playTeam][firstID]),120*sin(data->player_angle[data->playTeam][firstID])),QPointF(data->futureBallPos - data->player[data->playTeam][ID_1])))*180/PI;
+            double ball_player_angle_secondID = fabs(get_angle(QPoint(120*cos(data->player_angle[data->playTeam][secondID]),120*sin(data->player_angle[data->playTeam][secondID])),QPointF(data->futureBallPos - data->player[data->playTeam][ID_2])))*180/PI;
             int distance_firstID_ball = distance(data->player[data->playTeam][firstID], data->futureBallPos);
             int distance_secondID_ball = distance(data->player[data->playTeam][secondID], data->futureBallPos);
             if(ball_player_angle_firstID >= 90.0){
@@ -268,7 +274,7 @@ public slots:
             if(distance_secondID_ball <= distance_firstID_ball && ball_player_angle_secondID <= ball_player_angle_firstID){
                 return secondID;
             }
-            else if(distance_firstID_ball < distance_secondID_ball){
+            else if(distance_firstID_ball < distance_secondID_ball/* && ball_player_angle_firstID < ball_player_angle_secondID*/){
                 return firstID;
             }
             else{
