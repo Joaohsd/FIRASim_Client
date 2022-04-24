@@ -133,14 +133,14 @@ void Core::initializeTeam(bool team, int formation){
     // PID and Speed defender (robot 1)
     double fast_speed2 = 200;   //200   //300
     double spin_speed2 = fast_speed2*1.5;
-    double kp_base2 = -2.1;    //-2.65 //-4.65
+    double kp_base2 = -2.4;    //-2.65 //-4.65
     double ki_base2 = -0.0;
     double kd_base2 = -40.0;    //-50.5  //-95.5
 
     //PID and Speed stricker (robot 2)
     double fast_speed3_r = 200; //110   //400
     double spin_speed3_r = fast_speed3_r*1.5;
-    double kp_base3_r = -2.1;   //-3.0 //-5.65
+    double kp_base3_r = -2.4;   //-3.0 //-5.65
     double ki_base3_r = -0.0;
     double kd_base3_r = -40.0;  //-15.0 //-100.5
 
@@ -212,7 +212,7 @@ void Core::process(){
     //Defining the play
     data->mode = bola_ataque;
     double x_attack =  200;
-    double x_defense = 325;
+    double x_defense = 350;
     if(this->data->playSide == LEFT_SIDE){
         if(this->data->ballPos.x() >= this->data->middle_field.x() + x_attack){ //Attack
             data->mode = bola_ataque;
@@ -220,7 +220,7 @@ void Core::process(){
         else{   //Defense
             if(this->data->ballPos.x() >= this->data->middle_field.x() - x_defense)
                 data->mode = bola_meio;
-            else if(is_inside(this->data->ballPos,this->data->area[LEFT_SIDE]))
+            else if(is_inside(this->data->futureBallPos,this->data->area[LEFT_SIDE]))
                 data->mode = bola_area;
             else
                 data->mode = bola_defesa;
@@ -233,7 +233,7 @@ void Core::process(){
         else{   //Defense
             if(this->data->ballPos.x() <= this->data->middle_field.x() + x_defense)
                 data->mode = bola_meio;
-            else if(is_inside(this->data->ballPos,this->data->area[RIGHT_SIDE]))
+            else if(is_inside(this->data->futureBallPos,this->data->area[RIGHT_SIDE]))
                 data->mode = bola_area;
             else
                 data->mode = bola_defesa;
@@ -286,10 +286,11 @@ void Core::process(){
                     data->goalKick = false;
                 }
             }
+
             //Starting threads of each robot
             this->player[data->playTeam][ID_2]->start(QThread::HighestPriority);
-            this->player[data->playTeam][ID_1]->start(QThread::HighestPriority);
-            this->player[data->playTeam][ID_0]->start();
+            this->player[data->playTeam][ID_0]->start(QThread::HighestPriority);
+            this->player[data->playTeam][ID_1]->start();
         }
         else{
             this->player[this->data->playTeam][ID_0]->stopRobot();
@@ -298,9 +299,9 @@ void Core::process(){
         }
     }
     else{
-        this->player[this->data->playTeam][ID_0]->defend_goal_safe();
+        this->player[this->data->playTeam][ID_0]->stopRobot();
         this->player[this->data->playTeam][ID_1]->stopRobot();
-        this->player[this->data->playTeam][ID_2]->stopRobot();
+        this->player[this->data->playTeam][ID_2]->playID_2();
     }
 }
 

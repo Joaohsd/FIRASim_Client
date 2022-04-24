@@ -48,7 +48,7 @@ void VisionClient::runClient() {
         _lastEnvironment = environment;
         _environmentMutex.unlock();
     }
-    std::cout << "Info received from FIRA." << std::endl;
+    //std::cout << "Info received from FIRA." << std::endl;
     emit dataReceived();
 }
 

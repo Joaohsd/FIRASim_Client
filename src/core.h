@@ -95,7 +95,7 @@ private:
      * @return Returns true if the point a is inside the field A, and false
      * otherwise
      */
-    inline bool is_inside(QPoint point, FieldSpace field){
+    inline bool is_inside(QPointF point, FieldSpace field){
         double x = point.x();
         double y = point.y();
         if(x <= field.getBottomRight().x() && x >= field.getBottomLeft().x())
