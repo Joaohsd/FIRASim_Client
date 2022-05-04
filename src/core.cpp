@@ -440,10 +440,10 @@ void Core::reposition(){
             }
             else{
                 player[TEAM_YELLOW][ID_1]->setX(-175);
-                player[TEAM_YELLOW][ID_1]->setY(-300);
+                player[TEAM_YELLOW][ID_1]->setY(-275);
                 player[TEAM_YELLOW][ID_1]->setAngle(0);
                 player[TEAM_YELLOW][ID_2]->setX(-175);
-                player[TEAM_YELLOW][ID_2]->setY(300);
+                player[TEAM_YELLOW][ID_2]->setY(275);
                 player[TEAM_YELLOW][ID_2]->setAngle(0);
                 player[TEAM_YELLOW][ID_0]->setX(700);
                 player[TEAM_YELLOW][ID_0]->setY(0);
@@ -467,10 +467,10 @@ void Core::reposition(){
             }
             else{
                 player[TEAM_BLUE][ID_2]->setX(175);
-                player[TEAM_BLUE][ID_2]->setY(300);
+                player[TEAM_BLUE][ID_2]->setY(275);
                 player[TEAM_BLUE][ID_2]->setAngle(0);
                 player[TEAM_BLUE][ID_1]->setX(175);
-                player[TEAM_BLUE][ID_1]->setY(-300);
+                player[TEAM_BLUE][ID_1]->setY(-275);
                 player[TEAM_BLUE][ID_1]->setAngle(0);
                 player[TEAM_BLUE][ID_0]->setX(-700);
                 player[TEAM_BLUE][ID_0]->setY(0);

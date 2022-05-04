@@ -260,12 +260,19 @@ public slots:
              else return false;
         }
 
+
+        /**
+         * @brief verify_Player_Best_Condition
+         * @param firstID player 1
+         * @param secondID player 2
+         * @return Returns the ID in best condition to go to the ball. The secondID has priority
+         */
         inline int verify_Player_Best_Condition(int firstID, int secondID){
-            double ball_player_angle_firstID = fabs(get_angle(QPoint(120*cos(data->player_angle[data->playTeam][firstID]),120*sin(data->player_angle[data->playTeam][firstID])),QPointF(data->futureBallPos - data->player[data->playTeam][ID_1])))*180/PI;
+            /*double ball_player_angle_firstID = fabs(get_angle(QPoint(120*cos(data->player_angle[data->playTeam][firstID]),120*sin(data->player_angle[data->playTeam][firstID])),QPointF(data->futureBallPos - data->player[data->playTeam][ID_1])))*180/PI;
             double ball_player_angle_secondID = fabs(get_angle(QPoint(120*cos(data->player_angle[data->playTeam][secondID]),120*sin(data->player_angle[data->playTeam][secondID])),QPointF(data->futureBallPos - data->player[data->playTeam][ID_2])))*180/PI;
-            int distance_firstID_ball = distance(data->player[data->playTeam][firstID], data->futureBallPos);
-            int distance_secondID_ball = distance(data->player[data->playTeam][secondID], data->futureBallPos);
-            if(ball_player_angle_firstID >= 90.0){
+            */int distance_firstID_ball = distance(data->player[data->playTeam][firstID], data->ballPos);
+            int distance_secondID_ball = distance(data->player[data->playTeam][secondID], data->ballPos);
+            /*if(ball_player_angle_firstID >= 90.0){
                 ball_player_angle_firstID = 180.0 - ball_player_angle_firstID;
             }
             if(ball_player_angle_secondID >= 90.0){
@@ -274,12 +281,17 @@ public slots:
             if(distance_secondID_ball <= distance_firstID_ball && ball_player_angle_secondID <= ball_player_angle_firstID){
                 return secondID;
             }
-            else if(distance_firstID_ball < distance_secondID_ball/* && ball_player_angle_firstID < ball_player_angle_secondID*/){
+            else if(distance_firstID_ball < distance_secondID_ball){
                 return firstID;
             }
             else{
                 return secondID;
-            }
+            }*/
+            if(distance_secondID_ball < distance_firstID_ball)
+                return secondID;
+            else if(distance_firstID_ball < distance_secondID_ball)
+                return firstID;
+            return secondID;
 
         }
 };
