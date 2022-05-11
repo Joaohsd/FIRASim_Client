@@ -1061,8 +1061,8 @@ void Robot:: go_to(QPointF target, double target_angle, bool have_obstacle, int 
         double min_min_dist = 180;//0.18
         if(distance(pos,target) <= min_min_dist){
             //cout << "PERTO" << endl;
-            curr_speed *= 0.7; //0.65
-            kp_ *= 0.7; //0.65
+            curr_speed *= 0.7; //0.7
+            kp_ *= 0.65; //0.7
             ki_ *= 0.8; //0.7
             kd_ *= 0.6; //0.6
         }
@@ -1358,7 +1358,7 @@ void Robot::defend_goalLine_Left()
     double angle = PI/2;
 
     goal.setX(goal.x() + 50);
-    if(data->ballPos.x() >= data->middle_field.x()){
+    if(data->ballPos.x() >= data->middle_field.x() - 75){
         goal.setY(data->middle_field.y());
     }
     else if(ball_pos.y() > data->goal.getTopLeft().y()){
@@ -1404,7 +1404,7 @@ void Robot::defend_goalLine_Right()
     QPoint goal = data->goal.getTopRight();
     double angle = PI/2;
     goal.setX(goal.x() - 50);
-    if(data->ballPos.x() <= data->middle_field.x()){
+    if(data->ballPos.x() <= data->middle_field.x() + 75){
         goal.setY(data->middle_field.y());
     }
     else if(ball_pos.y() > data->goal.getTopRight().y()){
