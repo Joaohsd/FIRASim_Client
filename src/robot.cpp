@@ -1358,7 +1358,10 @@ void Robot::defend_goalLine_Left()
     double angle = PI/2;
 
     goal.setX(goal.x() + 50);
-    if(ball_pos.y() > data->goal.getTopLeft().y()){
+    if(data->ballPos.x() >= data->middle_field.x()){
+        goal.setY(data->middle_field.y());
+    }
+    else if(ball_pos.y() > data->goal.getTopLeft().y()){
         goal.setY(data->goal.getTopLeft().y() - 80);
     }
     else if(ball_pos.y() < data->goal.getBottomLeft().y()){
@@ -1369,10 +1372,10 @@ void Robot::defend_goalLine_Left()
         if(distance(med_goal, data->ballPos) < 450){
             QPointF futureBallPos = data->futureBallPos;
             futureBallPos.setY(data->futureBallPos.y() + data->ballVel.y() * 7 * TIME_TO_RECEIVE_DATA);
-            if(futureBallPos.y() > data->goal.getTopLeft().y()){
+            if(futureBallPos.y() >= data->goal.getTopLeft().y()){
                 futureBallPos.setY(data->goal.getTopLeft().y() - 80);
             }
-            else if(futureBallPos.y() < data->goal.getBottomLeft().y()){
+            else if(futureBallPos.y() <= data->goal.getBottomLeft().y()){
                 futureBallPos.setY(data->goal.getBottomLeft().y() + 80);
             }
             goal.setY(futureBallPos.y());
@@ -1401,10 +1404,13 @@ void Robot::defend_goalLine_Right()
     QPoint goal = data->goal.getTopRight();
     double angle = PI/2;
     goal.setX(goal.x() - 50);
-    if(ball_pos.y() > data->goal.getTopRight().y() - 30){
+    if(data->ballPos.x() <= data->middle_field.x()){
+        goal.setY(data->middle_field.y());
+    }
+    else if(ball_pos.y() > data->goal.getTopRight().y()){
         goal.setY(data->goal.getTopRight().y() - 80);
     }
-    else if(ball_pos.y() < data->goal.getBottomRight().y() + 30){
+    else if(ball_pos.y() < data->goal.getBottomRight().y()){
         goal.setY(data->goal.getBottomRight().y() + 80);
     }
     else{
@@ -1412,10 +1418,10 @@ void Robot::defend_goalLine_Right()
         if(distance(med_goal, data->ballPos) < 450){
             QPointF futureBallPos = data->futureBallPos;
             futureBallPos.setY(data->futureBallPos.y() + data->ballVel.y() * 7 * TIME_TO_RECEIVE_DATA);
-            if(futureBallPos.y() > data->goal.getTopRight().y() - 30){
+            if(futureBallPos.y() >= data->goal.getTopRight().y()){
                 futureBallPos.setY(data->goal.getTopRight().y() - 80);
             }
-            else if(futureBallPos.y() < data->goal.getBottomRight().y() + 30){
+            else if(futureBallPos.y() <= data->goal.getBottomRight().y()){
                 futureBallPos.setY(data->goal.getBottomRight().y() + 80);
             }
             goal.setY(futureBallPos.y());
@@ -2074,14 +2080,14 @@ void Robot::spin()
 }
 
 void Robot::spin_penalty(){
-    double spinA = spin_speed * 0.25 + data->speed_spin_increment;
-    double spinB = spin_speed * 0.25 - data->speed_spin_increment/3.3;
+    double spinA = spin_speed * 1.0 + data->speed_spin_increment;
+    double spinB = spin_speed * 0.245 - data->speed_spin_increment/0.2;
     data->speed_spin_increment += data->speed_spin_increment;
     if(data->playSide == LEFT_SIDE){
-        this->sendFIRA(this->getId(),-spinB,spinA);
+        this->sendFIRA(this->getId(),spinB,-spinA);
     }
     else{
-        this->sendFIRA(this->getId(),spinA,-spinB);
+        this->sendFIRA(this->getId(),-spinA,spinB);
     }
 }
 

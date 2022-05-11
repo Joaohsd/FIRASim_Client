@@ -243,23 +243,21 @@ void Core::process(){
     if(!this->getTestCondition()){
         if(this->data->playStatus == ON){
             /////////////////////////////////////////Penalty action/////////////////////////////////////////////////
-            if(data->robotPenalty[ID_2] >= 0 || data->robotPenalty[ID_2 +1] >= 0 || data->robotPenalty[ID_2+2] >= 0){
+            if(data->robotPenalty[ID_2] >= 0){
                 if(data->penaltyAction == 0){
-                    player[data->playTeam][ID_2]->kick();
+                    player[data->playTeam][ID_2]->go_to_penalty();
                     data->robotPenalty[ID_2]++;
                 }
                 else if(data->penaltyAction == 1){
                     player[data->playTeam][ID_2]->intercept();
-                    data->robotPenalty[ID_2+1]++;
+                    data->robotPenalty[ID_2]++;
                 }
                 else{
-                    player[data->playTeam][ID_2]->go_to_penalty();
-                    data->robotPenalty[ID_2+2]++;
+                    player[data->playTeam][ID_2]->spin_penalty();
+                    data->robotPenalty[ID_2]++;
                 }
-                if(data->robotPenalty[ID_2] >= max_cont_penalty || data->robotPenalty[ID_2+1] >= max_cont2_penalty || data->robotPenalty[ID_2+2] >= max_cont2_penalty){
+                if(data->robotPenalty[ID_2] >= max_cont_penalty){
                     data->robotPenalty[ID_2] = -1;
-                    data->robotPenalty[ID_2+1] = -1;
-                    data->robotPenalty[ID_2+2] = -1;
                     data->penalty = false;
                     data->speed_spin_increment = 3;
                     this->player[data->playTeam][ID_2]->position(data->middle_field,180,1,2);
@@ -522,11 +520,10 @@ void Core::reposition(){
             if(refereeClient->getLastFoulColor() == VSSRef::Color::BLUE){
                 if(this->data->playTeam == TEAM_BLUE){
                     this->data->penalty = true;
-                    data->penaltyAction = rand() % 2;
-                    //data->penaltyAction = 0;
+                    data->penaltyAction = rand() % 3;
+                    data->robotPenalty[ID_2] = 0;
                     //cout << data->penaltyAction << endl;
                     if(data->penaltyAction == 0){
-                        data->robotPenalty[ID_2] = 0;
                         player[TEAM_BLUE][ID_2]->setX(200);
                         player[TEAM_BLUE][ID_2]->setY(-20);
                         player[TEAM_BLUE][ID_2]->setAngle(8);
@@ -537,11 +534,21 @@ void Core::reposition(){
                         player[TEAM_BLUE][ID_0]->setY(0);
                         player[TEAM_BLUE][ID_0]->setAngle(90);
                     }
-                    else{
-                        data->robotPenalty[ID_2+1] = 0;
+                    else if(data->penaltyAction == 1){
                         player[TEAM_BLUE][ID_2]->setX(290);
                         player[TEAM_BLUE][ID_2]->setY(-130);
                         player[TEAM_BLUE][ID_2]->setAngle(-120);
+                        player[TEAM_BLUE][ID_1]->setX(-50);
+                        player[TEAM_BLUE][ID_1]->setY(600);
+                        player[TEAM_BLUE][ID_1]->setAngle(-20);
+                        player[TEAM_BLUE][ID_0]->setX(-700);
+                        player[TEAM_BLUE][ID_0]->setY(0);
+                        player[TEAM_BLUE][ID_0]->setAngle(90);
+                    }
+                    else{
+                        player[TEAM_BLUE][ID_2]->setX(375);
+                        player[TEAM_BLUE][ID_2]->setY(-85);
+                        player[TEAM_BLUE][ID_2]->setAngle(45);
                         player[TEAM_BLUE][ID_1]->setX(-50);
                         player[TEAM_BLUE][ID_1]->setY(600);
                         player[TEAM_BLUE][ID_1]->setAngle(-20);
@@ -567,10 +574,11 @@ void Core::reposition(){
             else{
                 if(this->data->playTeam == TEAM_YELLOW){
                     this->data->penalty = true;
-                    data->penaltyAction = rand() % 2;
+                    data->penaltyAction = rand() % 3;
+                    data->penaltyAction = 2;
+                    data->robotPenalty[ID_2] = 0;
                     //cout << data->penaltyAction << endl;
-                    if(data->penaltyAction == 0){
-                        data->robotPenalty[ID_2] = 0;
+                    if(data->penaltyAction == 0){                        
                         player[TEAM_YELLOW][ID_2]->setX(-200);
                         player[TEAM_YELLOW][ID_2]->setY(-20);
                         player[TEAM_YELLOW][ID_2]->setAngle(-8);
@@ -581,11 +589,21 @@ void Core::reposition(){
                         player[TEAM_YELLOW][ID_0]->setY(0);
                         player[TEAM_YELLOW][ID_0]->setAngle(90);
                     }
-                    else{
-                        data->robotPenalty[ID_2+1] = 0;
+                    else if(data->penaltyAction == 1){
                         player[TEAM_YELLOW][ID_2]->setX(-290);
                         player[TEAM_YELLOW][ID_2]->setY(-130);
                         player[TEAM_YELLOW][ID_2]->setAngle(120);
+                        player[TEAM_YELLOW][ID_1]->setX(50);
+                        player[TEAM_YELLOW][ID_1]->setY(600);
+                        player[TEAM_YELLOW][ID_1]->setAngle(20);
+                        player[TEAM_YELLOW][ID_0]->setX(700);
+                        player[TEAM_YELLOW][ID_0]->setY(0);
+                        player[TEAM_YELLOW][ID_0]->setAngle(90);
+                    }
+                    else{
+                        player[TEAM_YELLOW][ID_2]->setX(-375);
+                        player[TEAM_YELLOW][ID_2]->setY(-85);
+                        player[TEAM_YELLOW][ID_2]->setAngle(135);
                         player[TEAM_YELLOW][ID_1]->setX(50);
                         player[TEAM_YELLOW][ID_1]->setY(600);
                         player[TEAM_YELLOW][ID_1]->setAngle(20);
