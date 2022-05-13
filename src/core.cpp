@@ -522,6 +522,7 @@ void Core::reposition(){
                     this->data->penalty = true;
                     data->penaltyAction = rand() % 3;
                     data->robotPenalty[ID_2] = 0;
+                    //data->penaltyAction = 2;
                     //cout << data->penaltyAction << endl;
                     if(data->penaltyAction == 0){
                         player[TEAM_BLUE][ID_2]->setX(200);
@@ -575,7 +576,7 @@ void Core::reposition(){
                 if(this->data->playTeam == TEAM_YELLOW){
                     this->data->penalty = true;
                     data->penaltyAction = rand() % 3;
-                    data->penaltyAction = 2;
+                    //data->penaltyAction = 2;
                     data->robotPenalty[ID_2] = 0;
                     //cout << data->penaltyAction << endl;
                     if(data->penaltyAction == 0){                        

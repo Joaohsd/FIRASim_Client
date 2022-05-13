@@ -66,6 +66,7 @@ public slots:
         void defend_attack();
 
         //Defender
+        void midfielder();
         void defend();
 
         //Goalkeeper
@@ -139,7 +140,7 @@ public slots:
 
         bool kick_stat = false;
         bool pos_stat = false;
-        bool leaveFromGoal = false;
+        int defend_midfielder = 0;
 
         double speed_kick_base = 0.8;
         double speed_kick_increment = 0.3;

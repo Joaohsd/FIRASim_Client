@@ -286,7 +286,7 @@ void Robot::playID_1(){
             this->attack();
             break;
         case bola_meio:
-            this->intercept();
+            this->midfielder();
             break;
         case bola_defesa:
             this->defend();
@@ -392,7 +392,7 @@ void Robot::playID_2(){
                 this->attack();
             break;
         case bola_meio:
-            this->attack_antigo();
+            this->midfielder();
             break;
         case bola_defesa:
             this->defend();
@@ -553,7 +553,7 @@ void Robot::attack_antigo()
 void Robot::containing(){
     if(data->mode == bola_ataque){
         int desloc_y = 110;
-        int ball_Player_xDist = 325; //350
+        int ball_Player_xDist = 350; //350
         if(data->playSide == LEFT_SIDE){
             int x_Max = 1000;
             int x_Min = 350;
@@ -684,6 +684,34 @@ void Robot::kick()
             //go_to(QPoint(data->ballPos.x() + vec_ball_goal.x(),data->ballPos.y() + vec_ball_goal.y()), -999, 0, 5);
             this->go_to_kick(QPoint(this->data->ballPos.x() + vec_ball_goal.x(),this->data->ballPos.y() + vec_ball_goal.y()), min(this->speed_kick_current, this->speed_kick_max));
             this->speed_kick_current += this->speed_kick_increment;
+        }
+    }
+}
+
+void Robot::midfielder(){
+    if(data->playSide == LEFT_SIDE){
+        if(pos.x() < data->ballPos.x()){
+            this->defend_midfielder++;
+            if(this->defend_midfielder >= 120)
+                this->attack_antigo();
+            else
+                this->intercept();
+        }
+        else{
+            this->defend_midfielder = 0;
+            this->intercept();
+        }
+    }else{
+        if(pos.x() > data->ballPos.x()){
+            this->defend_midfielder++;
+            if(this->defend_midfielder >= 120)
+                this->attack_antigo();
+            else
+                this->intercept();
+        }
+        else{
+            this->defend_midfielder = 0;
+            this->intercept();
         }
     }
 }
@@ -1013,7 +1041,7 @@ void Robot:: go_to(QPointF target, double target_angle, bool have_obstacle, int 
             phi += 2*PI;
         }
 
-        //Da um passo com o robo a partir do vetor direção fornecido pelo uvf
+        //Da um passo com o robo a partir do angulo fornecido pelo uvf
         fut_pos.setX(pos.x() + 60*cos(phi));
         fut_pos.setY(pos.y() + 60*sin(phi));
         //O input é o ângulo entre o vetor orientação do robo e o vetor direção da trajetória a ser feita (fut_pos - pos)
@@ -1062,7 +1090,7 @@ void Robot:: go_to(QPointF target, double target_angle, bool have_obstacle, int 
         if(distance(pos,target) <= min_min_dist){
             //cout << "PERTO" << endl;
             curr_speed *= 0.7; //0.7
-            kp_ *= 0.65; //0.7
+            kp_ *= 0.7; //0.7
             ki_ *= 0.8; //0.7
             kd_ *= 0.6; //0.6
         }
