@@ -211,7 +211,7 @@ void Core::update(){
 void Core::process(){
     //Defining the play
     data->mode = bola_ataque;
-    double x_attack =  200;
+    double x_attack =  150;
     double x_defense = 350;
     if(this->data->playSide == LEFT_SIDE){
         if(this->data->ballPos.x() >= this->data->middle_field.x() + x_attack){ //Attack

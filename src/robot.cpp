@@ -287,7 +287,7 @@ void Robot::playID_1(){
                 this->attack();
             break;
         case bola_meio:
-            this->midfielder();
+            this->intercept();
             break;
         case bola_defesa:
             this->defend();
@@ -683,27 +683,27 @@ void Robot::kick()
 
 void Robot::midfielder(){
     if(data->playSide == LEFT_SIDE){
-        if(pos.x() < data->ballPos.x()){
-            this->defend_midfielder++;
+        if((pos.x() + 200) < data->ballPos.x()){
+            /*this->defend_midfielder++;
             if(this->defend_midfielder >= 120)
                 this->attack_antigo();
-            else
-                this->intercept();
+            else*/
+                this->attack_antigo();
         }
         else{
-            this->defend_midfielder = 0;
+            //this->defend_midfielder = 0;
             this->intercept();
         }
     }else{
-        if(pos.x() > data->ballPos.x()){
-            this->defend_midfielder++;
+        if((pos.x() - 200) > data->ballPos.x()){
+            /*this->defend_midfielder++;
             if(this->defend_midfielder >= 120)
                 this->attack_antigo();
-            else
-                this->intercept();
+            else*/
+                this->attack_antigo();
         }
         else{
-            this->defend_midfielder = 0;
+            //this->defend_midfielder = 0;
             this->intercept();
         }
     }
@@ -1254,18 +1254,14 @@ void Robot::defend_goal_safe(){
             defend_goalLine_Left();
         }
         else{
-            if(is_inside(data->ballPos,data->area[LEFT_SIDE]))
-                intercept_goalkeeper(false);
-            else this->spin_goleiro();
+            intercept_goalkeeper(false);
         }
     }
     else{
         if(distance(pos, data->ballPos) > 100)
             defend_goalLine_Right();
         else {
-            if(is_inside(data->ballPos,data->area[RIGHT_SIDE]))
-                intercept_goalkeeper(false);
-            else this->spin_goleiro();
+            intercept_goalkeeper(false);
         }
     }
 }
@@ -1425,6 +1421,12 @@ void Robot::defend_goalLine_Left()
         this->KP = -1.0;
         this->base_speed = 80;
     }
+    if(data->ballPos.y() > pos.y()){
+        angle = PI/2;
+    }
+    else{
+        angle = -PI/2;
+    }
     position_goalKeeper(goal, angle, 0, 1);
 }
 
@@ -1469,6 +1471,12 @@ void Robot::defend_goalLine_Right()
         this->KD = -14.9;
         this->KP = -1.0;
         this->base_speed = 80;
+    }
+    if(data->ballPos.y() > pos.y()){
+        angle = PI/2;
+    }
+    else{
+        angle = -PI/2;
     }
     position_goalKeeper(goal, angle, 0, 1);
 }
@@ -1522,16 +1530,11 @@ void Robot::defend_goalLine_Left_Projection(){
 
 void Robot::intercept_goalkeeper(bool hasObstacle){
     double min_pos_dist = 70;
-    int speed = 1;
+    int speed = 7;
     QPoint go_to_position = QPoint(data->futureBallPos.x(), data->futureBallPos.y());
-    this->KD = 14.9;
+    this->KD = -14.9;
     if(distance(pos, data->ballPos) <= min_pos_dist){
-        if(border_x()){
-            spin_x();
-        }
-        else{
-            spin();
-        }
+        spin_goleiro();
     }
     else{
         if(data->playSide == LEFT_SIDE){
@@ -1610,7 +1613,7 @@ void Robot::intercept_goalkeeper(bool hasObstacle){
 void Robot::defend_middle()
 {
     int x_point = 0, y_point= 0;
-    int x_var = -500;
+    int x_var = -450;
     //Minimum ball distance to spin
     int min_distance = 90;
     //Distance between border and position to stop
