@@ -283,7 +283,8 @@ void Robot::playID_1(){
         //CONTAINING - DEFENDER - CONTAINING
         switch(data->mode){
         case bola_ataque:
-            this->attack();
+            if(!data->penalty)
+                this->attack();
             break;
         case bola_meio:
             this->midfielder();
@@ -392,7 +393,7 @@ void Robot::playID_2(){
                 this->attack();
             break;
         case bola_meio:
-            this->midfielder();
+            this->attack_antigo();
             break;
         case bola_defesa:
             this->defend();
@@ -519,15 +520,7 @@ void Robot::attack_antigo()
 {
     enum play_mode {att_normal, att_borda,att_danger} mode = att_normal;
 
-    if(is_inside(data->ballPos, this->data->area[RIGHT_SIDE]) && this->data->playSide == LEFT_SIDE){
-        mode = att_danger;
-    }
-
-    else if(is_inside(data->ballPos, this->data->area[LEFT_SIDE]) && this->data->playSide == RIGHT_SIDE){
-        mode = att_danger;
-    }
-
-    else if(border_y()){
+    if(border_y()){
         mode = att_borda;
     }
 
@@ -1242,6 +1235,15 @@ void Robot::go_to_penalty(){
     this->sendFIRA(this->getId(),speed.first,speed.second);
 }
 
+void Robot::penalty_rebound(){
+    if(data->playSide == LEFT_SIDE){
+        this->go_to(data->futureBallPos,3*PI/4.0,1,3);
+    }
+    else{
+        this->go_to(data->futureBallPos,PI/4.0,1,3);
+    }
+}
+
 void Robot::stopRobot(){
     this->sendFIRA(this->getId(),0,0);
 }
@@ -1608,7 +1610,7 @@ void Robot::intercept_goalkeeper(bool hasObstacle){
 void Robot::defend_middle()
 {
     int x_point = 0, y_point= 0;
-    int x_var = -450;
+    int x_var = -500;
     //Minimum ball distance to spin
     int min_distance = 90;
     //Distance between border and position to stop

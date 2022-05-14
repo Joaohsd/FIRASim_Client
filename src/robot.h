@@ -68,6 +68,7 @@ public slots:
         //Defender
         void midfielder();
         void defend();
+        void penalty_rebound();
 
         //Goalkeeper
         void defend_goal_libero();

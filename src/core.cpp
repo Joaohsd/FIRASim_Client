@@ -256,6 +256,7 @@ void Core::process(){
                     player[data->playTeam][ID_2]->spin_penalty();
                     data->robotPenalty[ID_2]++;
                 }
+                player[data->playTeam][ID_1]->go_to_debug();
                 if(data->robotPenalty[ID_2] >= max_cont_penalty){
                     data->robotPenalty[ID_2] = -1;
                     data->penalty = false;
@@ -520,7 +521,7 @@ void Core::reposition(){
             if(refereeClient->getLastFoulColor() == VSSRef::Color::BLUE){
                 if(this->data->playTeam == TEAM_BLUE){
                     this->data->penalty = true;
-                    data->penaltyAction = rand() % 3;
+                    data->penaltyAction = rand() % 2;
                     data->robotPenalty[ID_2] = 0;
                     //data->penaltyAction = 2;
                     //cout << data->penaltyAction << endl;
@@ -528,9 +529,9 @@ void Core::reposition(){
                         player[TEAM_BLUE][ID_2]->setX(200);
                         player[TEAM_BLUE][ID_2]->setY(-20);
                         player[TEAM_BLUE][ID_2]->setAngle(8);
-                        player[TEAM_BLUE][ID_1]->setX(-200);
-                        player[TEAM_BLUE][ID_1]->setY(550);
-                        player[TEAM_BLUE][ID_1]->setAngle(-20);
+                        player[TEAM_BLUE][ID_1]->setX(-120);
+                        player[TEAM_BLUE][ID_1]->setY(565);
+                        player[TEAM_BLUE][ID_1]->setAngle(-15);
                         player[TEAM_BLUE][ID_0]->setX(-700);
                         player[TEAM_BLUE][ID_0]->setY(0);
                         player[TEAM_BLUE][ID_0]->setAngle(90);
@@ -539,8 +540,8 @@ void Core::reposition(){
                         player[TEAM_BLUE][ID_2]->setX(290);
                         player[TEAM_BLUE][ID_2]->setY(-130);
                         player[TEAM_BLUE][ID_2]->setAngle(-120);
-                        player[TEAM_BLUE][ID_1]->setX(-50);
-                        player[TEAM_BLUE][ID_1]->setY(600);
+                        player[TEAM_BLUE][ID_1]->setX(-120);
+                        player[TEAM_BLUE][ID_1]->setY(565);
                         player[TEAM_BLUE][ID_1]->setAngle(-20);
                         player[TEAM_BLUE][ID_0]->setX(-700);
                         player[TEAM_BLUE][ID_0]->setY(0);
@@ -551,8 +552,8 @@ void Core::reposition(){
                         player[TEAM_BLUE][ID_2]->setY(-85);
                         player[TEAM_BLUE][ID_2]->setAngle(45);
                         player[TEAM_BLUE][ID_1]->setX(-50);
-                        player[TEAM_BLUE][ID_1]->setY(600);
-                        player[TEAM_BLUE][ID_1]->setAngle(-20);
+                        player[TEAM_BLUE][ID_1]->setY(565);
+                        player[TEAM_BLUE][ID_1]->setAngle(-15);
                         player[TEAM_BLUE][ID_0]->setX(-700);
                         player[TEAM_BLUE][ID_0]->setY(0);
                         player[TEAM_BLUE][ID_0]->setAngle(90);
@@ -575,17 +576,17 @@ void Core::reposition(){
             else{
                 if(this->data->playTeam == TEAM_YELLOW){
                     this->data->penalty = true;
-                    data->penaltyAction = rand() % 3;
+                    data->penaltyAction = rand() % 2;
                     //data->penaltyAction = 2;
                     data->robotPenalty[ID_2] = 0;
                     //cout << data->penaltyAction << endl;
                     if(data->penaltyAction == 0){                        
                         player[TEAM_YELLOW][ID_2]->setX(-200);
                         player[TEAM_YELLOW][ID_2]->setY(-20);
-                        player[TEAM_YELLOW][ID_2]->setAngle(-8);
-                        player[TEAM_YELLOW][ID_1]->setX(200);
-                        player[TEAM_YELLOW][ID_1]->setY(550);
-                        player[TEAM_YELLOW][ID_1]->setAngle(20);
+                        player[TEAM_YELLOW][ID_2]->setAngle(172);
+                        player[TEAM_YELLOW][ID_1]->setX(120);
+                        player[TEAM_YELLOW][ID_1]->setY(565);
+                        player[TEAM_YELLOW][ID_1]->setAngle(15);
                         player[TEAM_YELLOW][ID_0]->setX(700);
                         player[TEAM_YELLOW][ID_0]->setY(0);
                         player[TEAM_YELLOW][ID_0]->setAngle(90);
@@ -594,8 +595,8 @@ void Core::reposition(){
                         player[TEAM_YELLOW][ID_2]->setX(-290);
                         player[TEAM_YELLOW][ID_2]->setY(-130);
                         player[TEAM_YELLOW][ID_2]->setAngle(120);
-                        player[TEAM_YELLOW][ID_1]->setX(50);
-                        player[TEAM_YELLOW][ID_1]->setY(600);
+                        player[TEAM_YELLOW][ID_1]->setX(120);
+                        player[TEAM_YELLOW][ID_1]->setY(565);
                         player[TEAM_YELLOW][ID_1]->setAngle(20);
                         player[TEAM_YELLOW][ID_0]->setX(700);
                         player[TEAM_YELLOW][ID_0]->setY(0);
