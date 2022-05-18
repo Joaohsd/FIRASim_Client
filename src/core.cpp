@@ -279,10 +279,23 @@ void Core::process(){
             /////////////////////////////////////////GoalKick action/////////////////////////////////////////////////
             if(data->contGoalKick >= 0){
                 data->contGoalKick++;
-                this->player[data->playTeam][ID_0]->go_to_debug();
-                if(data->contGoalKick >= 27){
+                this->player[data->playTeam][ID_2]->go_to_debug();
+                if(data->contGoalKick >= 60){
                     data->contGoalKick = -1;
                     data->goalKick = false;
+                }
+            }
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////
+            /////////////////////////////////////////FreeBall action/////////////////////////////////////////////////
+            if(data->contFreeBall >= 0){
+                data->contFreeBall++;
+                this->player[data->playTeam][ID_1]->go_to_debug();
+                this->player[data->playTeam][ID_2]->intercept_antigo();
+                cout << "JOGADA FREEBALL" << endl;
+                if(data->contFreeBall >= 120){
+                    data->contFreeBall = -1;
+                    data->freeBall = false;
                 }
             }
 
@@ -329,9 +342,9 @@ void Core::reposition(){
             if(this->data->playTeam == TEAM_BLUE){
                 player[TEAM_BLUE][ID_2]->setX(150);
                 player[TEAM_BLUE][ID_2]->setY(400);
-                player[TEAM_BLUE][ID_1]->setX(-100);
-                player[TEAM_BLUE][ID_1]->setY(0);
-                player[TEAM_BLUE][ID_1]->setAngle(0);
+                player[TEAM_BLUE][ID_1]->setX(-365);
+                player[TEAM_BLUE][ID_1]->setY(450);
+                player[TEAM_BLUE][ID_1]->setAngle(-40);
                 player[TEAM_BLUE][ID_2]->setAngle(0);
                 player[TEAM_BLUE][ID_0]->setX(-700);
                 player[TEAM_BLUE][ID_0]->setY(0);
@@ -364,11 +377,11 @@ void Core::reposition(){
                 player[TEAM_BLUE][ID_0]->setAngle(90);
             }
             else{
-                player[TEAM_YELLOW][ID_2]->setX(-180);
+                player[TEAM_YELLOW][ID_2]->setX(-150);
                 player[TEAM_YELLOW][ID_2]->setY(400);
-                player[TEAM_YELLOW][ID_1]->setX(100);
-                player[TEAM_YELLOW][ID_1]->setY(0);
-                player[TEAM_YELLOW][ID_1]->setAngle(180);
+                player[TEAM_YELLOW][ID_1]->setX(365);
+                player[TEAM_YELLOW][ID_1]->setY(450);
+                player[TEAM_YELLOW][ID_1]->setAngle(40);
                 player[TEAM_YELLOW][ID_2]->setAngle(180);
                 player[TEAM_YELLOW][ID_0]->setX(700);
                 player[TEAM_YELLOW][ID_0]->setY(0);
@@ -390,12 +403,12 @@ void Core::reposition(){
                 player[TEAM_BLUE][ID_0]->setAngle(-90);
             }
             else{
-                player[TEAM_YELLOW][ID_1]->setX(150);
-                player[TEAM_YELLOW][ID_1]->setY(-100);
-                player[TEAM_YELLOW][ID_2]->setX(-180);
+                player[TEAM_YELLOW][ID_1]->setX(365);
+                player[TEAM_YELLOW][ID_1]->setY(-450);
+                player[TEAM_YELLOW][ID_2]->setX(-150);
                 player[TEAM_YELLOW][ID_2]->setY(-400);
                 player[TEAM_YELLOW][ID_2]->setAngle(180);
-                player[TEAM_YELLOW][ID_1]->setAngle(180);
+                player[TEAM_YELLOW][ID_1]->setAngle(-40);
                 player[TEAM_YELLOW][ID_0]->setX(700);
                 player[TEAM_YELLOW][ID_0]->setY(0);
                 player[TEAM_YELLOW][ID_0]->setAngle(90);
@@ -405,12 +418,12 @@ void Core::reposition(){
         }
         else{
             if(this->data->playTeam == TEAM_BLUE){
-                player[TEAM_BLUE][ID_1]->setX(-150);
-                player[TEAM_BLUE][ID_1]->setY(-100);
-                player[TEAM_BLUE][ID_2]->setX(180);
+                player[TEAM_BLUE][ID_1]->setX(-365);
+                player[TEAM_BLUE][ID_1]->setY(-450);
+                player[TEAM_BLUE][ID_2]->setX(150);
                 player[TEAM_BLUE][ID_2]->setY(-400);
                 player[TEAM_BLUE][ID_2]->setAngle(0);
-                player[TEAM_BLUE][ID_1]->setAngle(0);
+                player[TEAM_BLUE][ID_1]->setAngle(40);
                 player[TEAM_BLUE][ID_0]->setX(-700);
                 player[TEAM_BLUE][ID_0]->setY(0);
                 player[TEAM_BLUE][ID_0]->setAngle(90);
@@ -437,14 +450,14 @@ void Core::reposition(){
         if(refereeClient->getLastFoulColor() == VSSRef::Color::BLUE){
             if(data->playTeam == TEAM_BLUE){
                 player[TEAM_BLUE][ID_2]->setX(-680);
-                player[TEAM_BLUE][ID_2]->setY(550);
-                player[TEAM_BLUE][ID_2]->setAngle(0);
+                player[TEAM_BLUE][ID_2]->setY(400);
+                player[TEAM_BLUE][ID_2]->setAngle(-30);
                 player[TEAM_BLUE][ID_1]->setX(-555);
                 player[TEAM_BLUE][ID_1]->setY(-70);
                 player[TEAM_BLUE][ID_1]->setAngle(90);
-                player[TEAM_BLUE][ID_0]->setX(-658);
-                player[TEAM_BLUE][ID_0]->setY(278);
-                player[TEAM_BLUE][ID_0]->setAngle(45);
+                player[TEAM_BLUE][ID_0]->setX(-700);
+                player[TEAM_BLUE][ID_0]->setY(0);
+                player[TEAM_BLUE][ID_0]->setAngle(90);
                 data->goalKick = true;
                 data->contGoalKick = 0;
             }
@@ -464,14 +477,14 @@ void Core::reposition(){
         else if(refereeClient->getLastFoulColor() == VSSRef::Color::YELLOW){
             if(data->playTeam == TEAM_YELLOW){
                 player[TEAM_YELLOW][ID_2]->setX(680);
-                player[TEAM_YELLOW][ID_2]->setY(550);
-                player[TEAM_YELLOW][ID_2]->setAngle(180);
+                player[TEAM_YELLOW][ID_2]->setY(400);
+                player[TEAM_YELLOW][ID_2]->setAngle(30);
                 player[TEAM_YELLOW][ID_1]->setX(555);
                 player[TEAM_YELLOW][ID_1]->setY(-70);
                 player[TEAM_YELLOW][ID_1]->setAngle(90);
-                player[TEAM_YELLOW][ID_0]->setX(658);
-                player[TEAM_YELLOW][ID_0]->setY(278);
-                player[TEAM_YELLOW][ID_0]->setAngle(135);
+                player[TEAM_YELLOW][ID_0]->setX(700);
+                player[TEAM_YELLOW][ID_0]->setY(150);
+                player[TEAM_YELLOW][ID_0]->setAngle(90);
                 data->goalKick = true;
                 data->contGoalKick = 0;
             }

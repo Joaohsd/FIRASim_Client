@@ -163,19 +163,19 @@ void Robot::playID_0(){
         //GOALKEEPER - GOALKEEPER - GOALKEEPER
         switch(data->mode){
         case bola_ataque:
-            if(!data->defendPenalty && !data->goalKick)
+            if(!data->defendPenalty /*&& !data->goalKick*/)
                 this->defend_goal_safe();
             break;
         case bola_meio:
-            if(!data->defendPenalty && !data->goalKick)
+            if(!data->defendPenalty /*&& /*!data->goalKick*/)
                 this->defend_goal_safe();
             break;
         case bola_defesa:
-            if(!data->defendPenalty && !data->goalKick)
+            if(!data->defendPenalty /*&& !data->goalKick*/)
                 this->defend_goal_safe();
             break;
         case bola_area:
-            if(!data->defendPenalty && !data->goalKick)
+            if(!data->defendPenalty /*&& !data->goalKick*/)
                 this->defend_goal_safe();
             break;
         }
@@ -283,7 +283,7 @@ void Robot::playID_1(){
         //CONTAINING - DEFENDER - CONTAINING
         switch(data->mode){
         case bola_ataque:
-            if(!data->penalty)
+            if(!data->penalty && !data->freeBall)
                 this->attack();
             break;
         case bola_meio:
@@ -389,17 +389,20 @@ void Robot::playID_2(){
         //STRICKER - DEFENDER - CONTAINING
         switch(data->mode){
         case bola_ataque:
-            if(!data->penalty)
+            if(!data->penalty && !data->freeBall && !data->goalKick)
                 this->attack();
             break;
         case bola_meio:
-            this->attack_antigo();
+            if(!data->penalty && !data->freeBall && !data->goalKick)
+                this->attack_antigo();
             break;
         case bola_defesa:
-            this->defend();
+            if(!data->penalty && !data->freeBall && !data->goalKick)
+                this->defend();
             break;
         case bola_area:
-            this->defend_middle_attack();
+            if(!data->penalty && !data->freeBall && !data->goalKick)
+                this->defend_middle_attack();
             break;
         }
     }
