@@ -211,7 +211,7 @@ void Core::update(){
 void Core::process(){
     //Defining the play
     data->mode = bola_ataque;
-    double x_attack =  150;
+    double x_attack =  200;
     double x_defense = 350;
     if(this->data->playSide == LEFT_SIDE){
         if(this->data->ballPos.x() >= this->data->middle_field.x() + x_attack){ //Attack
@@ -290,6 +290,9 @@ void Core::process(){
             this->player[data->playTeam][ID_2]->start(QThread::HighestPriority);
             this->player[data->playTeam][ID_0]->start(QThread::HighestPriority);
             this->player[data->playTeam][ID_1]->start();
+            /*this->player[data->playTeam][ID_2]->playID_2();
+            this->player[data->playTeam][ID_0]->playID_0();
+            this->player[data->playTeam][ID_1]->playID_1();*/
         }
         else{
             this->player[this->data->playTeam][ID_0]->stopRobot();
@@ -333,6 +336,8 @@ void Core::reposition(){
                 player[TEAM_BLUE][ID_0]->setX(-700);
                 player[TEAM_BLUE][ID_0]->setY(0);
                 player[TEAM_BLUE][ID_0]->setAngle(90);
+                data->freeBall = true;
+                data->contFreeBall = 0;
             }
             else{
                 player[TEAM_YELLOW][ID_2]->setX(570);
@@ -368,6 +373,8 @@ void Core::reposition(){
                 player[TEAM_YELLOW][ID_0]->setX(700);
                 player[TEAM_YELLOW][ID_0]->setY(0);
                 player[TEAM_YELLOW][ID_0]->setAngle(90);
+                data->freeBall = true;
+                data->contFreeBall = 0;
             }
         }
         else if(refereeClient->getLastFoulQuadrant() == VSSRef::Quadrant::QUADRANT_3){
@@ -392,6 +399,8 @@ void Core::reposition(){
                 player[TEAM_YELLOW][ID_0]->setX(700);
                 player[TEAM_YELLOW][ID_0]->setY(0);
                 player[TEAM_YELLOW][ID_0]->setAngle(90);
+                data->freeBall = true;
+                data->contFreeBall = 0;
             }
         }
         else{
@@ -405,6 +414,8 @@ void Core::reposition(){
                 player[TEAM_BLUE][ID_0]->setX(-700);
                 player[TEAM_BLUE][ID_0]->setY(0);
                 player[TEAM_BLUE][ID_0]->setAngle(90);
+                data->freeBall = true;
+                data->contFreeBall = 0;
             }
             else{
                 player[TEAM_YELLOW][ID_2]->setX(570);

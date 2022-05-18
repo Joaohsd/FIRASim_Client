@@ -53,6 +53,9 @@ int StaticData::contDefendPenalty = -1;
 bool StaticData::goalKick = false;
 int StaticData::contGoalKick = -1;
 
+bool StaticData::freeBall = false;
+int StaticData::contFreeBall = -1;
+
 int StaticData::robotAction[] = {-1,-1,-1,-1,-1};
 int StaticData::robotPenalty[] = {-1,-1,-1,-1,-1};
 int StaticData::penaltyAction = 0;

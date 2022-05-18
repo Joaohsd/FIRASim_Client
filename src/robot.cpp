@@ -287,7 +287,7 @@ void Robot::playID_1(){
                 this->attack();
             break;
         case bola_meio:
-            this->intercept();
+            this->midfielder();
             break;
         case bola_defesa:
             this->defend();
@@ -473,6 +473,7 @@ void Robot::attack()
 {
     enum play_mode {att_normal, att_borda,att_danger} mode = att_normal;
     int min_ball_player_dist_to_go_ball = 400;
+
     if(is_inside(data->ballPos, this->data->area[RIGHT_SIDE]) && this->data->playSide == LEFT_SIDE){
         mode = att_danger;
     }
@@ -481,24 +482,11 @@ void Robot::attack()
         mode = att_danger;
     }
 
-    else if(border_y()){
-        mode = att_borda;
-    }
-
     else{
         mode = att_normal;
     }
 
     switch(mode){
-    case att_borda:
-        if(verify_Player_Best_Condition(ID_1,ID_2) == this->getId())
-            this->intercept_antigo();
-        else {
-            if(distance(data->ballPos, pos) > min_ball_player_dist_to_go_ball)
-                containing();
-            else this->intercept_antigo();
-        }
-        break;
     case att_normal:
         if(verify_Player_Best_Condition(ID_1,ID_2) == this->getId())
             this->kick();
@@ -518,7 +506,7 @@ void Robot::attack()
 
 void Robot::attack_antigo()
 {
-    enum play_mode {att_normal, att_borda,att_danger} mode = att_normal;
+    enum play_mode {att_normal, att_borda} mode = att_normal;
 
     if(border_y()){
         mode = att_borda;
@@ -535,11 +523,6 @@ void Robot::attack_antigo()
     case att_normal:
         this->kick();
         break;
-    case att_danger:
-        if(verify_Player_Best_Condition(ID_1,ID_2) == this->getId())
-            this->kick();
-        else this->defend_attack();
-        break;
     }
 }
 
@@ -549,7 +532,7 @@ void Robot::containing(){
         int ball_Player_xDist = 350; //350
         if(data->playSide == LEFT_SIDE){
             int x_Max = 1000;
-            int x_Min = 350;
+            int x_Min = 400;
             int x_Point = data->ballPos.x() - ball_Player_xDist;
             if(x_Point < x_Min)
                 x_Point = x_Min;
@@ -566,7 +549,7 @@ void Robot::containing(){
         }
         else{
             int x_Max = 500; //600
-            int x_Min = 1150;
+            int x_Min = 1100;
             int x_Point = data->ballPos.x() + ball_Player_xDist;
             if(x_Point < x_Max)
                 x_Point = x_Max;
@@ -597,6 +580,8 @@ void Robot::kick()
     double max_angle_threshold = 50;
     //Maximum distance threshold for leaving kick mode
     double max_threshold = 270;
+    //Minimum distance to leaving containing mode
+    int min_ball_player_dist_to_go_ball = 400;
 
     QPoint med_goal2;
 
@@ -668,7 +653,7 @@ void Robot::kick()
                 }
             }
             else{
-                this->intercept();
+                this->intercept_antigo();
             }
         }
         else{
@@ -683,28 +668,38 @@ void Robot::kick()
 
 void Robot::midfielder(){
     if(data->playSide == LEFT_SIDE){
-        if((pos.x() + 200) < data->ballPos.x()){
-            /*this->defend_midfielder++;
-            if(this->defend_midfielder >= 120)
+        if(pos.x() < data->ballPos.x()){
+            this->defend_midfielder++;
+            if(this->defend_midfielder >= 60){
                 this->attack_antigo();
-            else*/
-                this->attack_antigo();
+                cout << "ATACANDO" << endl;
+            }
+            else{
+                this->intercept();
+                cout << "DEFENDENDO" << endl;
+            }
         }
         else{
-            //this->defend_midfielder = 0;
+            this->defend_midfielder = 0;
             this->intercept();
+            cout << "DEFENDENDO" << endl;
         }
     }else{
-        if((pos.x() - 200) > data->ballPos.x()){
-            /*this->defend_midfielder++;
-            if(this->defend_midfielder >= 120)
+        if(pos.x() > data->ballPos.x()){
+            this->defend_midfielder++;
+            if(this->defend_midfielder >= 60){
                 this->attack_antigo();
-            else*/
-                this->attack_antigo();
+                cout << "ATACANDO" << endl;
+            }
+            else{
+                this->intercept();
+                cout << "DEFENDENDO" << endl;
+            }
         }
         else{
-            //this->defend_midfielder = 0;
+            this->defend_midfielder = 0;
             this->intercept();
+            cout << "DEFENDENDO" << endl;
         }
     }
 }

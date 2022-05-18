@@ -33,6 +33,8 @@ public:
     static int contDefendPenalty;
     static bool goalKick;
     static int contGoalKick;
+    static bool freeBall;
+    static int contFreeBall;
     static double speed_spin_increment;
     static play_mode mode;
 	StaticData();
