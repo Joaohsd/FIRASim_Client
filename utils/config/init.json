@@ -1,0 +1,32 @@
+{
+    "NETWORK":{
+        "NETWORK_IP": "127.0.0.1",
+        "FIRASIM":{
+            "VISION":{
+		"MULTICAST_IP": "224.0.0.1",                
+		"PORT": 10002
+            },
+            "ACTUATOR":{
+		"MULTICAST_IP": "224.0.0.1",
+                "PORT": 20011
+            }
+        },
+        "REFEREE":{
+            "CLIENT":{            
+		"MULTICAST_IP": "224.5.23.2",		
+		"PORT": 10003
+            },
+            "REPLACER":{
+		"MULTICAST_IP": "224.5.23.2",
+                "PORT": 10004
+            }
+        }
+    },
+    "TEAM":{
+        "COLOR": "blue",
+	"QTDROBOTS": 3,
+        "FORMATION": 2,
+        "TEST": false
+    }
+}
+

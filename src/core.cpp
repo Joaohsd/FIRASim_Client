@@ -2,12 +2,8 @@
 
 Core::Core()
 {
-    codeArguments = new Arguments();
-}
-
-void Core::updateArguments(int argc, char** argv){
-    this->codeArguments->update(argc, argv);
-    this->codeArguments->print();
+    this->init = ConfigDAO::Instance();
+    this->init->print();
 }
 
 void Core::verifyStatus(){
@@ -42,13 +38,13 @@ void Core::ballInfo(){
 
 void Core::start(){
     //Creating client objects
-    this->visionClient = new VisionClient(this->codeArguments->get_ip_Multicast_FIRA_Vision(),this->codeArguments->get_port_FIRA_Vision());
-    this->actuatorClient = new ActuatorClient(this->codeArguments->get_ip_Local_Machine_FIRA(), this->codeArguments->get_port_FIRA_Actuator());
-    this->refereeClient = new RefereeClient(this->codeArguments->get_ip_Multicast_REF(), this->codeArguments->get_port_REF());
-    this->replacerClient = new ReplacerClient(this->codeArguments->get_ip_Multicast_REF(), this->codeArguments->get_port_REF_REPLACER());
+    this->visionClient = new VisionClient(this->init->get_ip_Multicast_FIRA_Vision(),this->init->get_port_FIRA_Vision());
+    this->actuatorClient = new ActuatorClient(this->init->get_ip_Local_Machine_FIRA(), this->init->get_port_FIRA_Actuator());
+    this->refereeClient = new RefereeClient(this->init->get_ip_Multicast_REF(), this->init->get_port_REF());
+    this->replacerClient = new ReplacerClient(this->init->get_ip_Multicast_REF(), this->init->get_port_REF_REPLACER());
 
     //Setting team color for actuator and replacer object
-    VSSRef::Color teamColor = this->codeArguments->get_teamColor() ? VSSRef::Color::YELLOW : VSSRef::Color::BLUE;
+    VSSRef::Color teamColor = this->init->get_teamColor() ? VSSRef::Color::YELLOW : VSSRef::Color::BLUE;
     this->actuatorClient->setTeamColor(teamColor);
     this->replacerClient->setTeamColor(teamColor);
 
@@ -57,7 +53,7 @@ void Core::start(){
     this->refereeClient->connect();
 
     //Initialize
-    this->initializeTeam(this->codeArguments->get_teamColor(), this->codeArguments->get_teamFormation());
+    this->initializeTeam(this->init->get_teamColor(), this->init->get_teamFormation());
 
     //Defining events and actions
 
@@ -71,8 +67,8 @@ void Core::start(){
 }
 
 void Core::initializeTeam(bool team, int formation){
-    //Defininf test condition
-    this->setTestCondition(this->codeArguments->getTestCondition());
+    //Defining test condition
+    this->testCondition = this->init->getTestCondition();
 
     // Defining team and side
     if(team){   // Yellow Team

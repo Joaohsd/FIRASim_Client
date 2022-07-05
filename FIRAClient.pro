@@ -26,7 +26,7 @@ system(echo "Compiling protobuf files" && cd proto && cmake . && make)
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
-
+DEFINES += PROJECT_PATH=\\\"$${PWD}\\\"
 SOURCES += \
         clients/actuator/actuatorclient.cpp \
         clients/client.cpp \
@@ -41,14 +41,14 @@ SOURCES += \
         proto/vssref_command.pb.cc \
         proto/vssref_common.pb.cc \
         proto/vssref_placement.pb.cc \
-        src/arguments/arguments.cpp \
         src/core.cpp \
 	src/fieldspace.cpp \
 	src/staticdata.cpp \
 	src/robot.cpp \
 	src/uvf.cpp \
 	src/pid.cpp \
-        utils/timer/timer.cpp
+        utils/timer/timer.cpp \
+    	utils/config/configdao.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -68,7 +68,6 @@ HEADERS += \
     proto/vssref_command.pb.h \
     proto/vssref_common.pb.h \
     proto/vssref_placement.pb.h \
-    src/arguments/arguments.h \
     src/core.h \
     src/defines.h \
     src/fieldspace.h \
@@ -76,4 +75,5 @@ HEADERS += \
     src/robot.h \
     src/uvf.h \
     src/pid.h \
-    utils/timer/timer.h
+    utils/timer/timer.h \
+    utils/config/configdao.h

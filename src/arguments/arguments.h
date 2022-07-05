@@ -1,8 +1,10 @@
 #ifndef ARGUMENTS_H
 #define ARGUMENTS_H
+
 #include <QString>
 #include <sstream>
 #include <iostream>
+#include <QJsonObject>
 
 struct Network{
     //VARIÁVEIS DE IP
@@ -59,7 +61,7 @@ public:
     quint16 get_teamFormation();
 
     //Methods to update and print arguments passed to this code
-    void update(int argc, char** argv);
+    void update(QJsonObject json);
     void print();
 private:
     Info info;

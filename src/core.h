@@ -6,18 +6,19 @@
 #include <clients/actuator/actuatorclient.h>
 #include <clients/replacer/replacerclient.h>
 
-#include <src/arguments/arguments.h>
+#include <src/configdao.h>
 #include <src/defines.h>
 
 #include <src/staticdata.h>
 #include <src/robot.h>
+
+#include <QJsonObject>
 
 class Core : public QObject
 {
     Q_OBJECT
 public:
     Core();
-    void updateArguments(int argc, char** argv);
 
     void start();
     void initializeTeam(bool team, int formation);
@@ -48,8 +49,8 @@ private:
     ReplacerClient *replacerClient;
     ActuatorClient *actuatorClient;
 
-    //Code arguments
-    Arguments *codeArguments;
+    //DAOs
+    ConfigDAO *init;
 
     //IDs of each robot
     int att_id = ID_2;

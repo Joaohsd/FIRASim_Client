@@ -1,0 +1,371 @@
+{
+    "FREE BALL":{
+        "QUADRANT_1":{
+            "BLUE":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            },
+            "YELLOW":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            }
+        },
+        "QUADRANT_2":{
+            "BLUE":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            },
+            "YELLOW":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            }
+        },
+        "QUADRANT_3":{
+            "BLUE":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            },
+            "YELLOW":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            }
+        },
+        "QUADRANT_4":{
+            "BLUE":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            },
+            "YELLOW":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            }
+        }
+    },
+    "PENALTY_KICK":{
+        "BLUE":{
+            "DEFEND":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            },
+            "ATTACK":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            }
+        },
+        "YELLOW":{
+            "DEFEND":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            },
+            "ATTACK":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            }
+        }
+    },
+    "GOAL_KICK":{
+        "BLUE":{
+            "ATTACK":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            },
+            "DEFEND":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            }
+        },
+        "YELLOW":{
+            "ATTACK":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            },
+            "DEFEND":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            }
+        }
+    },
+    "KICKOFF":{
+        "BLUE":{
+            "ATTACK":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            },
+            "DEFEND":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            }
+        },
+        "YELLOW":{
+            "ATTACK":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }
+            },
+            "DEFEND":{
+                "ID_0":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_1":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                },
+                "ID_2":{
+                    "X": 100,
+                    "Y": 100,
+                    "ORIENTATION": 100
+                }  
+            }
+        }
+    }
+}
+

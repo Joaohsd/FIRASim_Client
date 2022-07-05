@@ -85,46 +85,9 @@ quint16 Arguments::get_teamFormation(){
     return this->info.team.formation;
 }
 
-void Arguments::update(int argc, char **argv){
-    if(argc > 0){
-        for(int i = 1; i < argc; i++){
-            std::stringstream info;
-            info << argv[i];
-            //std::cout << argv[i] << std::endl;
-            if(i == 1){
-                if(strcmp(argv[1],"blue") == 0)
-                    this->info.team.color = false;
-                else this->info.team.color = true;
-            }
-            else if(i == 2){
-                this->info.network.ip_Local_Machine_FIRA = argv[2];
-            }
-            else if(i == 3){
-                info >> this->info.network.port_FIRA_Vision;
-            }
-            else if(i == 4){
-                info >> this->info.network.port_FIRA_Actuator;
-            }
-            else if(i == 5){
-                this->info.network.ip_Multicast_FIRA_Vision = argv[5];
-            }
-            else if(i == 6){
-                info >> this->info.network.port_REF;
-            }
-            else if(i == 7){
-                info >> this->info.network.port_REF_REPLACER;
-            }
-            else if(i == 8){
-                this->info.network.ip_Multicast_REF = argv[8];
-            }
-            else if(i == 9){
-                info >> this->info.team.formation;
-            }
-            else if(i == 10){
-                info >> this->info.testCondition;
-            }
-        }
-    }
+void Arguments::update(QJsonObject json){
+    this->info.network.ip_Local_Machine_FIRA = json.value("NETWORK").toObject().value("NETWORK_IP").toString();
+    std::cout<< this->info.network.ip_Local_Machine_FIRA << std::endl;
 }
 
 void Arguments::print(){
