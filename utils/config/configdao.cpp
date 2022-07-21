@@ -4,7 +4,7 @@ ConfigDAO* ConfigDAO::object = NULL;
 
 ConfigDAO::ConfigDAO()
 {
-    this->fileName = QString(QString(PROJECT_PATH) + "/utils/config/init.json");
+    this->fileName = QString(QString(PROJECT_PATH) + "/utils/config/config.json");
     this->file = new QFile();
     this->file->setFileName(this->fileName);
     this->file->open(QIODevice::ReadOnly | QIODevice::Text);

@@ -164,23 +164,59 @@
                     "ORIENTATION": 100
                 }
             },
-            "ATTACK":{
-                "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+            "ATTACK":[
+                {
+                    "ID_0":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    },
+                    "ID_1":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    },
+                    "ID_2":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    }
                 },
-                "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                {
+                    "ID_0":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    },
+                    "ID_1":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    },
+                    "ID_2":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    }
                 },
-                "ID_2":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                {
+                    "ID_0":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    },
+                    "ID_1":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    },
+                    "ID_2":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    }
                 }
-            }
+            ]
         },
         "YELLOW":{
             "DEFEND":{
@@ -200,23 +236,59 @@
                     "ORIENTATION": 100
                 }
             },
-            "ATTACK":{
-                "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+            "ATTACK":[
+                {
+                    "ID_0":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    },
+                    "ID_1":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    },
+                    "ID_2":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    }
                 },
-                "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                {
+                    "ID_0":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    },
+                    "ID_1":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    },
+                    "ID_2":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    }
                 },
-                "ID_2":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                {
+                    "ID_0":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    },
+                    "ID_1":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    },
+                    "ID_2":{
+                        "X": 100,
+                        "Y": 100,
+                        "ORIENTATION": 100
+                    }
                 }
-            }
+            ]
         }
     },
     "GOAL_KICK":{
@@ -368,4 +440,3 @@
         }
     }
 }
-

@@ -23,7 +23,7 @@
         }
     },
     "TEAM":{
-        "COLOR": "blue",
+        "COLOR": "yellow",
 	"QTDROBOTS": 3,
         "FORMATION": 2,
         "TEST": false
