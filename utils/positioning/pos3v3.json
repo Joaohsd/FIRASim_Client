@@ -3,144 +3,144 @@
         "QUADRANT_1":{
             "BLUE":{
                 "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -700,
+                    "Y": 0,
+                    "ORIENTATION": 900
                 },
                 "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -365,
+                    "Y": 450,
+                    "ORIENTATION": -40
                 },
                 "ID_2":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 150,
+                    "Y": 400,
+                    "ORIENTATION": 0
                 }
             },
             "YELLOW":{
                 "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 700,
+                    "Y": 150,
+                    "ORIENTATION": 90
                 },
                 "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 555,
+                    "Y": -25,
+                    "ORIENTATION": 90
                 },
                 "ID_2":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 570,
+                    "Y": 400,
+                    "ORIENTATION": 180
                 }
             }
         },
         "QUADRANT_2":{
             "BLUE":{
                 "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -700,
+                    "Y": 150,
+                    "ORIENTATION": 90
                 },
                 "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -555,
+                    "Y": -25,
+                    "ORIENTATION": 90
                 },
                 "ID_2":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -570,
+                    "Y": 400,
+                    "ORIENTATION": 0
                 }
             },
             "YELLOW":{
                 "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 700,
+                    "Y": 0,
+                    "ORIENTATION": 90
                 },
                 "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 365,
+                    "Y": 450,
+                    "ORIENTATION": 40
                 },
                 "ID_2":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -150,
+                    "Y": 400,
+                    "ORIENTATION": 180
                 }
             }
         },
         "QUADRANT_3":{
             "BLUE":{
                 "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -700,
+                    "Y": -150,
+                    "ORIENTATION": -90
                 },
                 "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -555,
+                    "Y": 25,
+                    "ORIENTATION": 90
                 },
                 "ID_2":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -570,
+                    "Y": -400,
+                    "ORIENTATION": 180
                 }
             },
             "YELLOW":{
                 "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 700,
+                    "Y": 0,
+                    "ORIENTATION": 90
                 },
                 "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 365,
+                    "Y": -450,
+                    "ORIENTATION": -40
                 },
                 "ID_2":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -150,
+                    "Y": -400,
+                    "ORIENTATION": 180
                 }
             }
         },
         "QUADRANT_4":{
             "BLUE":{
                 "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -700,
+                    "Y": 0,
+                    "ORIENTATION": 90
                 },
                 "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -365,
+                    "Y": -450,
+                    "ORIENTATION": 40
                 },
                 "ID_2":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 150,
+                    "Y": -400,
+                    "ORIENTATION": 0
                 }
             },
             "YELLOW":{
                 "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 700,
+                    "Y": -150,
+                    "ORIENTATION": -90
                 },
                 "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 555,
+                    "Y": 25,
+                    "ORIENTATION": 90
                 },
                 "ID_2":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 570,
+                    "Y": -400,
+                    "ORIENTATION": 0
                 }
             }
         }
@@ -295,72 +295,72 @@
         "BLUE":{
             "ATTACK":{
                 "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -700,
+                    "Y": 0,
+                    "ORIENTATION": 90
                 },
                 "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -555,
+                    "Y": -70,
+                    "ORIENTATION": 90
                 },
                 "ID_2":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -680,
+                    "Y": 400,
+                    "ORIENTATION": -30
                 }
             },
             "DEFEND":{
                 "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -700,
+                    "Y": 0,
+                    "ORIENTATION": 90
                 },
                 "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 175,
+                    "Y": -275,
+                    "ORIENTATION": 0
                 },
                 "ID_2":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 175,
+                    "Y": 275,
+                    "ORIENTATION": 0
                 }
             }
         },
         "YELLOW":{
             "ATTACK":{
                 "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 700,
+                    "Y": 150,
+                    "ORIENTATION": 90
                 },
                 "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 555,
+                    "Y": -70,
+                    "ORIENTATION": 90
                 },
                 "ID_2":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 680,
+                    "Y": 400,
+                    "ORIENTATION": 30
                 }
             },
             "DEFEND":{
                 "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 700,
+                    "Y": 0,
+                    "ORIENTATION": 90
                 },
                 "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -175,
+                    "Y": -275,
+                    "ORIENTATION": 0
                 },
                 "ID_2":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -175,
+                    "Y": 275,
+                    "ORIENTATION": 0
                 }
             }
         }
@@ -369,72 +369,72 @@
         "BLUE":{
             "ATTACK":{
                 "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -700,
+                    "Y": 0,
+                    "ORIENTATION": 90
                 },
                 "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -350,
+                    "Y": 0,
+                    "ORIENTATION": 0
                 },
                 "ID_2":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -70,
+                    "Y": -30,
+                    "ORIENTATION": 27.5
                 }
             },
             "DEFEND":{
                 "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -700,
+                    "Y": 0,
+                    "ORIENTATION": 90
                 },
                 "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -500,
+                    "Y": 0,
+                    "ORIENTATION": 0
                 },
                 "ID_2":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": -230,
+                    "Y": -70,
+                    "ORIENTATION": 20
                 }
             }
         },
         "YELLOW":{
             "ATTACK":{
                 "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 700,
+                    "Y": 0,
+                    "ORIENTATION": 90
                 },
                 "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 350,
+                    "Y": 0,
+                    "ORIENTATION": 180
                 },
                 "ID_2":{
                     "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "Y": -15,
+                    "ORIENTATION": 165
                 }
             },
             "DEFEND":{
                 "ID_0":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 700,
+                    "Y": 0,
+                    "ORIENTATION": 90
                 },
                 "ID_1":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 500,
+                    "Y": 0,
+                    "ORIENTATION": 0
                 },
                 "ID_2":{
-                    "X": 100,
-                    "Y": 100,
-                    "ORIENTATION": 100
+                    "X": 230,
+                    "Y": 70,
+                    "ORIENTATION": 207.5
                 }  
             }
         }
